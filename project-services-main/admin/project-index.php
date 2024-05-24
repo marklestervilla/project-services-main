@@ -36,14 +36,13 @@ $result = mysqli_query($con, $sql);
 
     <div class="card">
 
-        <?php 
+        <?php
         alertMessage();
         ?>
 
         <div class="card-header">
             <h4>Project Files
-                <a href="project-create.php" class="btn btn-primary float-right btn-sm"><i
-                        class="fas fa-plus-circle"></i> Create Project</a>
+                <a href="project-create.php" class="btn btn-primary float-right btn-sm"><i class="fas fa-plus-circle"></i> Create Project</a>
             </h4>
         </div>
         <div class="card-body">
@@ -62,15 +61,15 @@ $result = mysqli_query($con, $sql);
                 </thead>
                 <tbody>
                     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                    <tr>
-                        <!-- <td><?php echo $row['id']; ?></td> -->
-                        <td><?php echo $row['project_name']; ?></td>
-                        <td><?php echo $row['category_name']; ?></td>
-                        <td><?php echo $row['position']; ?></td>
-                        <td><?php echo $row['customer_name']; ?></td>
-                        <td><?php echo date('j M Y | g:i A', strtotime($row['time_created'])); ?></td>
-                        <td>
-                            <?php
+                        <tr>
+                            <!-- <td><?php echo $row['id']; ?></td> -->
+                            <td><?php echo $row['project_name']; ?></td>
+                            <td><?php echo $row['category_name']; ?></td>
+                            <td><?php echo $row['position']; ?></td>
+                            <td><?php echo $row['customer_name']; ?></td>
+                            <td><?php echo date('j M Y | g:i A', strtotime($row['time_created'])); ?></td>
+                            <td>
+                                <?php
                                 $status = $row['status'];
                                 $badge_class = '';
                                 switch ($status) {
@@ -88,47 +87,48 @@ $result = mysqli_query($con, $sql);
                                         break;
                                     case 4:
                                         $badge_class = 'bg-danger'; // Cancelled
-                                        break;    
+                                        break;
                                     default:
                                         $badge_class = 'bg-info'; // Default
                                         break;
                                 }
                                 echo '<span class="badge ' . $badge_class . '">' . getStatusText($status) . '</span>';
                                 ?>
-                        </td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Project Actions">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        <i class="fas fa-cog"></i>
-                                        Actions
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <button type="button" class="dropdown-item"
-                                            onclick="viewProject('<?php echo $row['id'] ?>')">
-                                            <i class="fas fa-eye"></i> Show
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Project Actions">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-cog"></i>
+                                            Actions
                                         </button>
-                                        <button type="button" class="dropdown-item"
-                                            onclick="editProject('<?php echo $row['id']; ?>')">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                        <form action="code-proj.php" method="POST">
-                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>" >
-                                        <input type="hidden" name="image" value="<?php echo $row['image']; ?>" >
-                                        <button type="submit" name="deleteProject" class="dropdown-item">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </button>
-                                        </form>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <button type="button" class="dropdown-item" onclick="viewProject('<?php echo $row['id'] ?>')">
+                                                <i class="fas fa-eye"></i> Show
+                                            </button>
+                                            <button type="button" class="dropdown-item" onclick="editProject('<?php echo $row['id']; ?>')">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <form action="code-proj.php" method="POST">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="hidden" name="image" value="<?php echo $row['image']; ?>">
+                                                <button type="submit" name="archiveProject" class="dropdown-item">
+                                                    <i class="fas fa-trash"></i> Archive
+                                                </button>
+                                            </form>
+                                            <form action="code-proj.php" method="POST">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="hidden" name="image" value="<?php echo $row['image']; ?>">
+                                                <button type="submit" name="deleteProject" class="dropdown-item">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-
-                    </tr>
+                            </td>
+                        </tr>
                     <?php } ?>
-
                 </tbody>
             </table>
         </div>
@@ -137,14 +137,13 @@ $result = mysqli_query($con, $sql);
     <?php include('includes/script.php'); ?>
 
     <script>
-    function viewProject(projId) {
-        window.location.href = 'project-view.php?proj_id=' + projId;
-    }
+        function viewProject(projId) {
+            window.location.href = 'project-view.php?proj_id=' + projId;
+        }
 
-    function editProject(projId) {
-        window.location.href = 'project-edit.php?proj_id=' + projId;
-    }
-
+        function editProject(projId) {
+            window.location.href = 'project-edit.php?proj_id=' + projId;
+        }
     </script>
 
     <?php include('includes/footer.php'); ?>
@@ -168,7 +167,7 @@ $result = mysqli_query($con, $sql);
                 break;
             case 4:
                 return 'Cancelled';
-                break;    
+                break;
             default:
                 return 'Unknown';
                 break;

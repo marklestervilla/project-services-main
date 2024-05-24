@@ -4,14 +4,14 @@ include 'config/dbcon.php';
 include 'config/function.php';
 
 // Insert Equipment
-if(isset($_POST['saveEquipment'])) {
+if (isset($_POST['saveEquipment'])) {
     $name = $_POST['name'] ?? '';
     $value = $_POST['value'] ?? '';
     $note = $_POST['description'] ?? ''; // Assuming the textarea for note has name="description"
     $status = $_POST['status'] ?? '0'; // Default status is 'available'
     $image = $_FILES['image']['name'] ?? '';
 
-    if(file_exists("uploads/".$_FILES['image']['name'] )) {   
+    if (file_exists("uploads/" . $_FILES['image']['name'])) {
         $filename = $_FILES['image']['name'];
         $_SESSION['status'] = $filename . " Image already exists";
         header('location: equipment-create.php');
@@ -26,7 +26,7 @@ if(isset($_POST['saveEquipment'])) {
         $stmt = mysqli_prepare($con, $insert_equipment_query);
         mysqli_stmt_bind_param($stmt, "sssss", $name, $value, $note, $status, $image);
 
-        if(mysqli_stmt_execute($stmt)) {
+        if (mysqli_stmt_execute($stmt)) {
             $_SESSION['status'] = "Equipment Added Successfully";
             header('location: equipment-create.php');
         } else {
@@ -37,7 +37,7 @@ if(isset($_POST['saveEquipment'])) {
 }
 
 // Update Equipment
-if(isset($_POST['updateEquipment'])) {
+if (isset($_POST['updateEquipment'])) {
     $id = $_POST['id'] ?? '';
     $name = $_POST['name'] ?? '';
     $value = $_POST['value'] ?? '';
@@ -47,14 +47,14 @@ if(isset($_POST['updateEquipment'])) {
     $image = $_FILES['image']['name'] ?? '';
 
     // File upload handling
-    if($image !== '') {
+    if ($image !== '') {
         $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["image"]["name"]);
 
         // Check if the new image file already exists
-        if(file_exists($target_file)) {
+        if (file_exists($target_file)) {
             $_SESSION['status'] = "Sorry, file already exists.";
-            header('location: equipment-edit.php?id='.$id);
+            header('location: equipment-edit.php?id=' . $id);
             exit;
         }
 
@@ -71,7 +71,7 @@ if(isset($_POST['updateEquipment'])) {
     mysqli_stmt_bind_param($stmt, "sssssi", $name, $value, $note, $status, $image, $id);
 
     // Execute the query
-    if(mysqli_stmt_execute($stmt)) {
+    if (mysqli_stmt_execute($stmt)) {
         $_SESSION['status'] = "Equipment Updated Successfully";
         header('location: equipment.php');
     } else {
@@ -84,16 +84,16 @@ if(isset($_POST['updateEquipment'])) {
 }
 
 // Delete Equipment
-if(isset($_POST['deleteEquipment'])) {
+if (isset($_POST['deleteEquipment'])) {
     $id = $_POST['id'];
     $image = $_POST['image'];
 
     $delete_query = "DELETE FROM equipment WHERE id='$id' ";
     $delete_query_run = mysqli_query($con, $delete_query);
 
-    if($delete_query_run) {
+    if ($delete_query_run) {
         // Delete image file
-        if(unlink("uploads/".$image)) {
+        if (unlink("uploads/" . $image)) {
             $_SESSION['status'] = "Equipment Deleted Successfully";
             header('location: equipment.php');
         } else {
@@ -107,17 +107,17 @@ if(isset($_POST['deleteEquipment'])) {
 }
 
 // Insert New Employee
-if(isset($_POST['saveEmployee'])) {
+if (isset($_POST['saveEmployee'])) {
     $name = $_POST['name'] ?? '';
     $age = $_POST['age'] ?? '';
     $email = $_POST['email'] ?? '';
     $contact = $_POST['contact'] ?? '';
-    $address = $_POST['address'] ?? ''; 
+    $address = $_POST['address'] ?? '';
     $position = $_POST['position'] ?? '';
     $status = $_POST['status'] ?? '0'; // Default status is 'available'
     $image = $_FILES['image']['name'] ?? '';
 
-    if(file_exists("uploads_emp/".$_FILES['image']['name'] )) {   
+    if (file_exists("uploads_emp/" . $_FILES['image']['name'])) {
         $filename = $_FILES['image']['name'];
         $_SESSION['status'] = $filename . " Image already exists";
         header('location: employee-create.php');
@@ -135,7 +135,7 @@ if(isset($_POST['saveEmployee'])) {
         mysqli_stmt_bind_param($stmt, "ssssssss", $name, $age, $email, $contact, $address, $position, $status, $image);
 
         // Execute the statement
-        if(mysqli_stmt_execute($stmt)) {
+        if (mysqli_stmt_execute($stmt)) {
             $_SESSION['status'] = "New Employee Added Successfully";
             header('location: employee-create.php');
         } else {
@@ -146,27 +146,27 @@ if(isset($_POST['saveEmployee'])) {
 }
 
 // Update Employee
-if(isset($_POST['updateEmployee'])) {
+if (isset($_POST['updateEmployee'])) {
     $id = $_POST['id'] ?? '';
     $name = $_POST['name'] ?? '';
     $age = $_POST['age'] ?? '';
     $email = $_POST['email'] ?? '';
     $contact = $_POST['contact'] ?? '';
-    $address = $_POST['address'] ?? ''; 
+    $address = $_POST['address'] ?? '';
     $position = $_POST['position'] ?? '';
     $status = $_POST['status'] ?? '0'; // Default status is 'available'
     $image = $_FILES['image']['name'] ?? '';
     $image_old = ''; // Define $image_old variable
 
     // File upload handling
-    if($image !== '') {
+    if ($image !== '') {
         $target_dir = "uploads_emp/";
         $target_file = $target_dir . basename($_FILES["image"]["name"]);
 
         // Check if the new image file already exists
-        if(file_exists($target_file)) {
+        if (file_exists($target_file)) {
             $_SESSION['status'] = "Sorry, file already exists.";
-            header('location: employee-edit.php?id='.$id);
+            header('location: employee-edit.php?id=' . $id);
             exit;
         }
 
@@ -186,7 +186,7 @@ if(isset($_POST['updateEmployee'])) {
     mysqli_stmt_bind_param($stmt, "ssssssisi", $name, $age, $email, $contact, $address, $position, $status, $image_old, $id);
 
     // Execute the query
-    if(mysqli_stmt_execute($stmt)) {
+    if (mysqli_stmt_execute($stmt)) {
         $_SESSION['status'] = "Employee Updated Successfully";
         header('location: employee.php');
     } else {
@@ -199,7 +199,7 @@ if(isset($_POST['updateEmployee'])) {
 }
 
 // Delete Employee
-if(isset($_POST['deleteEmployee'])) {
+if (isset($_POST['deleteEmployee'])) {
     $id = $_POST['id'];
     $image = $_POST['image'];
 
@@ -208,9 +208,9 @@ if(isset($_POST['deleteEmployee'])) {
     mysqli_stmt_bind_param($stmt, "i", $id);
     $delete_query_run = mysqli_stmt_execute($stmt);
 
-    if($delete_query_run) {
+    if ($delete_query_run) {
         // Delete image file
-        if(unlink("uploads_emp/".$image)) {
+        if (unlink("uploads_emp/" . $image)) {
             $_SESSION['status'] = "Employee Deleted Successfully";
             header('location: employee.php');
         } else {
@@ -223,8 +223,7 @@ if(isset($_POST['deleteEmployee'])) {
     }
 }
 
-if(isset($_POST['saveProject']))
-{
+if (isset($_POST['saveProject'])) {
     $category_id = validate($_POST['category_id']);
     $project_name = validate($_POST['project_name']);
     $customers_id = validate($_POST['customers_id']);
@@ -236,36 +235,27 @@ if(isset($_POST['saveProject']))
     $status = $_POST['status'] ?? '0'; // Default status is '0'
     $image = $_FILES['image']['name'];
 
-    if(file_exists("uploads_file/".$_FILES['image']['name']))
-    {
+    if (file_exists("uploads_file/" . $_FILES['image']['name'])) {
         $filename = $_FILES['image']['name'];
-        $_SESSION['status'] = $filename . " Image already exists" ;
+        $_SESSION['status'] = $filename . " Image already exists";
         header('location: project-index.php');
-    }
-    else
-    {
+    } else {
         $insert_image_query = "INSERT INTO project(category_id,project_name,customers_id,description,address,position,image,date_start,due_date,status) 
                                 VALUES ('$category_id','$project_name', '$customers_id','$description','$address','$position','$image','$date_start','$due_date','$status')";
         $insert_image_query_run = mysqli_query($con, $insert_image_query);
 
-        if($insert_image_query_run)
-        {
-            move_uploaded_file($_FILES["image"]["tmp_name"],"uploads_file/".$_FILES['image']['name']);
+        if ($insert_image_query_run) {
+            move_uploaded_file($_FILES["image"]["tmp_name"], "uploads_file/" . $_FILES['image']['name']);
             $_SESSION['status'] = "Project Added Successfully";
             header('location: project-index.php');
-        } 
-        else 
-        {
+        } else {
             $_SESSION['status'] = "Something Went Wrong";
             header('location: project-index.php');
         }
     }
-
-    
 }
 
-if(isset($_POST['updateProject'])) 
-{
+if (isset($_POST['updateProject'])) {
     $proj_id = $_POST['id'];
     $category_id = $_POST['category_id'];
     $project_name = $_POST['project_name'];
@@ -280,79 +270,79 @@ if(isset($_POST['updateProject']))
     $new_image = $_FILES['image']['name'];
     $old_image = $_POST['image_old'];
 
-    if($new_image !='')
-    {
-        $update_project = $new_image;
-    }
-    else
-    {
-        $update_project = $old_image;
-    }
-
-    if(file_exists("uploads_file/".$_FILES['image']['name']))
-    {
-        // Delete the existing image file
-        unlink("uploads_file/".$old_image);
-        
+    if ($new_image != '') {
         // Move the new image file to the uploads directory
-        move_uploaded_file($_FILES["image"]["tmp_name"],"uploads_file/".$_FILES['image']['name']);
-        
-        $_SESSION['status'] = "Project Plan Image replaced successfully";
-    }
-    else
-    {
-        // If the new image file does not exist, retain the existing image
+        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads_file/" . $_FILES['image']['name']);
+        // Delete the existing image file
+        unlink("uploads_file/" . $old_image);
+        $update_project = $new_image;
+    } else {
         $update_project = $old_image;
     }
 
     $update_project_query = "UPDATE project SET 
-    category_id='$category_id',
-    project_name='$project_name',
-    customers_id='$customers_id',
-    description='$description',
-    address='$address',
-    position='$position',
-    date_start='$date_start',
-    due_date='$due_date',
-    status='$status',
-    image='$update_project' WHERE id='$proj_id' ";
+category_id='$category_id',
+project_name='$project_name',
+customers_id='$customers_id',
+description='$description',
+address='$address',
+position='$position',
+date_start='$date_start',
+due_date='$due_date',
+status='$status'";
+
+    if ($update_project != $old_image) {
+        $update_project_query .= ", image='$update_project'";
+    }
+
+    $update_project_query .= " WHERE id='$proj_id' ";
 
     $update_project_query = mysqli_query($con, $update_project_query);
 
-    if($update_project_query)
-    {
+    if ($update_project_query) {
         $_SESSION['status'] = "Project Update Successfully";
         header('location: project-index.php');
-    }
-    else
-    {
+    } else {
         $_SESSION['status'] = "Something Went Wrong";
         header('location: project-edit.php');
     }
 }
 
-if(isset($_POST['deleteProject']))
- {
+if (isset($_POST['deleteProject'])) {
     $id = $_POST['id'];
     $image = $_POST['image'];
 
     $delete_project_query = "DELETE FROM project WHERE id='$id' ";
     $delete_project_query_run = mysqli_query($con, $delete_project_query);
 
-    if($delete_project_query_run)
-    {
-        unlink("uploads_file/".$image);
+    if ($delete_project_query_run) {
+        unlink("uploads_file/" . $image);
         $_SESSION['status'] = "Project Deleted Successfully";
         header('location: project-index.php');
-    }
-    else
-    {
+    } else {
         $_SESSION['status'] = "Something Went Wrong";
         header('location: project-index.php');
     }
- }
- 
- if(isset($_POST['saveTask'])) {
+}
+
+if (isset($_POST['archiveProject'])) {
+    $id = $_POST['id'];
+    $image = $_POST['image'];
+
+    $archive_project_query = "UPDATE project SET status = 4 WHERE id='$id' ";
+    $archive_project_query_run = mysqli_query($con, $archive_project_query);
+
+    if ($archive_project_query_run) {
+        unlink("uploads_file/" . $image);
+        $_SESSION['status'] = "Project Archvied Successfully";
+        header('location: project-index.php');
+    } else {
+        $_SESSION['status'] = "Something Went Wrong";
+        header('location: project-index.php');
+    }
+}
+
+if (isset($_POST['saveTask'])) {
     $project_id = $_POST['project_id'];
     $task_name = $_POST['task_name'];
     $description = $_POST['description'];
@@ -364,7 +354,7 @@ if(isset($_POST['deleteProject']))
     $query = "INSERT INTO task (project_id, task_name, description, start_date, due_date, status, priority) VALUES ('$project_id', '$task_name', '$description', '$start_date', '$due_date', '$status', '$priority')";
     $query_run = mysqli_query($con, $query);
 
-    if($query_run) {
+    if ($query_run) {
         $_SESSION['status'] = "Task Added Successfully";
         // Redirect to project view page with the specified project ID
         header("location: http://localhost/project-services/admin/project-view.php?proj_id=$project_id");
@@ -374,8 +364,7 @@ if(isset($_POST['deleteProject']))
     }
 }
 
- if(isset($_POST['updateTask']))
- {
+if (isset($_POST['updateTask'])) {
     $task_id = $_POST['task_id'];
 
     $project_id = $_POST['project_id'];
@@ -390,28 +379,25 @@ if(isset($_POST['deleteProject']))
             WHERE id='$task_id' ";
     $query_run = mysqli_query($con, $query);
 
-    if($query_run)
-    {
+    if ($query_run) {
         $_SESSION['status'] = "Task Updated Successfully";
         header('location: task-list.php');
         exit(0);
-    }
-    else
-    {
+    } else {
         $_SESSION['status'] = "Something Went Wrong!";
         header('location: task-list.php');
         exit(0);
     }
- }
+}
 
- if(isset($_POST['taskDelete'])) {
+if (isset($_POST['taskDelete'])) {
     $task_id = $_POST['taskDelete'];
 
     // Retrieve project ID associated with the task
     $query = "SELECT project_id FROM task WHERE id = $task_id";
     $result = mysqli_query($con, $query);
 
-    if($result && mysqli_num_rows($result) > 0) {
+    if ($result && mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $project_id = $row['project_id'];
 
@@ -423,12 +409,12 @@ if(isset($_POST['deleteProject']))
         $delete_result = mysqli_query($con, $delete_query);
 
         // Check if task is deleted successfully
-        if($delete_result) {
+        if ($delete_result) {
             // Update status of all tasks associated with the project to 'Cancelled'
             $update_query = "UPDATE task SET status = 4 WHERE project_id = $project_id";
             $update_result = mysqli_query($con, $update_query);
 
-            if($update_result) {
+            if ($update_result) {
                 // Commit transaction
                 mysqli_commit($con);
                 $_SESSION['status'] = "Task Deleted Successfully";
@@ -455,8 +441,8 @@ if(isset($_POST['deleteProject']))
         exit();
     }
 }
- 
-if(isset($_POST['saveProductivity'])) {
+
+if (isset($_POST['saveProductivity'])) {
     // Check form data
     print_r($_POST);
 
@@ -489,9 +475,9 @@ if(isset($_POST['saveProductivity'])) {
               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($con, $query);
 
-    if($stmt) {
+    if ($stmt) {
         mysqli_stmt_bind_param($stmt, "issssisss", $task_id, $description, $start_duration, $end_duration, $status, $priority, $employee, $equipment, $material);
-        if(mysqli_stmt_execute($stmt)) {
+        if (mysqli_stmt_execute($stmt)) {
             mysqli_stmt_close($stmt);
             $_SESSION['status'] = "Productivity Added Successfully";
             header("location: project-index.php");
@@ -508,24 +494,5 @@ if(isset($_POST['saveProductivity'])) {
     }
 }
 
-if(isset($_POST['updateProductivity']))
-{
-    
+if (isset($_POST['updateProductivity'])) {
 }
-?>
-
-
-
-
-
-
-   
-
-
-
- 
- 
-
-
-
-

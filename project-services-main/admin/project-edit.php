@@ -1,6 +1,5 @@
-
 <?php
-
+include('../admin/config/dbcon.php');
 include('authentication.php');
 include('includes/header.php');
 include('includes/topbar.php');
@@ -34,170 +33,165 @@ $result = $con->query($sql);
     </div>
     <!-- /.content-header -->
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
 
-            <?php alertMessage(); ?>
-                
-            <div class="card">
-                <div class="card-header">
-                    <h4>Edit Project</h4>
-                    <a href="project-index.php" class="btn btn-danger float-right">Back</a>
-                </div>
-                <div class="card-body">
+                <?php alertMessage(); ?>
 
-                <?php
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Edit Project</h4>
+                        <a href="project-index.php" class="btn btn-danger float-right">Back</a>
+                    </div>
+                    <div class="card-body">
 
-                    $con = mysqli_connect("localhost", "root", "","project_system");
-                    $id = $_GET['proj_id'];
-                    $project_query = "SELECT * FROM project WHERE id='$id'";
-                    $project_query_run = mysqli_query($con, $project_query);
+                        <?php
+                        $id = $_GET['proj_id'];
+                        $project_query = "SELECT * FROM project WHERE id='$id'";
+                        $project_query_run = mysqli_query($con, $project_query);
 
-                    if(mysqli_num_rows($project_query_run) > 0)
-                    {
-                        foreach($project_query_run as $row)
-                        {
-                            // echo $row['id'];
-                            ?>
-                            <form action="code-proj.php" method="POST" enctype="multipart/form-data">
+                        if (mysqli_num_rows($project_query_run) > 0) {
+                            foreach ($project_query_run as $row) {
+                                // echo $row['id'];
+                        ?>
+                                <form action="code-proj.php" method="POST" enctype="multipart/form-data">
 
-                            <div class="col-md-2 mb-3">
-                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>" class="form-control" />
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <label>Select Category:</label>
-                                <select name="category_id" class="form-select mySelect2" required>
-                                    <option value="" selected disabled>Select Category</option>
-                                    <?php
-                                    $categories = getAll('categories');
-                                    if($categories){
-                                        if(mysqli_num_rows($categories) > 0){
-                                            foreach($categories as $cateItem){
-                                                echo '<option value="'.$cateItem['id'].'">'.$cateItem['name'].'</option>';
-                                            }
-                                        } else {
-                                            echo '<option value="">No Category Found!</option>';
-                                        }
-                                    } else {
-                                        echo '<option value="">Something went Wrong!</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-
-                                <div class="col-md-8 mb-3">
-                                    <div class="form-group">
-                                        <label for="project_name" class="form-label">Project Name</label>
-                                        <input type="text"  class="form-control" name="project_name" value="<?php echo $row['project_name']; ?>" id="project_name">
+                                    <div class="col-md-2 mb-3">
+                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>" class="form-control" />
                                     </div>
-                                </div> 
 
-                                <div class="col-md-12 mb-6">
-                                    <div class="form-group">
-                                        <label for="">Description </label>
-                                        <textarea name="description" class="form-control" rows="5"><?php echo $row['description']; ?></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 mb-6">
-                                    <div class="form-group">
-                                        <label for="">Address *</label>
-                                        <textarea id="summernote" name="address" class="form-control" rows="5"><?php echo $row['address']; ?></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="">Project Manager</label>
-                                    <?php
-                                    $available_managers_query = "SELECT * FROM employee WHERE position='Project Manager' AND name NOT IN (SELECT DISTINCT position FROM project)";
-                                    $available_managers_run = mysqli_query($con, $available_managers_query);
-
-                                    if(mysqli_num_rows($available_managers_run) > 0) {
-                                        ?>
-                                        <select name="project_manager" class="form-control" required>
-                                            <option value="" disabled>--Select Manager--</option>
+                                    <div class="col-md-12 mb-3">
+                                        <label>Select Category:</label>
+                                        <select name="category_id" class="form-control mySelect2" required>
+                                            <option value="" selected disabled hidden>Select Category</option>
                                             <?php
-                                            foreach($available_managers_run as $manager) {
-                                                $selected = ($manager['name'] == $row['position']) ? "selected" : "";
-                                                ?>
-                                                <option value="<?= $manager['name'] ?>" <?= $selected ?>><?= $manager['name'] ?></option>
-                                                <?php
+                                            $categories = getAll('categories');
+                                            if ($categories) {
+                                                if (mysqli_num_rows($categories) > 0) {
+                                                    foreach ($categories as $cateItem) {
+                                                        $selected = ($cateItem['id'] == $row['category_id']) ? 'selected' : '';
+                                                        echo '<option value="' . $cateItem['id'] . '" ' . $selected . '>' . $cateItem['name'] . '</option>';
+                                                    }
+                                                } else {
+                                                    echo '<option value="">No Category Found!</option>';
+                                                }
+                                            } else {
+                                                echo '<option value="">Something went Wrong!</option>';
                                             }
                                             ?>
                                         </select>
+                                    </div>
+
+                                    <div class="col-md-8 mb-3">
+                                        <div class="form-group">
+                                            <label for="project_name" class="form-label">Project Name</label>
+                                            <input type="text" class="form-control" name="project_name" value="<?php echo $row['project_name']; ?>" id="project_name">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mb-6">
+                                        <div class="form-group">
+                                            <label for="">Description </label>
+                                            <textarea name="description" class="form-control" rows="5"><?php echo $row['description']; ?></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mb-6">
+                                        <div class="form-group">
+                                            <label for="">Address *</label>
+                                            <textarea id="summernote" name="address" class="form-control" rows="5"><?php echo $row['address']; ?></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="">Project Manager</label>
                                         <?php
-                                    } else {
+                                        $available_managers_query = "SELECT * FROM employee WHERE position='Project Manager' AND name NOT IN (SELECT DISTINCT position FROM project)";
+                                        $available_managers_run = mysqli_query($con, $available_managers_query);
+
+                                        if (mysqli_num_rows($available_managers_run) > 0) {
                                         ?>
-                                        <select name="project_manager" class="form-control" disabled>
-                                            <option value="" disabled>No Available Project Manager</option>
-                                        </select>
+                                            <select name="project_manager" class="form-control" required>
+                                                <option value="" disabled>--Select Manager--</option>
+                                                <?php
+                                                foreach ($available_managers_run as $manager) {
+                                                    $selected = ($manager['name'] == $row['position']) ? "selected" : "";
+                                                ?>
+                                                    <option value="<?= $manager['name'] ?>" <?= $selected ?>><?= $manager['name'] ?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
                                         <?php
-                                    }
-                                    ?>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label for="name">Project Plan Image *</label>
-                                        <input type="file" class="form-control" name="image" required />
-                                        <div class="col-md-6 mb-3">
-                                        <img src="<?php echo "uploads_file/".$row['image']; ?>" width="100" height="100" alt="Project Plan Image">
-                                </div>
+                                        } else {
+                                        ?>
+                                            <select name="project_manager" class="form-control" disabled>
+                                                <option value="" disabled>No Available Project Manager</option>
+                                            </select>
+                                        <?php
+                                        }
+                                        ?>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label for="">Date Start</label>
-                                        <input type="date" name="date_start" value="<?php echo $row['date_start']; ?>" class="form-control" />
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label for="name">Project Plan Image *</label>
+                                            <input type="file" class="form-control" name="image" />
+                                            <div class="col-md-6 mb-3">
+                                                <img src="<?php echo "uploads_file/" . $row['image']; ?>" width="100" height="100" alt="Project Plan Image">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>  
 
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label for="">Due Date</label>
-                                        <input type="date" name="due_date" value="<?php echo $row['due_date']; ?>" class="form-control" />
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label for="">Date Start</label>
+                                            <input type="date" name="date_start" value="<?php echo $row['date_start']; ?>" class="form-control" />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-3 mb-3">
-                                    <div class="form-group">
-                                        <label for="status">Status:</label>
-                                        <select name="status" class="form-control" value="<?php echo $row['status']; ?>">
-                                            <option value="0">Pending</option>
-                                            <option value="1">Preparing</option>
-                                            <option value="2">On-Progress</option>
-                                            <option value="3">Completed</option>
-                                            <option value="4">Cancelled</option>
-                                        </select>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label for="">Due Date</label>
+                                            <input type="date" name="due_date" value="<?php echo $row['due_date']; ?>" class="form-control" />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-12 mb-3">
-                                    <div class="form-group">
-                                    <button type="submit" class="btn btn-primary float-right" name="updateProject">Update Project</button>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="form-group">
+                                            <label for="status">Status:</label>
+                                            <select name="status" class="form-control" value="<?php echo $row['status']; ?>">
+                                                <option value="0">Pending</option>
+                                                <option value="1">Preparing</option>
+                                                <option value="2">On-Progress</option>
+                                                <option value="3">Completed</option>
+                                                <option value="4">Cancelled</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary float-right" name="updateProject">Update Project</button>
+                                        </div>
+                                    </div>
 
                                 </form>
-                            <?php
+                        <?php
+                            }
+                        } else {
+                            echo "No Data Found";
                         }
-                    }
-                    else
-                    {
-                        echo "No Data Found";
-                    }
 
-                ?>
+                        ?>
 
-                
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <?php include('includes/script.php'); ?>
     <link href="path/to/summernote.css" rel="stylesheet">
