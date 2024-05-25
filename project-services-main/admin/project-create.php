@@ -44,8 +44,7 @@ include('modal/task-modal-add.php');
                         </h4>
                     </div>
                     <div class="card-body">
-
-                        <form method="post" enctype="multipart/form-data"> <!-- Removed action="code-proj.php" -->
+                        <form action="code-proj.php" method="POST" enctype="multipart/form-data"> <!-- Removed action="code-proj.php" -->
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
                                     <label>Project Name</label>
@@ -170,6 +169,9 @@ include('modal/task-modal-add.php');
                             -->
                                 <input class="form-control" type="text" id="projectStatusCreate" name="status" value="0" readonly hidden>
                             </div>
+                            <div class="card">
+                                <button type="submit" class="btn btn-primary float-right" name="saveProject" <?= $manager == 0 ? 'disabled' : '' ?>>Save Project</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -186,10 +188,6 @@ include('modal/task-modal-add.php');
                     <div class="card-body" id="projectCreateTasksList">
 
                     </div>
-                </div>
-
-                <div class="card">
-                    <button class="btn btn-primary float-right" id="projectFormSubmit" name="saveProject" <?= $manager == 0 ? 'disabled' : '' ?>>Save Project</button>
                 </div>
             </div>
         </div>
@@ -209,7 +207,6 @@ include('modal/task-modal-add.php');
         <script>
             $(document).ready(function() {
                 $('#addTaskModalBtn').click(function() {
-                    $('#pimage').val($('projectImageAdd').val());
                     $('#project_name').val($('#projectNameAdd').val());
                     $('#category_id').val($('#projectCategoryAdd').val());
                     $('#pcustomer_id').val($('#projectCustomerAdd').val());

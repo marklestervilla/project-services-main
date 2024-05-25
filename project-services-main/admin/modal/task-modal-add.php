@@ -1,105 +1,4 @@
-<?php
-include('config/dbcon.php');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $query = "SELECT id FROM project ORDER BY id DESC LIMIT 1";
-
-    $id = $con->query($query);
-
-    $current_id = 0;
-
-    if ($id->num_rows > 0) {
-        $row = $id->fetch_assoc();
-        $current_id = $row['id'] + 1;
-    } else {
-        echo "No records found.";
-    }
-
-    $category_id = mysqli_real_escape_string($con, $_POST['category_id']);
-    $project_name = mysqli_real_escape_string($con, $_POST['project_name']);
-    $customers_id = mysqli_real_escape_string($con, $_POST['pcustomer_id']);
-    $description = mysqli_real_escape_string($con, $_POST['description']);
-    $address = mysqli_real_escape_string($con, $_POST['address']);
-    $position = mysqli_real_escape_string($con, $_POST['position']);
-    $date_start = mysqli_real_escape_string($con, $_POST['date_start']);
-    $due_date = mysqli_real_escape_string($con, $_POST['due_date']);
-    $status = mysqli_real_escape_string($con, $_POST['status']);
-
-    $project_sql = "INSERT INTO project (id, category_id, project_name, customers_id, description, address, position , date_start, due_date, status)
-    VALUES ('$current_id', '$category_id', '$project_name', '$customers_id', '$description', '$address', '$position', '$date_start', '$due_date', '$status')";
-
-    $taskMax = "SELECT id FROM task ORDER BY id DESC LIMIT 1";
-
-    $taskId = $con->query($taskMax);
-
-    $current_task_id = 0;
-
-    if ($id->num_rows > 0) {
-        $row = $taskId->fetch_assoc();
-        $current_task_id = $row['id'] + 1;
-    } else {
-        echo "No records found.";
-    }
-
-    $task_name = mysqli_real_escape_string($con, $_POST['task_name']);
-    $task_description = mysqli_real_escape_string($con, $_POST['task_description']);
-    $task_start_date = mysqli_real_escape_string($con, $_POST['task_start_date']);
-    $selected_workers = isset($_POST['selected_workers']) ? $_POST['selected_workers'] : array();
-    $selected_workers_str = implode(",", $selected_workers);
-
-    $products_query = "SELECT * FROM products";
-    $available_products = mysqli_query($con, $products_query);
-    $product_count = mysqli_num_rows($available_products);
-
-    $material_names_query = "SELECT name FROM products";
-    $material_names_result = mysqli_query($con, $material_names_query);
-    $material_names = [];
-
-    while ($row = mysqli_fetch_assoc($material_names_result)) {
-        $material_names[] = $row['name'];
-    }
-
-    $materials_used = [];
-
-    foreach ($_POST as $field_name => $value) {
-        if (in_array($field_name, $material_names)) {
-            $material_name = mysqli_real_escape_string($con, $field_name);
-            $quantity = mysqli_real_escape_string($con, $value);
-
-            $materials_used[] = $material_name;
-
-            $update_query = "UPDATE products SET quantity = quantity - $quantity WHERE name = '$material_name'";
-            mysqli_query($con, $update_query);
-        }
-    }
-
-    // Convert the array of materials used into a comma-separated string
-    $materials_used_str = implode(", ", $materials_used);
-
-    $selected_equipment = isset($_POST['selected_equipment']) ? $_POST['selected_equipment'] : array();
-    $selected_equipment_str = implode(",", $selected_equipment);
-
-    $task_due_date = mysqli_real_escape_string($con, $_POST['task_due_date']);
-    $task_status = mysqli_real_escape_string($con, $_POST['task_status']);
-    $task_priority = mysqli_real_escape_string($con, $_POST['task_priority']);
-
-    $task_sql = "INSERT INTO task (id, project_id, task_name, description, start_date, workers, materials, equipments, due_date, status, priority)
-    VALUES ('$current_task_id', '$current_id', '$task_name', '$task_description', '$task_start_date', '$selected_workers_str', '$materials_used_str', '$selected_equipment_str', '$task_due_date', '$task_status', '$task_priority')";
-
-    if ($con->query($task_sql) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $task_sql . "<br>" . $con->error;
-    }
-
-    if ($con->query($project_sql) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $project_sql . "<br>" . $con->error;
-    }
-}
-
-?>
+<script src="../js/createProject.js"></script>
 
 <!-- Task Modal Add -->
 <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel" aria-hidden="true">
@@ -112,21 +11,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Your form for adding a task goes here -->
-
-                <!-- removed action code-proj.php -->
-
-                <form method="POST" enctype="multipart/form-data"> <!-- store to addedTasks Array -->
-                    <input type="text" name="project_name" id="project_name">
-                    <input type="number" name="category_id" id="category_id">
-                    <input type="number" name="pcustomer_id" id="pcustomer_id">
-                    <input type="text" name="description" id="description">
-                    <input type="text" name="address" id="address">
-                    <input type="text" name="position" id="position">
-                    <!-- <input type="file" name="pimage" id="pimage"> -->
-                    <input type="text" name="date_start" id="date_start">
-                    <input type="text" name="due_date" id="due_date">
-                    <input type="text" name="status" id="status">
+                <form enctype="multipart/form-data" id="projectTaskForm">
+                    <input type="text" name="project_name" id="project_name" hidden>
+                    <input type="number" name="category_id" id="category_id" hidden>
+                    <input type="number" name="pcustomer_id" id="pcustomer_id" hidden>
+                    <input type="text" name="description" id="description" hidden>
+                    <input type="text" name="address" id="address" hidden>
+                    <input type="text" name="position" id="position" hidden>
+                    <input type="text" name="date_start" id="date_start" hidden>
+                    <input type="text" name="due_date" id="due_date" hidden>
+                    <input type="text" name="status" id="status" hidden>
 
                     <div class="form-group">
                         <label for="taskName">Task Name</label>
@@ -247,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" name="submit" class="btn btn-primary">Save Task</button>
+                        <button id="saveTaskBtn" class="btn btn-primary">Save Task</button>
                     </div>
                 </form>
             </div>
@@ -259,26 +153,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
     $(document).ready(function() {
-        // $('#materials').change(function() {
-        //     let selectedValue = $(this).val();
-        //     let selectedText = $("#materials option:selected").text();
+        $('#saveTaskBtn').click(function(event) {
+            event.preventDefault();
 
-        //     if (selectedValue) {
-        //         $('#selected-materials-list').append(`
-        //             <div class="selected-material">
-        //                 <input type="hidden" name="selected_materials[]" value="${selectedValue}">
-        //                 <span>${selectedText}</span>
-        //                 <button type="button" class="btn btn-danger remove-material">Remove</button>
-        //             </div>
-        //         `);
-
-        //         $('#materials').prop('selectedIndex', 0);
-        //     }
-        // });
-
-        // $(document).on('click', '.remove-material', function() {
-        //     $(this).closest('.selected-material').remove();
-        // });
+            $.ajax({
+                url: './modal/addTask.php',
+                type: "POST",
+                data: $('#projectTaskForm').serialize(),
+                success(response) {
+                    console.log(response)
+                    $('#addTaskModal').modal('hide');
+                    $('#selected-workers-list').empty();
+                    $('#selected-equipment-list').empty();
+                    $('#projectTaskForm')[0].reset();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
 
         $('#equipment').change(function() {
             let selectedValue = $(this).val();

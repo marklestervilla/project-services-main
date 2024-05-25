@@ -232,7 +232,7 @@ if (isset($_POST['saveProject'])) {
     $position = validate($_POST['position']);
     $date_start = validate($_POST['date_start']);
     $due_date = validate($_POST['due_date']);
-    $status = $_POST['status'] ?? '0'; // Default status is '0'
+    $status = $_POST['status'] ?? '0';
     $image = $_FILES['image']['name'];
 
     if (file_exists("uploads_file/" . $_FILES['image']['name'])) {
@@ -246,10 +246,10 @@ if (isset($_POST['saveProject'])) {
 
         if ($insert_image_query_run) {
             move_uploaded_file($_FILES["image"]["tmp_name"], "uploads_file/" . $_FILES['image']['name']);
-            $_SESSION['status'] = "Project Added Successfully";
+            $_SESSION['status'] = $current_id;
             header('location: project-index.php');
         } else {
-            $_SESSION['status'] = "Something Went Wrong";
+            $_SESSION['status'] = $current_id;
             header('location: project-index.php');
         }
     }
@@ -281,15 +281,15 @@ if (isset($_POST['updateProject'])) {
     }
 
     $update_project_query = "UPDATE project SET 
-category_id='$category_id',
-project_name='$project_name',
-customers_id='$customers_id',
-description='$description',
-address='$address',
-position='$position',
-date_start='$date_start',
-due_date='$due_date',
-status='$status'";
+    category_id='$category_id',
+    project_name='$project_name',
+    customers_id='$customers_id',
+    description='$description',
+    address='$address',
+    position='$position',
+    date_start='$date_start',
+    due_date='$due_date',
+    status='$status'";
 
     if ($update_project != $old_image) {
         $update_project_query .= ", image='$update_project'";

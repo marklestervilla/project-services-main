@@ -449,7 +449,7 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`id`, `category_id`, `project_name`, `customers_id`, `description`, `address`, `position`, `image`, `date_start`, `due_date`, `time_created`, `project_num_task`, `task_num_completed`, `project_progress`, `status`) VALUES
-(33, 10, 'First Project', 6, 'Lorem Ipsum', 'Lorem Ipsum', 'Mark Aaron Dinco', 'House.jpg', '2024-05-23', '2024-05-23', '2024-05-23 09:29:56', 3, 3, 100, 0);
+(1, 10, 'First Project', 6, 'Lorem Ipsum', 'Lorem Ipsum', 'Mark Aaron Dinco', 'House.jpg', '2024-05-23', '2024-05-23', '2024-05-23 09:29:56', 3, 3, 100, 0);
 
 -- --------------------------------------------------------
 
@@ -477,9 +477,9 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`id`, `project_id`, `task_name`, `description`, `start_date`, `due_date`, `created_at`, `status`, `priority`) VALUES
-(47, 33, 'Task Task', 'Lorem Ipsum', '2024-05-23 17:28:00', '2024-05-27 17:28:00', '2024-05-23 09:29:56', 3, 1),
-(48, 33, 'Second Task', 'Ipsum Lorem', '2024-05-23 17:29:00', '2024-05-25 17:29:00', '2024-05-23 09:29:56', 1, 1),
-(49, 33, 'Third Task', 'Sugoma', '2024-05-23 17:29:00', '2024-05-25 17:29:00', '2024-05-23 09:29:56', 3, 0);
+(47, 1, 'Task Task', 'Lorem Ipsum', '2024-05-23 17:28:00', '2024-05-27 17:28:00', '2024-05-23 09:29:56', 3, 1),
+(48, 1, 'Second Task', 'Ipsum Lorem', '2024-05-23 17:29:00', '2024-05-25 17:29:00', '2024-05-23 09:29:56', 1, 1),
+(49, 1, 'Third Task', 'Sugoma', '2024-05-23 17:29:00', '2024-05-25 17:29:00', '2024-05-23 09:29:56', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -667,7 +667,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `task`

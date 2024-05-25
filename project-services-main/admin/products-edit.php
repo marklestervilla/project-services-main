@@ -25,8 +25,6 @@ include('config/dbcon.php');
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
-<!-- /.content-header -->
-
 <section class="content">
     <div class="container">
         <div class="row">

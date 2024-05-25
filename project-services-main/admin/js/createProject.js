@@ -127,7 +127,7 @@ $("document").ready(function () {
   //     }
   // });
 
-  $("#taskFormAdd").submit(function (event) {
+  $("#saveTaskBtn").click(function (event) {
     event.preventDefault();
 
     let selectedWorkers = [];
@@ -163,93 +163,74 @@ $("document").ready(function () {
       task_priority: $("#taskPriorityAdd").val(),
     };
 
-    // createdTasks.push(taskFormAddData);
-    // num_task = createdTasks.length;
+    createdTasks.push(taskFormAddData);
+    num_task = createdTasks.length;
 
-    // console.table(taskFormAddData)
-    // console.log(num_task);
+    console.table(taskFormAddData)
+    console.log(num_task);
 
-    // function createdTasksList() {
-    //     $('#projectCreateTasksList').empty();
+    function createdTasksList() {
+        $('#projectCreateTasksList').empty();
 
-    //     var structure = `
-    //     <table class="table table-bordered table-striped" id="taskTableAdd">
-    //         <thead class="table-dark">
-    //             <tr>
-    //                 <th scope="col">Task Name</th>
-    //                 <th scope="col">Description</th>
-    //                 <th scope="col">Start Date</th>
-    //                 <th scope="col">Due Date</th>
-    //                 <th scope="col">Priority</th>
-    //                 <th scope="col">Manage</th>
-    //             </tr>
-    //         </thead>
-    //         <tbody>
-    //         `;
+        var structure = `
+        <table class="table table-bordered table-striped" id="taskTableAdd">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Manage</th>
+                </tr>
+            </thead>
+            <tbody>
+            `;
 
-    //         createdTasks.forEach(function(data) {
-    //             var formattedStartDate = formatDate(data.task_start_date);
-    //             var formattedDueDate = formatDate(data.task_due_date);
-    //             var priority = data.task_priority;
+            createdTasks.forEach(function(data) {
+                var formattedStartDate = formatDate(data.task_start_date);
+                var formattedDueDate = formatDate(data.task_due_date);
+                var priority = data.task_priority;
 
-    //             if (priority === '0') {
-    //                 formattedPriority = 'Low';
-    //             } else if (priority === '1') {
-    //                 formattedPriority = 'Medium';
-    //             } else if (priority === '2') {
-    //                 formattedPriority = 'High';
-    //             }
+                if (priority === '0') {
+                    formattedPriority = 'Low';
+                } else if (priority === '1') {
+                    formattedPriority = 'Medium';
+                } else if (priority === '2') {
+                    formattedPriority = 'High';
+                }
 
-    //             structure +=`
-    //             <tr>
-    //                 <td>${data.task_name}</td>
-    //                 <td>${data.task_description}</td>
-    //                 <td>${formattedStartDate}</td>
-    //                 <td>${formattedDueDate}</td>
-    //                 <td>${formattedPriority}</td>
-    //                 <td>
-    //                     <button class="btn btn-danger btn-remove">Remove</button>
-    //                 </td>
-    //             </tr>
-    //             `;
-    //         })
-    //         structure +=`
-    //         </tbody>
-    //     </table>
-    //     `;
+                structure +=`
+                <tr>
+                    <td>${data.task_name}</td>
+                    <td>${data.task_description}</td>
+                    <td>${formattedStartDate}</td>
+                    <td>${formattedDueDate}</td>
+                    <td>${formattedPriority}</td>
+                    <td>
+                        <button class="btn btn-danger btn-remove">Remove</button>
+                    </td>
+                </tr>
+                `;
+            })
+            structure +=`
+            </tbody>
+        </table>
+        `;
 
-    //     $('#projectCreateTasksList').append(structure);
+        $('#projectCreateTasksList').append(structure);
 
-    //     $('#taskNameAdd').val('');
-    //     $('#taskDescriptionAdd').val('');
-    //     $('#taskStartDateAdd').val('');
-    //     $('#taskDueDateAdd').val('');
-    //     $('#taskPriorityAdd').val('');
-    //     $('#selected-materials-list .selected-material').remove();
-    //     $('#selected-workers-list .selected-workers').remove();
-    //     $('#addTaskModal').modal('hide');
-    // }
+        $('#taskNameAdd').val('');
+        $('#taskDescriptionAdd').val('');
+        $('#taskStartDateAdd').val('');
+        $('#taskDueDateAdd').val('');
+        $('#taskPriorityAdd').val('');
+        $('#selected-materials-list .selected-material').remove();
+        $('#selected-workers-list .selected-workers').remove();
+        $('#addTaskModal').modal('hide');
+    }
 
-    // createdTasksList();
-
-    // $.ajax({
-    //     url: '../admin/addTask.php',
-    //     type: 'POST',
-    //     data: {
-    //         data: taskFormAddData
-    //     },
-    //     success: function(response) {
-    //         var data = JSON.parse(response);
-    //         if (data.status === 'success') {
-    //             alert(data.message);
-    //         } else {
-    //             alert(data.message);
-    //         }
-    //     },
-    //     error: function(xhr, status, error) {
-    //         alert("Failed to add task. Please try again later.");
-    //     }
-    // });
+    createdTasksList();
   });
 
   function cleanTaskListDisplay() {
