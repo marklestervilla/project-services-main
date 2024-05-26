@@ -467,6 +467,7 @@ CREATE TABLE `task` (
   `workers` varchar(255) NOT NULL,
   `materials` varchar(255) NOT NULL,
   `equipments` varchar(255) NOT NULL,
+  `cost` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` mediumint(10) NOT NULL COMMENT '0=Pending,1=Preparing,2=On-Progress,3=Completed,4=Cancelled',
   `priority` mediumint(10) NOT NULL COMMENT '0=Low,1=Medium,2=High'

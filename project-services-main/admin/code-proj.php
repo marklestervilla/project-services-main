@@ -231,6 +231,7 @@ if (isset($_POST['saveProject'])) {
     $address = validate($_POST['address']);
     $position = validate($_POST['position']);
     $date_start = validate($_POST['date_start']);
+    $project_num_task = validate($_POST['project_num_task']);
     $due_date = validate($_POST['due_date']);
     $status = $_POST['status'] ?? '0';
     $image = $_FILES['image']['name'];
@@ -240,8 +241,8 @@ if (isset($_POST['saveProject'])) {
         $_SESSION['status'] = $filename . " Image already exists";
         header('location: project-index.php');
     } else {
-        $insert_image_query = "INSERT INTO project(category_id,project_name,customers_id,description,address,position,image,date_start,due_date,status) 
-                                VALUES ('$category_id','$project_name', '$customers_id','$description','$address','$position','$image','$date_start','$due_date','$status')";
+        $insert_image_query = "INSERT INTO project(category_id,project_name,customers_id,description,address,position,image,date_start,due_date,status,project_num_task) 
+                                VALUES ('$category_id','$project_name', '$customers_id','$description','$address','$position','$image','$date_start','$due_date','$status','$project_num_task')";
         $insert_image_query_run = mysqli_query($con, $insert_image_query);
 
         if ($insert_image_query_run) {

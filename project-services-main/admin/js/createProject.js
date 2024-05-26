@@ -227,6 +227,7 @@ $("document").ready(function () {
         $('#taskPriorityAdd').val('');
         $('#selected-materials-list .selected-material').remove();
         $('#selected-workers-list .selected-workers').remove();
+        $('#project_num_task').val(num_task);
         $('#addTaskModal').modal('hide');
     }
 
