@@ -30,16 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($row = $result->fetch_assoc()) {
                     $totalTasks = $row['project_num_task']; // total number of tasks
                     $completedTasks = $row['task_num_completed']; // number of completed tasks
-
                     $completedTasks++; // increment the completed tasks
 
                     $progress = calculateProgress($totalTasks, $completedTasks);
                     $roundedProgress = round($progress); // current progress
-
                     $stmt = $con->prepare('UPDATE project SET task_num_completed = ?, project_progress = ? WHERE id = ?');
                     $stmt->bind_param('iii', $completedTasks, $roundedProgress, $project_id);
                     if ($stmt->execute()) {
 
+                        if ($roundedProgress == 100) {
+                            $status = 3;
+                            $stmt = $con->prepare('UPDATE project SET status = ? WHERE id = ?');
+                            $stmt->bind_param('ii', $status, $project_id);
+                            $stmt->execute();
+                        }
                         $stmt = $con->prepare('UPDATE task SET task_name = ?, description = ?, start_date = ?, due_date = ?, status = ?, priority = ? WHERE id = ?');
                         $stmt->bind_param('ssssiii', $new_task_name, $new_task_desc, $new_start_date, $new_due_date, $new_task_status, $new_task_priority, $task_id);
                         if ($stmt->execute()) {
@@ -68,26 +72,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $current_task_status = $row['status'];
 
                             if ($current_task_status == 3) {
-                                $completedTasks--; // deduct 1 to uncomplete
+                                $completedTasks--;
 
                                 $progress = calculateProgress($totalTasks, $completedTasks); // re calculate
                                 $roundedProgress = round($progress); // current progress
-                                $stmt = $con->prepare('UPDATE project SET task_num_completed = ?, project_progress = ? WHERE id = ?');
-                                $stmt->bind_param('iii', $completedTasks, $roundedProgress, $project_id);
-                                if ($stmt->execute()) {
 
+                                $status = 0;
+                                if ($roundedProgress == 100) {
+                                    $status = 3;
+                                } else {
+                                    $status = 0;
+                                }
+
+                                $stmt = $con->prepare('UPDATE project SET task_num_completed = ?, project_progress = ?, status = ? WHERE id = ?');
+                                $stmt->bind_param('iiii', $completedTasks, $roundedProgress, $status, $project_id);
+
+                                if ($stmt->execute()) {
                                     $stmt = $con->prepare('UPDATE task SET task_name = ?, description = ?, start_date = ?, due_date = ?, status = ?, priority = ? WHERE id = ?');
                                     $stmt->bind_param('ssssiii', $new_task_name, $new_task_desc, $new_start_date, $new_due_date, $new_task_status, $new_task_priority, $task_id);
-                                    if ($stmt->execute()) {
-                                        echo '0'; // task uncompleted
-                                    }
+                                    $stmt->execute();
                                 };
+                                echo '0';
                             } else {
                                 $stmt = $con->prepare('UPDATE task SET status = ? WHERE id = ?');
                                 $stmt->bind_param('ii', $new_task_status, $task_id);
-                                if ($stmt->execute()) {
-                                    echo '0';
-                                }
+                                $stmt->execute();
+                                echo '0';
                             }
                         }
                     }
