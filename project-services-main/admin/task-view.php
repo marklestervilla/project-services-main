@@ -84,6 +84,18 @@ include('config/dbcon.php');
 
             <hr>
 
+            <p><strong>Workers:</strong> <p><strong></strong> <?php echo $row['workers']; ?></p>
+
+            <hr>
+
+            <p><strong>Equipment:</strong> <p><strong></strong> <?php echo $row['equipments']; ?></p>
+
+            <hr>
+
+            <p><strong>Materials:</strong> <p><strong></strong> <?php echo $row['materials']; ?></p>
+            
+            <hr>
+
             <p><strong>Date Created:</strong> <?php echo date('j M Y | g:i A', strtotime($row['created_at'])); ?></p>
         </div>
 

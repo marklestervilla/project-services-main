@@ -280,7 +280,7 @@ if ($stmt->execute()) {
                                         echo '<span class="badge ' . $badge_class . '">' . getStatusText($status) . '</span>';
                                         ?>
                                 </td>
-                                <td><?php ?></td>
+                                <td><?php echo $row['workers']; ?></td>
                                 <td>
                                     <button class="btn btn-sm btn-info view-task" data-id="<?php echo $row['id']; ?>" data-toggle="modal" data-target="#viewTaskModal"><i class="fas fa-eye"></i> View</button>
                                     <button class="btn btn-sm btn-secondary" onclick="window.location.href='task-set-status.php?id=<?php echo $row['id']; ?>'"><i class="fas fa-edit"></i> Edit / Set Status</button>
