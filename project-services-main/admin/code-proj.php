@@ -335,7 +335,7 @@ if (isset($_POST['archiveProject'])) {
 
     if ($archive_project_query_run) {
         unlink("uploads_file/" . $image);
-        $_SESSION['status'] = "Project Archvied Successfully";
+        $_SESSION['status'] = "Project Archived Successfully";
         header('location: project-index.php');
     } else {
         $_SESSION['status'] = "Something Went Wrong";
