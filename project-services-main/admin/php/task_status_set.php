@@ -37,21 +37,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $con->prepare('UPDATE project SET task_num_completed = ?, project_progress = ? WHERE id = ?');
                     $stmt->bind_param('iii', $completedTasks, $roundedProgress, $project_id);
                     if ($stmt->execute()) {
-
                         if ($roundedProgress == 100) {
                             $status = 3;
                             $stmt = $con->prepare('UPDATE project SET status = ? WHERE id = ?');
                             $stmt->bind_param('ii', $status, $project_id);
                             $stmt->execute();
                         }
-                        $stmt = $con->prepare('UPDATE task SET task_name = ?, description = ?, start_date = ?, due_date = ?, status = ?, priority = ? WHERE id = ?');
-                        $stmt->bind_param('ssssiii', $new_task_name, $new_task_desc, $new_start_date, $new_due_date, $new_task_status, $new_task_priority, $task_id);
+                        $stmt = $con->prepare('UPDATE task SET status = ? WHERE id = ?');
+                        $stmt->bind_param('ii', $new_task_status, $task_id);
                         if ($stmt->execute()) {
                             echo '0'; // task uncompleted
                         }
                     };
-                } else {
-                    echo '1';
+                }
+            }
+        } else if ($new_task_status === "4") {
+            $stmt = $con->prepare('SELECT project_num_task, task_num_completed FROM project WHERE id = ?'); // fetch the needed data
+            $stmt->bind_param('i', $project_id);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($row = $result->fetch_assoc()) {
+                    $totalTasks = $row['project_num_task']; // total number of tasks
+                    $completedTasks = $row['task_num_completed']; // number of completed tasks
+                    $totalTasks--; // increment the completed tasks
+
+                    $progress = calculateProgress($totalTasks, $completedTasks);
+                    $roundedProgress = round($progress); // current progress
+                    $stmt = $con->prepare('UPDATE project SET task_num_completed = ?, project_progress = ? WHERE id = ?');
+                    $stmt->bind_param('iii', $completedTasks, $roundedProgress, $project_id);
+                    if ($stmt->execute()) {
+                        if ($roundedProgress == 100) {
+                            $status = 3;
+                            $stmt = $con->prepare('UPDATE project SET status = ? WHERE id = ?');
+                            $stmt->bind_param('ii', $status, $project_id);
+                            $stmt->execute();
+                        }
+                        $stmt = $con->prepare('SELECT status FROM task WHERE id = ?');
+                        $stmt->bind_param('i', $task_id);
+                        if ($stmt->execute()) {
+                            $result = $stmt->get_result();
+                            $stmt = $con->prepare('UPDATE task SET status = ? WHERE id = ?');
+                            $stmt->bind_param('ii', $new_task_status, $task_id);
+                            $stmt->execute();
+                            echo '0';
+                        }
+                    };
                 }
             }
         } else {
@@ -63,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $totalTasks = $row['project_num_task'];
                     $completedTasks = $row['task_num_completed'];
 
-                    $stmt = $con->prepare('SELECT status FROM task WHERE id = ?');
+                    $stmt = $con->prepare('SELECT * FROM task WHERE id = ?');
                     $stmt->bind_param('i', $task_id);
 
                     if ($stmt->execute()) {
@@ -71,13 +101,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if ($row = $result->fetch_assoc()) {
                             $current_task_status = $row['status'];
 
-                            if ($current_task_status == 3) {
+                            if ($current_task_status == 4) {
+                                $progress = calculateProgress($totalTasks, $completedTasks); // re calculate
+                                $roundedProgress = round($progress); // current progress
+
+                                $status = 0;
+
+                                if ($roundedProgress != 100) {
+                                    $status = 0;
+                                } else {
+                                    $status = 3;
+                                }
+
+                                $stmt = $con->prepare('UPDATE project SET task_num_completed = ?, project_progress = ?, status = ? WHERE id = ?');
+                                $stmt->bind_param('iiii', $completedTasks, $roundedProgress, $status, $project_id);
+
+                                if ($stmt->execute()) {
+                                    $stmt = $con->prepare('UPDATE task SET status = ? WHERE id = ?');
+                                    $stmt->bind_param('ii', $new_task_status, $task_id);
+                                    $stmt->execute();
+                                };
+                                echo '0';
+                            } else if ($current_task_status == 3) {
                                 $completedTasks--;
 
                                 $progress = calculateProgress($totalTasks, $completedTasks); // re calculate
                                 $roundedProgress = round($progress); // current progress
 
                                 $status = 0;
+
                                 if ($roundedProgress == 100) {
                                     $status = 3;
                                 } else {
@@ -94,10 +146,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 };
                                 echo '0';
                             } else {
-                                $stmt = $con->prepare('UPDATE task SET status = ? WHERE id = ?');
-                                $stmt->bind_param('ii', $new_task_status, $task_id);
-                                $stmt->execute();
-                                echo '0';
+                                $progress = calculateProgress($totalTasks, $completedTasks); // re calculate
+                                $roundedProgress = round($progress); // current progress
+
+                                $status = 0;
+
+                                if ($roundedProgress != 100) {
+                                    $status = 0;
+                                } else {
+                                    $status = 3;
+                                }
+
+                                $stmt = $con->prepare('UPDATE project SET task_num_completed = ?, project_progress = ?, status = ? WHERE id = ?');
+                                $stmt->bind_param('iiii', $completedTasks, $roundedProgress, $status, $project_id);
+
+                                if ($stmt->execute()) {
+                                    $stmt = $con->prepare('UPDATE task SET status = ? WHERE id = ?');
+                                    $stmt->bind_param('ii', $new_task_status, $task_id);
+                                    $stmt->execute();
+                                    echo '0';
+                                }
                             }
                         }
                     }
