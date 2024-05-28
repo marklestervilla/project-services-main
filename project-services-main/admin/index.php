@@ -227,13 +227,19 @@ include('./config/dbcon.php');
                             }]
                         ];
 
-                        console.log(data);
-
                         // Add grouped materials to the table
                         data.grouped_materials.forEach(material => {
                             let totalCost = parseFloat(material.total_cost);
                             tableBody.push([material.name, material.quantity, totalCost.toFixed(2)]);
                         });
+
+                        let materialsUsedText = "Materials Used: " + data.grouped_materials.map(material => material.name).join(', ');
+                        const groupedEquipments = data.all_equipments.split(', ').reduce((acc, equipment) => {
+                            acc[equipment] = acc[equipment] ? acc[equipment] + 1 : 1;
+                            return acc;
+                        }, {});
+
+                        let equipmentsUsedText = "Equipments Used: " + Object.keys(groupedEquipments).join(', ');
 
                         let docDefinition = {
                             content: [{
@@ -263,12 +269,12 @@ include('./config/dbcon.php');
                                     margin: [0, 0, 0, 10]
                                 },
                                 {
-                                    text: "Materials Used: " + data.all_materials,
+                                    text: materialsUsedText,
                                     fontSize: 14,
                                     margin: [0, 0, 0, 10]
                                 },
                                 {
-                                    text: "Equipments Used: " + data.all_equipments,
+                                    text: equipmentsUsedText,
                                     fontSize: 14,
                                     margin: [0, 0, 0, 10]
                                 },
