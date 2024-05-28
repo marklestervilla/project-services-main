@@ -1,3 +1,4 @@
+
 <?php
 include('authentication.php');
 include('includes/header.php');
@@ -74,13 +75,13 @@ $result = mysqli_query($con, $sql);
                                 $badge_class = '';
                                 switch ($status) {
                                     case 0:
-                                        $badge_class = 'bg-primary'; // Pending
+                                        $badge_class = 'bg-secondary'; // Pending
                                         break;
                                     case 1:
-                                        $badge_class = 'bg-secondary'; // Preparing
+                                        $badge_class = 'bg-info'; // Preparing
                                         break;
                                     case 2:
-                                        $badge_class = 'bg-warning'; // On-Progress
+                                        $badge_class = 'bg-primary'; // On-Progress
                                         break;
                                     case 3:
                                         $badge_class = 'bg-success'; // Completed
@@ -113,14 +114,7 @@ $result = mysqli_query($con, $sql);
                                                 <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                                 <input type="hidden" name="image" value="<?php echo $row['image']; ?>">
                                                 <button type="submit" name="archiveProject" class="dropdown-item">
-                                                    <i class="fas fa-trash"></i> Archive
-                                                </button>
-                                            </form>
-                                            <form action="code-proj.php" method="POST">
-                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                                <input type="hidden" name="image" value="<?php echo $row['image']; ?>">
-                                                <button type="submit" name="deleteProject" class="dropdown-item">
-                                                    <i class="fas fa-trash"></i> Delete
+                                                    <i class="fas fa-envelope"></i> Archive
                                                 </button>
                                             </form>
                                         </div>

@@ -40,10 +40,10 @@ include('includes/sidebar.php');
                         <h4 class="card-title"><b>Task List / Progress</b></h4>
 
                         <h5>
-                        <a href="javascript:history.go(-1)" class="btn btn-danger float-right btn-sm"><i
+                            <a href="javascript:history.go(-1)" class="btn btn-danger float-right btn-sm"><i
                                     class="fas fa-arrow-alt-circle-left"></i> Go Back</a>
                         </h5>
-                        
+
 
                     </div>
                     <!-- /.card-header -->
@@ -68,22 +68,22 @@ include('includes/sidebar.php');
                                 if($query_run) {
                                     while($row = mysqli_fetch_assoc($query_run)) {
                                         ?>
-                                        <tr>
-                                            <td><?php echo $row['id']; ?></td>
-                                            <td><?php echo $row['task_name']; ?></td>
-                                            <td><?php echo $row['project_name']; ?></td>
-                                            <td><?php
+                                <tr>
+                                    <td><?php echo $row['id']; ?></td>
+                                    <td><?php echo $row['task_name']; ?></td>
+                                    <td><?php echo $row['project_name']; ?></td>
+                                    <td><?php
                                                 $status = $row['status'];
                                                 $badge_class = '';
                                                 switch ($status) {
                                                     case 0:
-                                                        $badge_class = 'bg-primary'; // Pending
+                                                        $badge_class = 'bg-secodary'; // Pending
                                                         break;
                                                     case 1:
-                                                        $badge_class = 'bg-secondary'; // Preparing
+                                                        $badge_class = 'bg-info'; // Preparing
                                                         break;
                                                     case 2:
-                                                        $badge_class = 'bg-warning'; // On-Progress
+                                                        $badge_class = 'bg-primary'; // On-Progress
                                                         break;
                                                     case 3:
                                                         $badge_class = 'bg-success'; // Completed
@@ -97,26 +97,31 @@ include('includes/sidebar.php');
                                                 }
                                                 echo '<span class="badge ' . $badge_class . '">' . getStatusText($status) . '</span>';
                                                 ?>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-cog"></i> Actions 
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="task-edit.php?id=<?= $row['id']; ?>"><i class="fas fa-pencil-alt"></i> Edit</a>
-                                                        <form action="code-proj.php" method="POST">
-                                                            <button type="submit" class="dropdown-item text-danger" name="taskDelete" value="<?= $row['id']; ?>"><i class="fas fa-trash-alt"></i> Delete</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                <i class="fas fa-cog"></i> Actions
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="task-edit.php?id=<?= $row['id']; ?>"><i
+                                                        class="fas fa-pencil-alt"></i> Edit</a>
+                                                <form action="code-proj.php" method="POST">
+                                                    <button type="submit" class="dropdown-item text-danger"
+                                                        name="taskDelete" value="<?= $row['id']; ?>"><i
+                                                            class="fas fa-trash-alt"></i> Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
 
 
 
 
-                                        </tr>
-                                        <?php
+                                </tr>
+                                <?php
                                     }
                                 } else {
                                     echo "Query failed: " . mysqli_error($con);
@@ -135,7 +140,7 @@ include('includes/sidebar.php');
     <?php include('includes/script.php'); ?>
     <?php include('includes/footer.php'); ?>
 
-<?php
+    <?php
 // Function to get status text based on status code
 function getStatusText($status)
 {

@@ -1,3 +1,4 @@
+
 $("document").ready(function () {
   let createdTasks = [];
   let num_task;
@@ -131,36 +132,30 @@ $("document").ready(function () {
     event.preventDefault();
 
     let selectedWorkers = [];
-    $('#selected-workers-list input[name="selected_workers[]"]').each(
-      function () {
+    $('#selected-workers-list input[name="selected_workers[]"]').each(function () {
         selectedWorkers.push($(this).val());
-      }
-    );
+    });
 
     let selectedMaterials = [];
-    $('#selected-materials-list input[name="selected_materials[]"]').each(
-      function () {
+    $('#selected-materials-list input[name="selected_materials[]"]').each(function () {
         selectedMaterials.push($(this).val());
-      }
-    );
+    });
 
     let selectedEquipment = [];
-    $('#selected-equipment-list input[name="selected_equipment[]"]').each(
-      function () {
+    $('#selected-equipment-list input[name="selected_equipment[]"]').each(function () {
         selectedEquipment.push($(this).val());
-      }
-    );
+    });
 
     var taskFormAddData = {
-      task_name: $("#taskNameAdd").val(),
-      task_description: $("#taskDescriptionAdd").val(),
-      task_start_date: $("#taskStartDateAdd").val(),
-      workers: selectedWorkers,
-      items: selectedMaterials,
-      equipment: selectedEquipment,
-      task_due_date: $("#taskDueDateAdd").val(),
-      task_status: $("#taskStatusAdd").val(),
-      task_priority: $("#taskPriorityAdd").val(),
+        task_name: $("#taskNameAdd").val(),
+        task_description: $("#taskDescriptionAdd").val(),
+        task_start_date: $("#taskStartDateAdd").val(),
+        workers: selectedWorkers,
+        items: selectedMaterials,
+        equipment: selectedEquipment,
+        task_due_date: $("#taskDueDateAdd").val(),
+        task_status: $("#taskStatusAdd").val(),
+        task_priority: $("#taskPriorityAdd").val(),
     };
 
     createdTasks.push(taskFormAddData);
@@ -187,33 +182,34 @@ $("document").ready(function () {
             <tbody>
             `;
 
-            createdTasks.forEach(function(data) {
-                var formattedStartDate = formatDate(data.task_start_date);
-                var formattedDueDate = formatDate(data.task_due_date);
-                var priority = data.task_priority;
+        createdTasks.forEach(function(data) {
+            var formattedStartDate = formatDate(data.task_start_date);
+            var formattedDueDate = formatDate(data.task_due_date);
+            var priority = data.task_priority;
 
-                if (priority === '0') {
-                    formattedPriority = 'Low';
-                } else if (priority === '1') {
-                    formattedPriority = 'Medium';
-                } else if (priority === '2') {
-                    formattedPriority = 'High';
-                }
+            var formattedPriority = '';
+            if (priority === '0') {
+                formattedPriority = 'Low';
+            } else if (priority === '1') {
+                formattedPriority = 'Medium';
+            } else if (priority === '2') {
+                formattedPriority = 'High';
+            }
 
-                structure +=`
-                <tr>
-                    <td>${data.task_name}</td>
-                    <td>${data.task_description}</td>
-                    <td>${formattedStartDate}</td>
-                    <td>${formattedDueDate}</td>
-                    <td>${formattedPriority}</td>
-                    <td>
-                        <button class="btn btn-danger btn-remove">Remove</button>
-                    </td>
-                </tr>
-                `;
-            })
-            structure +=`
+            structure += `
+            <tr>
+                <td>${data.task_name}</td>
+                <td>${data.task_description}</td>
+                <td>${formattedStartDate}</td>
+                <td>${formattedDueDate}</td>
+                <td>${formattedPriority}</td>
+                <td>
+                    <button class="btn btn-danger btn-remove">Remove</button>
+                </td>
+            </tr>
+            `;
+        });
+        structure += `
             </tbody>
         </table>
         `;
@@ -229,18 +225,24 @@ $("document").ready(function () {
         $('#selected-workers-list .selected-workers').remove();
         $('#project_num_task').val(num_task);
         $('#addTaskModal').modal('hide');
+ 
+        Swal.fire({
+            icon: 'success',
+            title: 'Task Saved',
+            text: 'Task Added successfully!'
+        });
     }
 
     createdTasksList();
-  });
+});
 
-  function cleanTaskListDisplay() {
+function cleanTaskListDisplay() {
     if (createdTasks.length === 0) {
-      $("#projectCreateTasksList").empty();
+        $("#projectCreateTasksList").empty();
     }
-  }
+}
 
-  $(document).on("click", "#taskTableAdd .btn-remove", function () {
+$(document).on("click", "#taskTableAdd .btn-remove", function () {
     var rowIndex = $(this).closest("tr").index();
 
     createdTasks.splice(rowIndex, 1);
@@ -248,5 +250,6 @@ $("document").ready(function () {
     $(this).closest("tr").remove();
 
     cleanTaskListDisplay();
-  });
+});
+
 });

@@ -1,9 +1,17 @@
-<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-        <img src="assets/dist/img/icon-gbua.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">GBUA Services</span>
+    <a href="../admin/index.php" class="brand-link d-flex align-items-center">
+        <img src="assets/dist/img/icon-gbua.jpg" alt="GBUA Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8; width: 50px; height: 50px;">
+        <div class="ml-2" style="line-height: 1;">
+            <span class="brand-text font-weight-bold"
+                style="font-size: 1.5rem; color: #007bff; letter-spacing: 0.05rem;">
+                GBUA
+            </span>
+            <span class="brand-text font-weight-light" style="font-size: 1.5rem; color: #6c757d;">
+                SERVICES
+            </span>
+        </div>
     </a>
 
     <!-- Sidebar -->
@@ -39,6 +47,7 @@
                 <li class="nav-item">
                     <a href="appointment-view.php" class="nav-link">
                         <i class="nav-icon far fa-calendar-check"></i>
+                        <span class="badge badge-warning right"><?= getCount('appointment'); ?></span>
                         <p>Appointment</p>
                     </a>
                 </li>
@@ -48,55 +57,59 @@
                         <p>Categories</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="equipment.php" class="nav-link">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>Equipments</p>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-box"></i>
+                        <p>Inventory <i class="right fas fa-angle-left"></i></p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="equipment.php" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>Equipments</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="products.php" class="nav-link">
+                                <i class="nav-icon fas fa-box-open"></i>
+                                <p>Materials</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="category-create.php" class="nav-link">
+                                <i class="nav-icon fas fa-folder"></i>
+                                <p>Create Category</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="category.php" class="nav-link">
+                                <i class="nav-icon fas fa-folder"></i>
+                                <p>View Category</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="products.php" class="nav-link">
-                        <i class="nav-icon fas fa-box-open"></i>
-                        <p>Materials</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="order-create.php" class="nav-link">
-                        <i class="nav-icon far fa-plus-square"></i>
-                        <p>Create Order</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="orders.php" class="nav-link">
-                        <i class="nav-icon far fa-list-alt"></i>
-                        <span class="badge badge-warning right"><?= getCount('orders'); ?></span>
-                        <p>Orders</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="category-create.php" class="nav-link">
-                        <i class="nav-icon far fa-folder"></i>
-                        <p>Create Category</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="category.php" class="nav-link">
-                        <i class="nav-icon far fa-folder"></i>
-                        <p>View Category</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="project-create.php" class="nav-link">
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-paperclip"></i>
                         <span class="badge badge-info right"><?= getCount('project'); ?></span>
-                        <p>Create Project</p>
+                        <p>Project Plan <i class="right fas fa-angle-left"></i></p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="project-index.php" class="nav-link">
-                        <i class="nav-icon fa fa-paperclip"></i>
-                        <p>Project List</p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="project-create.php" class="nav-link">
+                                <i class="nav-icon fas fa-plus"></i>
+                                <p>Create Project</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="project-index.php" class="nav-link">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>Project List</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="task-list.php" class="nav-link">
@@ -104,62 +117,46 @@
                         <p>Task List</p>
                     </a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a href="productivity-list.php" class="nav-link">
-                        <i class="nav-icon fas fa-folder-open"></i>
-                        <p>Productivity List</p>
-                    </a>
-                </li> -->
-                <li class="nav-header">GENERATING REPORTS</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-file"></i>
-                        <p>Project Reports</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-file"></i>
-                        <p>Task Reports</p>
-                    </a>
-                </li>
                 <li class="nav-header">INFO</li>
-                <li class="nav-item">
-                    <a href="registered.php" class="nav-link">
-                        <i class="nav-icon far fa-circle text-warning"></i>
-                        <p>Registered User</p>
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-circle text-success"></i>
+                        <p>Records<i class="right fas fa-angle-left"></i></p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="employee-create.php" class="nav-link">
-                        <i class="nav-icon far fa-circle text-danger"></i>
-                        <p>Create Employee</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="employee.php" class="nav-link">
-                        <i class="nav-icon far fa-circle text-danger"></i>
-                        <p>View Employee List</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="customers-create.php" class="nav-link">
-                        <i class="nav-icon far fa-circle text-primary"></i>
-                        <p>Create Customer</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="customers.php" class="nav-link">
-                        <i class="nav-icon far fa-circle text-primary"></i>
-                        <p>View Customer</p>
-                    </a>
-                </li>
-                <li class="nav-header">SETTINGS</li>
-                <li class="nav-item">
-                    <a href="settings.php" class="nav-link">
-                        <i class="nav-icon far fa-circle"></i>
-                        <p>Software Settings</p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="registered.php" class="nav-link">
+                                <i class="nav-icon far fa-circle text-warning"></i>
+                                <p>Registered User</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="employee-create.php" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Create Employee</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="employee.php" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>View Employee List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="customers-create.php" class="nav-link">
+                                <i class="nav-icon far fa-circle text-primary"></i>
+                                <p>Create Customer</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="customers.php" class="nav-link">
+                                <i class="nav-icon far fa-circle text-primary"></i>
+                                <span class="badge badge-danger right"><?= getCount('customers'); ?></span>
+                                <p>View Customer</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

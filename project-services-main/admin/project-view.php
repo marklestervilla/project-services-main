@@ -168,7 +168,10 @@ if ($stmt->execute()) {
                                     <th scope="row">Progress</th>
                                     <td>
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: <?php echo $project_progress ?>%" aria-valuenow="<?php echo $project_progress ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $project_progress?>%</div>
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: <?php echo $project_progress ?>%"
+                                                aria-valuenow="<?php echo $project_progress ?>" aria-valuemin="0"
+                                                aria-valuemax="100"><?php echo $project_progress?>%</div>
                                         </div>
                                     </td>
                                 </tr>
@@ -227,7 +230,7 @@ if ($stmt->execute()) {
                         <thead class="table-dark">
                             <tr>
                                 <th scope="col">Task Name</th>
-                                <th scope="col">Description</th>
+                                <!-- <th scope="col">Description</th> -->
                                 <th scope="col">Date Created</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Worker</th>
@@ -249,7 +252,7 @@ if ($stmt->execute()) {
                             <tr>
                                 <!-- <td><?php echo $row['id']; ?></td> -->
                                 <td><?php echo $row['task_name']; ?></td>
-                                <td><?php echo $row['description']; ?></td>
+                                <!-- <td><?php echo $row['description']; ?></td> -->
                                 <td>
                                     <?php echo date("F j, Y | g:i A", strtotime($row['created_at'])); ?>
                                 </td>
@@ -259,13 +262,13 @@ if ($stmt->execute()) {
                                         $badge_class = '';
                                         switch ($status) {
                                             case 0:
-                                                $badge_class = 'bg-primary'; // Pending
+                                                $badge_class = 'bg-secondary'; // Pending
                                                 break;
                                             case 1:
-                                                $badge_class = 'bg-secondary'; // Preparing
+                                                $badge_class = 'bg-info'; // Preparing
                                                 break;
                                             case 2:
-                                                $badge_class = 'bg-warning'; // On-Progress
+                                                $badge_class = 'bg-primary'; // On-Progress
                                                 break;
                                             case 3:
                                                 $badge_class = 'bg-success'; // Completed
@@ -282,8 +285,12 @@ if ($stmt->execute()) {
                                 </td>
                                 <td><?php echo $row['workers']; ?></td>
                                 <td>
-                                    <button class="btn btn-sm btn-info view-task" data-id="<?php echo $row['id']; ?>" data-toggle="modal" data-target="#viewTaskModal"><i class="fas fa-eye"></i> View</button>
-                                    <button class="btn btn-sm btn-secondary" onclick="window.location.href='task-set-status.php?id=<?php echo $row['id']; ?>'"><i class="fas fa-edit"></i> Edit / Set Status</button>
+                                    <button class="btn btn-sm btn-info view-task" data-id="<?php echo $row['id']; ?>"
+                                        data-toggle="modal" data-target="#viewTaskModal"><i class="fas fa-eye"></i>
+                                        View</button>
+                                    <button class="btn btn-sm btn-secondary"
+                                        onclick="window.location.href='task-set-status.php?id=<?php echo $row['id']; ?>'"><i
+                                            class="fas fa-edit"></i> Edit / Set Status</button>
                                 </td>
                             </tr>
                             <?php

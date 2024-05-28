@@ -22,7 +22,7 @@ $('document').ready(function() {
                 newTaskStatus = 'Completed';
                 break;
             case '4':
-                newTaskStatus = 'Canceled';
+                newTaskStatus = 'Cancelled';
                 break;
             default:
                 newTaskStatus = 'Unknown Status';

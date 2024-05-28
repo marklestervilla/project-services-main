@@ -1,3 +1,4 @@
+
 <?php
 include('authentication.php');
 include('includes/header.php');
@@ -45,13 +46,18 @@ include('modal/task-modal-add.php');
                     </div>
                     <div class="card-body">
                         <form action="code-proj.php" method="POST" enctype="multipart/form-data"> <!-- Removed action="code-proj.php" -->
+                        <div class="col-md-12 mb-3">
+                            <input type="number" placeholder="Total Task" name="project_num_task" id="project_num_task" readonly>
+                        </div>
+
+                        <hr>
+
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
                                     <label>Project Name</label>
                                     <input type="text" class="form-control" id="projectNameAdd" name="project_name" placeholder="Project Name" required>
                                 </div>
                             </div>
-                            <input type="number" name="project_num_task" id="project_num_task">
 
                             <div class="col-md-12 mb-3">
                                 <label>Select Category:</label>
