@@ -465,7 +465,7 @@ CREATE TABLE `task` (
   `start_date` datetime NOT NULL,
   `due_date` datetime NOT NULL,
   `workers` varchar(255) NOT NULL,
-  `materials` varchar(255) NOT NULL,
+  `materials` longtext NOT NULL,
   `equipments` varchar(255) NOT NULL,
   `cost` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
