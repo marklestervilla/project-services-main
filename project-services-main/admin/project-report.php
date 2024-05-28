@@ -45,29 +45,27 @@ include('./config/dbcon.php');
                             </tr>
                         </thead>
                         <tbody> <!-- example table  -->
-                            <!-- <?php
-                            $query = "SELECT * FROM projects WHERE status = 'archived'";
+                            <?php
+                            $query = "SELECT * FROM project WHERE status = 5";
                             $result = mysqli_query($con, $query);
 
                             if(mysqli_num_rows($result) > 0) {
                                 while($row = mysqli_fetch_assoc($result)) {
                                     echo "<tr>";
-                                    echo "<td>" . $row['project_id'] . "</td>";
+                                    echo "<td>" . $row['id'] . "</td>";
                                     echo "<td>" . $row['project_name'] . "</td>";
-                                    echo "<td>" . $row['start_date'] . "</td>";
-                                    echo "<td>" . $row['end_date'] . "</td>";
-                                    echo "<td>" . $row['status'] . "</td>";
+                                    echo "<td>" . $row['date_start'] . "</td>";
+                                    echo "<td>" . $row['due_date'] . "</td>";
+                                    echo "<td>Archived</td>";
                                     echo "<td>
-                                            <a href='view_project.php?id=" . $row['project_id'] . "' class='btn btn-info btn-sm'>View</a>
-                                            <a href='edit_project.php?id=" . $row['project_id'] . "' class='btn btn-warning btn-sm'>Edit</a>
-                                            <a href='delete_project.php?id=" . $row['project_id'] . "' class='btn btn-danger btn-sm'>Delete</a>
+                                            <a href='unarchive_project.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Unarchive</a>
                                           </td>";
                                     echo "</tr>";
                                 }
                             } else {
                                 echo "<tr><td colspan='6'>No archived projects found.</td></tr>";
                             }
-                            ?> -->
+                            ?>
                         </tbody>
                     </table>
                 </div>
