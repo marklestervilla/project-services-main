@@ -117,6 +117,13 @@
                         <p>Task List</p>
                     </a>
                 </li>
+                <li class="nav-header">REPORT</li>
+
+                    <a href="project-report.php" class="nav-link">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>Project Report<i class="right fas fa-angle-left"></i></p>
+                    </a>
+
                 <li class="nav-header">INFO</li>
 
                 <li class="nav-item has-treeview">

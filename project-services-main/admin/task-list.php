@@ -77,7 +77,7 @@ include('includes/sidebar.php');
                                                 $badge_class = '';
                                                 switch ($status) {
                                                     case 0:
-                                                        $badge_class = 'bg-secodary'; // Pending
+                                                        $badge_class = 'bg-secondary'; // Pending
                                                         break;
                                                     case 1:
                                                         $badge_class = 'bg-info'; // Preparing

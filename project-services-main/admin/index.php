@@ -16,20 +16,7 @@ include('./config/dbcon.php');
             <div class="row mb-2">
                 <div class="col-sm-6 d-flex">
                     <h1 class="m-0">DASHBOARD</h1>
-                    <?php
-                    $query = "SELECT * FROM project GROUP BY id";
-                    $result = mysqli_query($con, $query);
-                    ?>
-                    <select name="projects" id="projects">
-                        <?php
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['project_name'] . '</option>';
-                        }
-                        ?>
-                    </select>
-                    <?php
-                    ?>
-                    <button id="generateProject">Generate PDF</button>
+                    
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -93,11 +80,7 @@ include('./config/dbcon.php');
                 </div>
             </div>
             <div class="row">
-                <!-- <div class="col-md-3 mb-3">
-    <div class="card card-body p-3">
-      <p class="text-sm mb-0 text-capitalize font-weight-bold">Orders</p>
-    </div>
-  </div> -->
+              
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-secondary">
                         <div class="inner">
@@ -137,41 +120,116 @@ include('./config/dbcon.php');
                 </div>
                 <div class="col-md-12 mb-3">
                     <hr>
-                    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-                    <style>
-                        .progress {
-                            height: 20px;
-                        }
-                    </style>
-                    
-<div class="container mt-5">
-    <h2>Projects</h2>
-    <table id="project-table" class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Project Name</th>
-            <th>Project Manager</th>
-            <th>Status</th>
-            <th>Progress</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>Project A</td>
-            <td>John Doe</td>
-            <td>In Progress</td>
-            <td>
-                <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+
+                       <!-- Project Information Small Box -->
+<div class="row">
+    <div class="col-lg-6 col-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h6>Project Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="inner">
+                    <table id="example1" class="table table-striped" id="project-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Project Name</th>
+                                <th scope="col">Progress</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Manage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Fetch project information from the database
+                            $query = "SELECT id, project_name, project_progress, status FROM project";
+                            $result = mysqli_query($con, $query);
+
+                            // Loop through the fetched projects and display project information
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $projectId = $row['id'];
+                                $projectName = $row['project_name'];
+                                $progress = $row['project_progress'];
+                                $status = $row['status'];
+
+                                // Determine status text based on status code
+                                switch ($status) {
+                                    case 0:
+                                        $statusText = 'Pending';
+                                        $statusClass = 'badge-secondary'; // Apply secondary color
+                                        break;
+                                    case 1:
+                                        $statusText = 'Preparing';
+                                        $statusClass = 'badge-info'; // Apply info color
+                                        break;
+                                    case 2:
+                                        $statusText = 'On-Progress';
+                                        $statusClass = 'badge-primary'; // Apply primary color
+                                        break;
+                                    case 3:
+                                        $statusText = 'Completed';
+                                        $statusClass = 'badge-success'; // Apply success color
+                                        break;
+                                    case 4:
+                                        $statusText = 'Cancelled';
+                                        $statusClass = 'badge-danger'; // Apply danger color
+                                        break;
+                                    default:
+                                        $statusText = 'Unknown';
+                                        $statusClass = 'badge-dark'; // Apply dark color for unknown status
+                                        break;
+                                }
+
+                                echo '<tr>';
+                                echo '<td>' . $projectName . '</td>';
+                                echo '<td>';
+                                echo '<div class="progress">';
+                                echo '<div class="progress-bar" role="progressbar" style="width: ' . $progress . '%" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100">' . $progress . '%</div>';
+                                echo '</div>';
+                                echo '</td>';
+                                echo '<td><span class="badge ' . $statusClass . '">' . $statusText . '</span></td>';
+                                echo '<td><a href="project-view.php?proj_id=' . $projectId . '" class="btn btn-primary btn-sm"><i class="fas fa-folder"></i> View</a></td>';
+                                echo '</tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <button id="add-project-btn" class="btn btn-primary">Add Project</button>
-</div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Generating Report -->
+    <div class="col-lg-6 col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0">Generating Project Report</h6>
+            </div>
+            <div class="card-body">
+            <?php
+                    $query = "SELECT * FROM project GROUP BY id";
+                    $result = mysqli_query($con, $query);
+                    ?>
+                    <select name="projects" id="projects">
+                        <?php
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['project_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                    <?php
+                    ?>
+                    <button id="generateProject">Generate PDF</button>
+            </div>
+        </div>
+    </div>
+    <!-- // Project Generating Report -->
+
+</div>
+<!-- End of Project Information Small Box -->
+
+                    
+
                 </div>
             </div>
         </div>
@@ -182,32 +240,7 @@ include('./config/dbcon.php');
     <?php include('includes/footer.php'); ?>
     <script>
         $(document).ready(() => {
-            // let projectIdCounter = 2;
-
-            // function addProjectRow() {
-            //     projectIdCounter++;
-
-            //     const progressPercentage = Math.floor(Math.random() * 100) + 1;
-            //     const newRow = document.createElement("tr");
-            //     newRow.innerHTML = `
-            //                         <td>${projectIdCounter}</td>
-            //                         <td>Project ${String.fromCharCode(65 + projectIdCounter)}</td>
-            //                         <td>Manager ${projectIdCounter}</td>
-            //                         <td>In Progress</td>
-            //                         <td>
-            //                             <div class="progress">
-            //                                 <div class="progress-bar bg-success" role="progressbar" style="width: ${progressPercentage}%;"
-            //                                     aria-valuenow="${progressPercentage}" aria-valuemin="0" aria-valuemax="100">${progressPercentage}%</div>
-            //                             </div>
-            //                         </td>
-            //                     `;
-            //     document.getElementById("project-table").getElementsByTagName("tbody")[0].appendChild(newRow);
-            // }
-
-
-            // document.getElementById("add-project-btn").addEventListener("click", function() {
-            //     addProjectRow();
-            // });
+           
 
             $('#generateProject').on('click', function() {
                 fetch(`fetch_project.php?proj_id=${$('#projects').val()}`)
