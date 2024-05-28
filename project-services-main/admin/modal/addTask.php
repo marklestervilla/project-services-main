@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $materials_used = [];
+    $material_costs = [];
     $con->begin_transaction();
 
     try {
@@ -42,16 +43,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (in_array($field_name, $material_names) && !empty($value)) {
                 $material_name = $con->real_escape_string($field_name);
                 $quantity = (int)$value;
-
-                $materials_used[] = $material_name;
-
+        
+                for ($i = 0; $i < $quantity; $i++) {
+                    $materials_used[] = $material_name;
+                }
+        
                 $update_query = "UPDATE products SET quantity = quantity - $quantity WHERE name = '$material_name'";
                 if (!$con->query($update_query)) {
                     throw new Exception("Error executing update query for $material_name: " . $con->error);
                 }
             }
         }
-
+        
         $materials_used_str = implode(", ", $materials_used);
 
         $selected_equipment = $_POST['selected_equipment'] ?? [];
