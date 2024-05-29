@@ -17,7 +17,7 @@ include('config/dbcon.php');
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addUserModalLabel">Create User</h5>
+        <h5 class="modal-title" id="addUserModalLabel"> <i class="fas fa-plus-circle"></i> Create User</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -130,7 +130,7 @@ include('config/dbcon.php');
                 <h3 class="card-title">Registered User List</h3>
                 <!-- Button trigger modal -->
               <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#AddUserModal">
-                Create User
+              <i class="fas fa-plus-circle"></i> Create User
               </button>
               </div>
               <!-- /.card-header -->
@@ -184,7 +184,7 @@ include('config/dbcon.php');
                               ?>
                               </td>
                               <td>
-                              <button onclick="editUser(<?php echo $row['id']; ?>)" class="edit-btn btn-success flex-fill">
+                              <button onclick="editUser(<?php echo $row['id']; ?>)" class="edit-btn btn-info flex-fill">
                                   <i class="fas fa-edit"></i> Edit
                               </button>
                               <button type="button" value="<?php echo $row['id'];?>" class="delete-btn btn-danger flex-fill deletebtn">

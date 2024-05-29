@@ -330,7 +330,7 @@ if (isset($_POST['archiveProject'])) {
     $id = $_POST['id'];
     $image = $_POST['image'];
 
-    $archive_project_query = "UPDATE project SET status = 4 WHERE id='$id' ";
+    $archive_project_query = "UPDATE project SET status = 5 WHERE id='$id' ";
     $archive_project_query_run = mysqli_query($con, $archive_project_query);
 
     if ($archive_project_query_run) {
@@ -443,57 +443,4 @@ if (isset($_POST['taskDelete'])) {
     }
 }
 
-if (isset($_POST['saveProductivity'])) {
-    // Check form data
-    print_r($_POST);
 
-    $project_id = $_POST['project_id'];
-    $task_id = $_POST['task_id'];
-    $description = $_POST['description'];
-    $start_duration = isset($_POST['start_date']) ? $_POST['start_date'] : '';
-    $end_duration = isset($_POST['due_date']) ? $_POST['due_date'] : '';
-    $priority = isset($_POST['priority']) ? $_POST['priority'] : '0'; // Default priority is '0'
-    $status = isset($_POST['status']) ? $_POST['status'] : '0'; // Default status is '0'
-
-    // Handle employee data
-    $employee_array = isset($_POST['employee']) ? $_POST['employee'] : array();
-    $employees = '';
-    foreach ($employee_array as $employee) {
-        $employee_data = explode('|', $employee);
-        $employees .= $employee_data[0] . ' (' . $employee_data[1] . '), ';
-    }
-    $employee = rtrim($employees, ', ');
-
-    $equipment_name = isset($_POST['equipment']) ? $_POST['equipment'] : array();
-    $material_name = isset($_POST['material']) ? $_POST['material'] : array();
-
-    // Implode arrays to convert them into comma-separated strings
-    $equipment = implode(', ', $equipment_name);
-    $material = implode(', ', $material_name);
-
-    // Prepare and execute the INSERT statement
-    $query = "INSERT INTO productivity (task_id, description, start_duration, end_duration, status, priority, employee, equipment, material) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($con, $query);
-
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "issssisss", $task_id, $description, $start_duration, $end_duration, $status, $priority, $employee, $equipment, $material);
-        if (mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_close($stmt);
-            $_SESSION['status'] = "Productivity Added Successfully";
-            header("location: project-index.php");
-            exit(0);
-        } else {
-            $_SESSION['status'] = "Error: " . mysqli_error($con); // Check for MySQL errors
-            header("location: project-index.php?proj_id=" . $project_id);
-            exit(0);
-        }
-    } else {
-        $_SESSION['status'] = "Error: " . mysqli_error($con); // Check for MySQL errors
-        header("location: project-index.php?proj_id=" . $project_id);
-        exit(0);
-    }
-}
-
-if (isset($_POST['updateProductivity'])) {
-}

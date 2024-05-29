@@ -81,43 +81,7 @@ include('./config/dbcon.php');
             </div>
             <div class="row">
               
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-secondary">
-                        <div class="inner">
-                            <h3><?= getCount('orders'); ?></h3>
-                            <p>PROJECT ORDERS</p>
-                        </div>
-                        <div class="icon">
-                            <!-- <i class="ion ion-bag"></i> -->
-                        </div>
-                        <!-- <a href="orders.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>
-                                <?php
-                                $todayDate = date('Y-m-d');
-                                $todayOrders = mysqli_query($con, "SELECT * FROM orders WHERE order_date='$todayDate' ");
-                                if ($todayOrders) {
-                                    if (mysqli_num_rows($todayOrders) > 0) {
-                                        $totalCountOrders = mysqli_num_rows($todayOrders);
-                                        echo $totalCountOrders;
-                                    } else {
-                                        echo "0";
-                                    }
-                                }
-                                ?>
-                            </h3>
-                            <p>TODAY ORDERS</p>
-                        </div>
-                        <div class="icon">
-                            <!-- <i class="ion ion-bag"></i> -->
-                        </div>
-                        <!-- <a href="orders.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-                    </div>
-                </div>
+                
                 <div class="col-md-12 mb-3">
                     <hr>
 
@@ -130,7 +94,7 @@ include('./config/dbcon.php');
             </div>
             <div class="card-body">
                 <div class="inner">
-                    <table id="example1" class="table table-striped" id="project-table">
+                    <table id="projectDataTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">Project Name</th>
@@ -174,6 +138,10 @@ include('./config/dbcon.php');
                                         $statusText = 'Cancelled';
                                         $statusClass = 'badge-danger'; // Apply danger color
                                         break;
+                                    case 5:
+                                        $statusText = 'Archived';
+                                        $statusClass = 'badge-success'; // Apply secondary color
+                                        break;    
                                     default:
                                         $statusText = 'Unknown';
                                         $statusClass = 'badge-dark'; // Apply dark color for unknown status
@@ -199,31 +167,46 @@ include('./config/dbcon.php');
         </div>
     </div>
 
+    <script>
+    $(document).ready(function() {
+        $('#projectDataTable').DataTable();
+    });
+    </script>
+
     <!-- Project Generating Report -->
-    <div class="col-lg-6 col-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h6 class="mb-0">Generating Project Report</h6>
-            </div>
-            <div class="card-body">
-            <?php
+<div class="col-lg-6 col-12">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h6 class="mb-0">Generating Project Report</h6>
+        </div>
+        <div class="card-body">
+            <!-- Project Selection -->
+            <div class="form-group">
+                <label for="projects">Select Project: </label>
+                <select class="form-control" name="projects" id="projects">
+                    <?php
+                    // Assuming $con is your database connection
                     $query = "SELECT * FROM project GROUP BY id";
                     $result = mysqli_query($con, $query);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<option value="' . $row['id'] . '">' . $row['project_name'] . '</option>';
+                    }
                     ?>
-                    <select name="projects" id="projects">
-                        <?php
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['project_name'] . '</option>';
-                        }
-                        ?>
-                    </select>
-                    <?php
-                    ?>
-                    <button id="generateProject">Generate PDF</button>
+                </select>
             </div>
+            <!-- // Project Selection -->
+
+            <button id="generateProject" class="btn btn-success float-right">
+                <i class="fas fa-file-pdf mr-1"></i> Generate PDF
+            </button>
+
         </div>
     </div>
-    <!-- // Project Generating Report -->
+</div>
+<!-- // Project Generating Report -->
+
+<!-- Include Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 </div>
 <!-- End of Project Information Small Box -->
@@ -240,8 +223,6 @@ include('./config/dbcon.php');
     <?php include('includes/footer.php'); ?>
     <script>
         $(document).ready(() => {
-           
-
             $('#generateProject').on('click', function() {
                 fetch(`fetch_project.php?proj_id=${$('#projects').val()}`)
                     .then(response => response.json())
@@ -275,7 +256,8 @@ include('./config/dbcon.php');
                         let equipmentsUsedText = "Equipments Used: " + Object.keys(groupedEquipments).join(', ');
 
                         let docDefinition = {
-                            content: [{
+                            content: [
+                                {
                                     text: "Project Name: " + data.project_name,
                                     fontSize: 16,
                                     bold: true,

@@ -89,6 +89,9 @@ $result = mysqli_query($con, $sql);
                                     case 4:
                                         $badge_class = 'bg-danger'; // Cancelled
                                         break;
+                                        case 5:
+                                            $badge_class = 'bg-success'; // Archived
+                                            break;
                                     default:
                                         $badge_class = 'bg-info'; // Default
                                         break;
@@ -162,6 +165,9 @@ $result = mysqli_query($con, $sql);
             case 4:
                 return 'Cancelled';
                 break;
+            case 5:
+                return 'Archived';
+                break;    
             default:
                 return 'Unknown';
                 break;

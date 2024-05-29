@@ -156,6 +156,9 @@ if ($stmt->execute()) {
                                                 case 4:
                                                     $badge_class = 'bg-danger'; // Cancelled
                                                     break;
+                                                case 5:
+                                                    $badge_class = 'bg-danger'; // Archived
+                                                    break;    
                                                 default:
                                                     $badge_class = 'bg-secondary'; // Default
                                                     break;
@@ -276,6 +279,9 @@ if ($stmt->execute()) {
                                             case 4:
                                                 $badge_class = 'bg-danger'; // Cancelled
                                                 break;
+                                                case 5:
+                                                    $badge_class = 'bg-success'; // Archived
+                                                    break;
                                             default:
                                                 $badge_class = 'bg-secondary'; // Default
                                                 break;
@@ -375,6 +381,9 @@ function getStatusText($status)
         case 4:
             return 'Cancelled';
             break;
+        case 5:
+            return 'Archived';
+            break;    
         default:
             return 'Unknown';
             break;

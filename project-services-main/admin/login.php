@@ -22,11 +22,19 @@ if(isset($_SESSION['auth'])) {
             unset($_SESSION['auth_status']);
           }
           ?>
-                    <h1 class="my-2 display-3 fw-bold ls-tight" style="font-size: 3.2rem; margin-right:20px ">
-                        The best partner<br />
-                        <span class="text-primary" style="font-size: 2.5rem; margin-right:25px ">for your construction
-                            <span style="font-weight: bold;">services</span></span>
+                    <h1 class="my-2 display-3 fw-bold ls-tight"
+                        style="font-size: 85px; font-weight: 800; margin-right: 20px; line-height: 0.8;">
+                        <span style="color: #333; font-family: fantasy, cursive, sans-serif;">
+                            The best partner
+                        </span><br />
+                        <span class="text-primary"
+                            style="font-size: 45px; margin-right: 50px; font-weight: bold; font-family: fantasy, cursive, sans-serif;">
+                            <span style="font-weight: bold;">
+                                for your construction services
+                            </span>
+                        </span>
                     </h1>
+
                     <p style="color: hsl(217, 10%, 50.8%); margin-right:25px ">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Eveniet, itaque accusantium odio, soluta, corrupti aliquam

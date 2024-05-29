@@ -154,6 +154,7 @@ $result = $con->query($sql);
                                                 <option value="2">On-Progress</option>
                                                 <option value="3">Completed</option>
                                                 <option value="4">Cancelled</option>
+                                                <option value="5">Archived</option>
                                             </select>
                                         </div>
                                     </div>

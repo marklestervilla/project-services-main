@@ -81,15 +81,15 @@ include('includes/sidebar.php');
                                 <select name="position" required class="form-control">
                                         <option value="" selected disabled>--Select Role--</option>
                                         <option value="Worker"> Worker </option>
-                                        <option value="Foreman"> Foreman </option>
                                         <option value="Project Manager"> Project Manager </option>
+                                        <!-- <option value="Foreman"> Foreman </option>
                                         <option value="Electrician Engr"> Electrician Engineer </option>
                                         <option value="Electrical Tech"> Electrical Technician </option>
                                         <option value="Mechanical Engineer"> Mechanical Engineer </option>
                                         <option value="HR Manager"> HR Manager </option>
                                         <option value="Accountant"> Accountant </option>
                                         <option value="Acct. Staff"> Acct. Staff </option>
-                                        <option value="Architect"> Architect </option>
+                                        <option value="Architect"> Architect </option> -->
                                 </select>
                                 </div>
                                 <div class="col-md-3 mb-3">

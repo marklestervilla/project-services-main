@@ -102,10 +102,10 @@ include('includes/sidebar.php');
                                             if($row['position'] == 'Worker')
                                             {
                                                     echo 'Worker';
+                                            }elseif($row['position'] == 'Project Manager'){
+                                                echo 'Project Manager';        
                                             }elseif($row['position'] == 'Foreman'){
                                                     echo 'Foreman';
-                                            }elseif($row['position'] == 'Project Manager'){
-                                                    echo 'Project Manager';
                                             }elseif($row['position'] == 'Electrician Engr'){
                                                     echo 'Electrician Engr';
                                             }elseif($row['position'] == 'Electrical Tech'){

@@ -48,7 +48,7 @@ include('config/dbcon.php');
                     <div class="card-header">
                         <h4>
                             Customer Record
-                            <a href="customers-create.php" class="btn btn-primary float-right">Add Customer</a>
+                            <a href="customers-create.php" class="btn btn-primary float-right"> <i class="fas fa-plus-circle"></i> Add Customer</a>
                         </h4>
                     </div>
                     <div class="card-body">
@@ -90,8 +90,8 @@ include('config/dbcon.php');
                                 ?>
                               </td>
                               <td>
-                              <a href="customers-edit.php?id=<?= $item['id']; ?>" class="btn btn-success btn-sm">Edit</a>
-                              <a href="#" class="btn btn-danger btn-sm deleteCustomerBtn" data-customer-id="<?= $item['id']; ?>">Delete</a>
+                              <a href="customers-edit.php?id=<?= $item['id']; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm deleteCustomerBtn" data-customer-id="<?= $item['id']; ?>"><i class="fas fa-trash"></i> Delete</a>
                               </td>
                             </tr>
 

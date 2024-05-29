@@ -93,15 +93,15 @@ include 'includes/sidebar.php';
                                             <select name="position" class="form-control" required >
                                                 <option value="">--Select Role--</option>
                                                 <option value="Worker" <?php if ($row['position'] == 'Worker') echo 'selected'; ?>>Worker</option>
-                                                <option value="Foreman" <?php if ($row['position'] == 'Foreman') echo 'selected'; ?>>Foreman</option>
                                                 <option value="Project Manager" <?php if ($row['position'] == 'Project Manager') echo 'selected'; ?>>Project Manager</option>
+                                                <!-- <option value="Foreman" <?php if ($row['position'] == 'Foreman') echo 'selected'; ?>>Foreman</option>
                                                 <option value="Electrician Engr" <?php if ($row['position'] == 'Electrician Engr') echo 'selected'; ?>>Electrician Engineer</option>
                                                 <option value="Electrical Tech" <?php if ($row['position'] == 'Electrical Tech') echo 'selected'; ?>>Electrical Technician</option>
                                                 <option value="Mechanical Engr" <?php if ($row['position'] == 'Mechanical Engr') echo 'selected'; ?>>Mechanical Engr</option>
                                                 <option value="HR Manager" <?php if ($row['position'] == 'HR Manager') echo 'selected'; ?>>HR Manager</option>
                                                 <option value="Accountant" <?php if ($row['position'] == 'Accountant') echo 'selected'; ?>>Accountant</option>
                                                 <option value="Acct. Staff" <?php if ($row['position'] == 'Acct. Staff') echo 'selected'; ?>>Acct. Staff</option>
-                                                <option value="Architect" <?php if ($row['position'] == 'Architect') echo 'selected'; ?>>Architect</option>
+                                                <option value="Architect" <?php if ($row['position'] == 'Architect') echo 'selected'; ?>>Architect</option> -->
                                             </select>
                                         </div>
                                         </div>

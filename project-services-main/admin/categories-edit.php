@@ -14,8 +14,8 @@ include('config/dbcon.php');
                 <div class="col-md-12">
 
                     <?php 
-                alertMessage();
-                ?>
+                    alertMessage();
+                    ?>
 
                     <div class="card">
                         <div class="card-header">
