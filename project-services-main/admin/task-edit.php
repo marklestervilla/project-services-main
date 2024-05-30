@@ -41,7 +41,7 @@ include('config/dbcon.php');
                       ?>
                       <div class="card">
                         <div class="card-header">
-                            <h4>Task Edit
+                            <h4><i class="fas fa-edit"></i> Task Edit
                             <a href="javascript:history.go(-1)" class="btn btn-danger float-right btn-sm"><i class="fas fa-arrow-alt-circle-left"></i> Go Back</a>
                             </h4>
                         </div>

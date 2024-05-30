@@ -59,7 +59,7 @@ if(isset($_GET['id'])) {
                     <div class="card">
                     <div class="card-header">
                         <h4>
-                            Edit / Set Task Status
+                            <i class="fas fa-edit"></i> Edit / Set Task Status
                             <a href="javascript:history.go(-1)" class="btn btn-danger float-right btn-sm"><i class="fas fa-arrow-alt-circle-left"></i> Go Back</a>
                         </h4>
                     </div>

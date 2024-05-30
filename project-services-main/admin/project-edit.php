@@ -37,8 +37,9 @@ $result = $con->query($sql);
                 <?php alertMessage(); ?>
                 <div class="card">
                     <div class="card-header">
-                        <h4>Edit Project</h4>
-                        <a href="project-index.php" class="btn btn-danger float-right">Back</a>
+                        <h4><i class="fas fa-edit"></i>Edit Project
+                        <a href="project-index.php" class="btn btn-danger btn-sm float-right">Back</a>
+                        </h4>
                     </div>
                     <div class="card-body">
                         <?php

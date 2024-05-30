@@ -90,6 +90,77 @@ if(isset($_POST['addCategoryUpdate']))
     }
 }
 
+// categories id edit modal
+if(isset($_GET['categories_id']))
+{
+    $categories_id = mysqli_real_escape_string($con, $_GET['categories_id']);
+
+    $query = "SELECT * FROM categories WHERE id='$categories_id' LIMIT 1";
+    $query_run = mysqli_query($con, $query);
+
+    if(mysqli_num_rows($query_run) == 1)
+    {
+        $categories = mysqli_fetch_array($query_run);
+        $res = [
+            'status' => 200,
+            'message' => 'Categories Fetch Successfully',
+            'data' => $categories
+        ];
+        echo json_encode($res);
+        return false;
+    }
+    else
+    {
+        $res = [
+            'status' => 404,
+            'message' => 'Categories ID not found.'
+        ];
+        echo json_encode($res);
+        return false;
+    }
+}
+// categories edit modal
+if(isset($_POST['update_categories']))
+{
+    $categories_id = mysqli_real_escape_string($con, $_POST['categories_id']);
+
+    $name = mysqli_real_escape_string($con, $_POST['name']);
+    $description = mysqli_real_escape_string($con, $_POST['description']);
+
+    // Validate form fields
+    if(empty($name) || empty($description)) {
+        $res = [
+            'status' => 422,
+            'message' => 'All fields are mandatory'
+        ];
+        echo json_encode($res);
+        return false;
+    }
+
+    // Update categories
+    $query = "UPDATE categories SET name=?, description=? WHERE id=?";
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "ssi", $name, $description, $categories_id);
+    
+    if(mysqli_stmt_execute($stmt))
+    {
+        $res = [
+            'status' => 200,
+            'message' => 'Categories Updated Successfully'
+        ];
+        echo json_encode($res);
+        return false;
+    }
+    else
+    {
+        $res = [
+            'status' => 500,
+            'message'=> 'Categories Not Updated'
+        ];
+        echo json_encode($res);
+        return false;
+    }
+}
 
 if(isset($_POST['deleteCategory']))
 {

@@ -31,18 +31,6 @@ include('config/dbcon.php');
                         <label for="description">Description</label>
                         <textarea name="description" class="form-control" required rows="3"></textarea>
                     </div>
-
-                    <!-- <div class="form-group">
-                        <label for="info">Info</label>
-                        <input type="checkbox" name="info"> Info
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <input type="checkbox" name="status"> Status
-                    </div> -->
-
-                    <!-- Add more fields as needed -->
             </div>
 
             <div class="modal-footer">
@@ -55,6 +43,43 @@ include('config/dbcon.php');
     </div>
 </div>
 <!-- //Add Category Modal -->
+
+<!-- Edit Category Modal -->
+<div class="modal fade" id="categoriesEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Edit Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="updateCategories">
+                <div class="modal-body">
+                    <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                    <input type="hidden" name="categories_id" id="categories_id">
+
+                    <div class="form-group">
+                        <label for="name">Category Name</label>
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- // Modal -->
 
@@ -72,7 +97,7 @@ include('config/dbcon.php');
                     <div class="card">
                         <div class="card-header">
                             <h4>
-                                Category
+                                Categories
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
                                     data-target="#AddCategoryModal">
@@ -82,13 +107,11 @@ include('config/dbcon.php');
                             </h4>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered">
+                            <table id="myCategories" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <!-- <th>Info</th>
-                          <th>Status</th> -->
                                         <th>Created At</th>
                                         <th>Manage</th>
 
@@ -108,26 +131,20 @@ include('config/dbcon.php');
                                     <tr>
                                         <td><?php echo $categoryitem['id']; ?></td>
                                         <td><?php echo $categoryitem['name']; ?></td>
-                                        <!-- <td>
-                                          <input type="checkbox" <?php echo $categoryitem['info'] == '1' ? 'checked':'' ?> readonly />
+                                        <td><?php echo date('M d, Y h:i A', strtotime($categoryitem['created_at'])); ?>
                                         </td>
-                                        <td>
-                                          <input type="checkbox" <?php echo $categoryitem['status'] == '1' ? 'checked':'' ?> readonly />
-                                        </td> -->
-                                        <td><?php echo date('M d, Y h:i A', strtotime($categoryitem['created_at'])); ?></td>
                                         <td>
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
                                                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false">
-                                                    <i class="fas fa-cog"></i>
-                                                    Actions
+                                                    <i class="fas fa-cog"></i> Actions
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item"
-                                                        href="categories-edit.php?id=<?php echo $categoryitem['id']; ?>">
+                                                    <button type="button" value="<?= $categoryitem['id']; ?>"
+                                                        class="dropdown-item editCategoriesBtn btn btn-success">
                                                         <i class="fas fa-edit"></i> Edit
-                                                    </a>
+                                                    </button>
                                                     <form action="code.php" method="POST">
                                                         <input type="hidden" name="category_delete_id"
                                                             value="<?php echo $categoryitem['id']; ?>">
@@ -140,6 +157,7 @@ include('config/dbcon.php');
                                                 </div>
                                             </div>
                                         </td>
+
 
                                     </tr>
                                     <?php
@@ -167,3 +185,64 @@ include('config/dbcon.php');
 
     <?php include('includes/script.php'); ?>
     <?php include('includes/footer.php'); ?>
+
+    <script>
+    $(document).on('click', '.editCategoriesBtn', function() {
+
+        var categories_id = $(this).val();
+        // alert(categories_id);
+
+        $.ajax({
+            type: "GET",
+            url: "code.php?categories_id=" + categories_id,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+                if (res.status == 422) {
+
+                    alert(res.message);
+                } else if (res.status == 200) {
+
+                    $('#categories_id').val(res.data.id);
+                    $('#name').val(res.data.name);
+                    $('#description').val(res.data.description);
+                    $('#created_at').val(res.data.created_at);
+
+                    $('#categoriesEditModal').modal('show');
+                }
+            }
+        });
+
+    });
+
+    $(document).on('submit', '#updateCategories', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+        formData.append("update_categories", true);
+
+        $.ajax({
+            type: "POST",
+            url: "code.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+                if (res.status == 422) {
+                    $('#errorMessageUpdate').removeClass('d-none');
+                    $('#errorMessageUpdate').text(res.message);
+                } else if (res.status == 200) {
+
+                    $('#errorMessageUpdate').addClass('d-none');
+
+                    $('#categoriesEditModal').modal('hide');
+                    $('#updateCategories')[0].reset();
+
+                    $('#myCategories').load(location.href + " #myCategories");
+                }
+            }
+        });
+    });
+    </script>

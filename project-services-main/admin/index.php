@@ -47,7 +47,7 @@ include('./config/dbcon.php');
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
                         </div>
-                        <a href="project.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="project-index.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
@@ -297,9 +297,9 @@ include('./config/dbcon.php');
                                             width: '*',
                                             text: [
                                                 { text: 'Customer Details\n', style: 'sectionHeader' },
-                                                { text: `Customer Name: ${data.customer_name}\n` },
-                                                { text: `Customer Phone No.: ${data.customer_phone}\n` },
-                                                { text: `Customer Email Id: ${data.customer_email}\n` },
+                                                { text: `Full Name: ${data.customer_name}\n` },
+                                                { text: `Phone Number.: ${data.customer_phone}\n` },
+                                                { text: `Email Address: ${data.customer_email}\n` },
                                             ]
                                         },
                                         {

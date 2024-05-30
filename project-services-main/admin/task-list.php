@@ -37,12 +37,10 @@ include('includes/sidebar.php');
 
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title"><b>Task List / Progress</b></h4>
-
-                        <h5>
+                        <h4><b>Task List / Progress</b>
                             <a href="javascript:history.go(-1)" class="btn btn-danger float-right btn-sm"><i
                                     class="fas fa-arrow-alt-circle-left"></i> Go Back</a>
-                        </h5>
+                        </h4>
 
 
                     </div>
@@ -55,7 +53,7 @@ include('includes/sidebar.php');
                                     <th>Task Name</th>
                                     <th>Project Name</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Manage</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -84,19 +84,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="category-create.php"
-                                class="nav-link <?= ($current_file_name == 'category-create.php') ? 'active' : ''; ?>">
-                                <i class="nav-icon fas fa-folder"></i>
-                                <p>Create Category</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="category.php"
                                 class="nav-link <?= ($current_file_name == 'category.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>View Category</p>
                             </a>
                         </li>
+                        
                     </ul>
                 </li>
 

@@ -7,7 +7,6 @@ include('../admin/config/dbcon.php');
 include('modal/task-modal-add.php');
 include('modal/productivity-add-modal.php');
 
-// Fetch proj_id from URL parameter
 $proj_id = isset($_GET['proj_id']) ? $_GET['proj_id'] : '';
 
 $stmt = $con->prepare('SELECT project_progress FROM project WHERE id = ?');
@@ -19,6 +18,8 @@ if ($stmt->execute()) {
     }
 }
 ?>
+
+
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
@@ -35,11 +36,10 @@ if ($stmt->execute()) {
             </div>
         </div>
     </div>
+
     <div class="container-fluid px-4">
+
         <?php
-        // removed $con already has connection no need to connect again
-    
-        // Query modified to select only one project with the specified proj_id
         $query = "SELECT project.*, categories.name AS category_name, customers.name AS customer_name 
           FROM project 
           LEFT JOIN categories ON project.category_id = categories.id
@@ -55,13 +55,15 @@ if ($stmt->execute()) {
         <?php 
             alertMessage();
         ?>
+
+
         <div class="card mt-4 shadow-sm">
             <div class="card-header">
                 <h4 class="mb-0">Project Details
-                    <!--<a href="productivity-list.php" class="btn btn-success float-right btn-sm"><i class="fas fa-eye"></i> View Productivity</a>-->
                     <a href="project-index.php" class="btn btn-danger float-right mx-2 btn-sm">Back</a>
                 </h4>
             </div>
+
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -95,7 +97,6 @@ if ($stmt->execute()) {
                                     <th scope="row">Project Manager</th>
                                     <td>
                                         <?php
-                                            // Fetch project manager's image from the database based on their name
                                             $project_manager_name = $row['position'];
                                             $manager_query = "SELECT * FROM employee WHERE name='$project_manager_name'";
                                             $manager_result = mysqli_query($con, $manager_query);
@@ -103,7 +104,6 @@ if ($stmt->execute()) {
                                             if (mysqli_num_rows($manager_result) > 0) {
                                                 $manager_row = mysqli_fetch_assoc($manager_result);
                                                 $manager_image = $manager_row['image'];
-                                                // Display project manager's image
                                                 echo '<div style="display: flex; align-items: center;">';
                                                 echo '<img src="uploads_emp/' . $manager_image . '" alt="Project Manager" class="rounded-circle" style="max-width: 50px; margin-right: 10px;">';
                                                 echo '<span>' . $row['position'] . '</span>';
@@ -119,7 +119,6 @@ if ($stmt->execute()) {
                                     <td>
                                         <span style="position: relative;">
                                             <i class="fa fa-calendar" style=""></i>
-                                            <!-- Calendar Icon -->
                                             <?php echo date("F j, Y", strtotime($row['date_start'])); ?>
                                         </span>
                                     </td>
@@ -129,7 +128,6 @@ if ($stmt->execute()) {
                                     <td>
                                         <span style="position: relative;">
                                             <i class="fa fa-calendar" style=""></i>
-                                            <!-- Calendar Icon -->
                                             <?php echo date("F j, Y", strtotime($row['due_date'])); ?>
                                         </span>
                                     </td>
@@ -197,8 +195,6 @@ if ($stmt->execute()) {
 
         <!-- Task List Card -->
 
-
-
         <!-- Task View Modal -->
         <div class="modal fade" id="viewTaskModal" tabindex="-1" role="dialog" aria-labelledby="viewTaskModalLabel"
             aria-hidden="true">
@@ -233,7 +229,6 @@ if ($stmt->execute()) {
                         <thead class="table-dark">
                             <tr>
                                 <th scope="col">Task Name</th>
-                                <!-- <th scope="col">Description</th> -->
                                 <th scope="col">Date Created</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Worker</th>
@@ -242,7 +237,6 @@ if ($stmt->execute()) {
                         </thead>
                         <tbody>
                             <?php
-                                // Fetch only tasks associated with the current project
                                 $task_query = "SELECT task.*, project.project_name AS project_name
                                         FROM task
                                         LEFT JOIN project ON task.project_id = project.id
@@ -253,9 +247,7 @@ if ($stmt->execute()) {
                                     while($row = mysqli_fetch_assoc($task_query_run)) {
                             ?>
                             <tr>
-                                <!-- <td><?php echo $row['id']; ?></td> -->
                                 <td><?php echo $row['task_name']; ?></td>
-                                <!-- <td><?php echo $row['description']; ?></td> -->
                                 <td>
                                     <?php echo date("F j, Y | g:i A", strtotime($row['created_at'])); ?>
                                 </td>
@@ -312,21 +304,16 @@ if ($stmt->execute()) {
         <!-- // Task List Card -->
 
         <?php
-// Get the project ID from the URL
-if(isset($_GET['proj_id'])) {
-    $proj_id = $_GET['proj_id'];
+        if(isset($_GET['proj_id'])) {
+            $proj_id = $_GET['proj_id'];
+            $sql = "SELECT p.*, t.task_name 
+                    FROM productivity p
+                    LEFT JOIN task t ON p.task_id = t.id
+                    WHERE t.project_id = $proj_id";
+            $result = $con->query($sql);
+            }
+            ?>
 
-    // Fetch data from the productivity table for the specified project
-    $sql = "SELECT p.*, t.task_name 
-            FROM productivity p
-            LEFT JOIN task t ON p.task_id = t.id
-            WHERE t.project_id = $proj_id";
-    $result = $con->query($sql);
-   
-}
-?>
-
-        <!-- Productivity Card Removed -->
     </div>
 </div>
 
@@ -334,6 +321,7 @@ if(isset($_GET['proj_id'])) {
 include('includes/script.php');
 include('includes/footer.php');
 ?>
+
 <script>
 $(document).ready(function() {
     $('.view-task').click(function(e) {
@@ -353,8 +341,6 @@ $(document).ready(function() {
             }
         });
     });
-
-    // Reload page when modal is closed
     $('#viewTaskModal').on('hidden.bs.modal', function() {
         location.reload();
     });
@@ -362,7 +348,6 @@ $(document).ready(function() {
 </script>
 
 <?php
-// Function to get status text based on status code
 function getStatusText($status)
 {
     switch ($status) {
@@ -389,10 +374,7 @@ function getStatusText($status)
             break;
     }
 }
-?>
 
-<?php
-// Function to get Priority text based on priority code
 function getPriorityText($priority)
 {
     switch ($priority) {
@@ -410,4 +392,5 @@ function getPriorityText($priority)
             break;
     }
 }
+
 ?>

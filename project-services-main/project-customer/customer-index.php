@@ -103,33 +103,33 @@ include('../project-customer/includes/header.php');
                 <div class="row">
                     <div class="col-lg-4">
                         <img class="rounded-circle"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-                            alt="Generic placeholder image" width="140" height="140">
-                        <h2>Heading</h2>
-                        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh
-                            ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                            Praesent commodo cursus magna.</p>
-                        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                            src="src/bluehouse.png"
+                            alt="Generic placeholder image" width="150" height="150">
+                        <h2>Residential</h2>
+                        <p>We create dream homes that are tailored to your lifestyle. From cozy cottages to opulent
+                            estates, our residential construction services bring your vision to life through quality
+                            craftsmanship and attention to detail.</p>
+                        <!-- <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p> -->
                     </div><!-- /.col-lg-4 -->
                     <div class="col-lg-4">
                         <img class="rounded-circle"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-                            alt="Generic placeholder image" width="140" height="140">
-                        <h2>Heading</h2>
-                        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec
-                            elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus
-                            commodo, tortor mauris condimentum nibh.</p>
-                        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                            src="src/greenhouse.png"
+                            alt="Generic placeholder image" width="150" height="150">
+                        <h2>Commercial</h2>
+                        <p>Creating spaces that inspire success. Our commercial construction expertise turns ideas into
+                            vibrant offices, retail centers, and hospitality venues, delivering innovative designs and
+                            functional environments that help businesses thrive.</p>
+                        <!-- <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p> -->
                     </div><!-- /.col-lg-4 -->
                     <div class="col-lg-4">
                         <img class="rounded-circle"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-                            alt="Generic placeholder image" width="140" height="140">
-                        <h2>Heading</h2>
-                        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum
-                            id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                            condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                            src="src/orangehouse.png"
+                            alt="Generic placeholder image" width="150" height="150">
+                        <h2>Industrial</h2>
+                        <p>Making progress with strong infrastructure. Our industrial construction solutions improve
+                            efficiency and productivity by constructing warehouses, factories, and logistics centers
+                            that are designed for smooth operations and long-term growth.</p>
+                        <!-- <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p> -->
                     </div><!-- /.col-lg-4 -->
                 </div><!-- /.row -->
 
@@ -172,7 +172,7 @@ include('../project-customer/includes/header.php');
 
                 <div class="row featurette">
                     <div class="col-md-7">
-                        <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span>
+                        <h2 class="featurette-heading">For more details. <span class="text-muted">Inquire Now!</span>
                         </h2>
                         <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta
                             felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce
@@ -189,14 +189,6 @@ include('../project-customer/includes/header.php');
                 <div class="row featurette">
 
 
-                    <div class="container">
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                <a href="../project-customer/customer-index.php" class="btn btn-success">Back to
-                                    Homepage</a>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Code Function Appointment -->
                     <?php
@@ -327,8 +319,7 @@ function build_calendar($month, $year) {
                     <head>
                         <meta charset="UTF-8">
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <link rel="stylesheet"
-                            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
                         <title>GBUA Services</title>
                         <style>
                         @media only screen and (max-width: 760px),

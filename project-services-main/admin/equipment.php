@@ -49,7 +49,7 @@ include('includes/sidebar.php');
                                 <!-- <th scope="col">ID</th> -->
                                 <th scope="col">Equipment</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Value * (₱)</th>
+                                <th scope="col">Value</th>
                                 <th scope="col">Note</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Manage</th>
@@ -75,7 +75,7 @@ include('includes/sidebar.php');
                                             <img src="<?php echo "uploads/".$row['image']; ?>" width="75" height="75" alt="Equipment Image">
                                           </td>
                                           <td><?php echo $row['name']; ?></td>
-                                          <td><?php echo $row['value']; ?></td>
+                                          <td>₱ <?php echo $row['value']; ?></td>
                                           <td><?php echo $row['note']; ?></td>
                                           <td>
                                           <?php

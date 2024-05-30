@@ -33,9 +33,10 @@ include('config/dbcon.php');
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Edit Category</h3>
+                        <h4> <i class="fas fa-edit"></i> Edit Category
                         <!-- Back Button -->
                         <a href="category.php" class="btn btn-danger btn-sm float-right">Back</a>
+                        </h4>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">

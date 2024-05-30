@@ -34,7 +34,7 @@ include 'includes/sidebar.php';
                     ?>
                     <div class="card">
                         <div class="card-header">
-                            <h4>Equipment Edit
+                            <h4> <i class="fas fa-edit"></i> Equipment Edit
                                 <a href="equipment.php" class="btn btn-danger float-right">Back</a>
                             </h4>
                         </div>
