@@ -13,6 +13,42 @@ include('config/dbcon.php');
     
 </head>
 <body>
+<style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .task-details {
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .task-details p {
+            margin: 10px 0;
+        }
+        .task-details .badge {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+        .task-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        hr {
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
     <div class="container">
         <?php
         $con = mysqli_connect("localhost", "root", "", "project_system");
@@ -20,14 +56,12 @@ include('config/dbcon.php');
         $task_query = "SELECT * FROM task WHERE id='$id'";
         $task_query_run = mysqli_query($con, $task_query);
 
-        if(mysqli_num_rows($task_query_run) > 0)
-        {
-            foreach($task_query_run as $row)
-            {
+        if(mysqli_num_rows($task_query_run) > 0) {
+            foreach($task_query_run as $row) {
         ?>
         
         <div class="task-details">
-            <p><strong>Task Name:</strong> <?php echo $row['task_name']; ?></p>
+            <p class="task-title"><?php echo $row['task_name']; ?></p>
 
             <p><strong>Description:</strong> <?php echo $row['description']; ?></p>
 
@@ -84,27 +118,25 @@ include('config/dbcon.php');
 
             <hr>
 
-            <p><strong>Workers:</strong> <p><strong></strong> <?php echo $row['workers']; ?></p>
+            <p><strong>Workers:</strong> <br> <?php echo $row['workers']; ?></p>
 
             <hr>
 
-            <p><strong>Equipment:</strong> <p><strong></strong> <?php echo $row['equipments']; ?></p>
+            <p><strong>Equipment Used:</strong> <br> <?php echo $row['equipments']; ?></p>
 
             <hr>
 
-            <p><strong>Materials:</strong> <p><strong></strong> <?php echo $row['materials']; ?></p>
-            
-            <hr>
+            <!-- Uncomment if materials are needed -->
+            <!-- <p><strong>Materials:</strong> <?php echo $row['materials']; ?></p>
+            <hr> -->
 
             <p><strong>Date Created:</strong> <?php echo date('j M Y | g:i A', strtotime($row['created_at'])); ?></p>
         </div>
 
         <?php
             }
-        }
-        else
-        {
-            echo "No Data Found";
+        } else {
+            echo "<div class='alert alert-warning'>No Data Found</div>";
         }
         ?>
     </div>
