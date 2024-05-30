@@ -32,18 +32,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="customer-index.php" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="appointment.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Appoint Now!</p>
-                </a>
-              </li>
               
             </ul>
           </li>

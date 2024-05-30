@@ -116,7 +116,7 @@ include('modal/task-modal-add.php');
                             <div class="col-md-6 mb-3">
                                 <label>Project Manager</label>
                                 <?php
-                                $available_managers_query = "SELECT * FROM employee WHERE position = 'Project Manager' AND name NOT IN (SELECT DISTINCT position FROM project)";
+                                $available_managers_query = "SELECT * FROM employee WHERE position = 'Project Manager' AND name NOT IN (SELECT DISTINCT position FROM project WHERE status != 5)";
                                 $available_managers_run = mysqli_query($con, $available_managers_query);
                                 $manager = mysqli_num_rows($available_managers_run);
 

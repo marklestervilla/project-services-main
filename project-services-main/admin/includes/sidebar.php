@@ -8,7 +8,7 @@
                 style="font-size: 1.5rem; color: #007bff; letter-spacing: 0.05rem;">
                 GBUA
             </span>
-            <span class="brand-text font-weight-light" style="font-size: 1.5rem; color: #6c757d;">
+            <span class="brand-text font-weight-light" style="font-size: 1.5rem; color: white;">
                 SERVICES
             </span>
         </div>
@@ -37,52 +37,62 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                <?php 
+                $current_file_name = basename($_SERVER['SCRIPT_NAME']);
+                ?>
                 <li class="nav-item">
-                    <a href="index.php" class="nav-link active">
+                    <a href="index.php" class="nav-link <?= ($current_file_name == 'index.php') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="appointment-view.php" class="nav-link">
+                    <a href="appointment-view.php"
+                        class="nav-link <?= ($current_file_name == 'appointment-view.php') ? 'active' : ''; ?>">
                         <i class="nav-icon far fa-calendar-check"></i>
                         <span class="badge badge-warning right"><?= getCount('appointment'); ?></span>
                         <p>Appointment</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="categories.php" class="nav-link">
+                    <a href="categories.php"
+                        class="nav-link <?= ($current_file_name == 'categories.php') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-tags"></i>
                         <p>Categories</p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li
+                    class="nav-item has-treeview <?= in_array($current_file_name, ['equipment.php', 'products.php', 'category-create.php', 'category.php']) ? 'menu-open' : ''; ?>">
+                    <a href="#"
+                        class="nav-link <?= in_array($current_file_name, ['equipment.php', 'products.php', 'category-create.php', 'category.php']) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-box"></i>
                         <p>Inventory <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="equipment.php" class="nav-link">
+                            <a href="equipment.php"
+                                class="nav-link <?= ($current_file_name == 'equipment.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>Equipments</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="products.php" class="nav-link">
+                            <a href="products.php"
+                                class="nav-link <?= ($current_file_name == 'products.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-box-open"></i>
                                 <p>Materials</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="category-create.php" class="nav-link">
+                            <a href="category-create.php"
+                                class="nav-link <?= ($current_file_name == 'category-create.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>Create Category</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="category.php" class="nav-link">
+                            <a href="category.php"
+                                class="nav-link <?= ($current_file_name == 'category.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-folder"></i>
                                 <p>View Category</p>
                             </a>
@@ -90,21 +100,25 @@
                     </ul>
                 </li>
 
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li
+                    class="nav-item has-treeview <?= in_array($current_file_name, ['project-create.php', 'project-index.php']) ? 'menu-open' : ''; ?>">
+                    <a href="#"
+                        class="nav-link <?= in_array($current_file_name, ['project-create.php', 'project-index.php']) ? 'active' : ''; ?>">
                         <i class="nav-icon fa fa-paperclip"></i>
                         <span class="badge badge-info right"><?= getCount('project'); ?></span>
                         <p>Project Plan <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="project-create.php" class="nav-link">
+                            <a href="project-create.php"
+                                class="nav-link <?= ($current_file_name == 'project-create.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-plus"></i>
                                 <p>Create Project</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="project-index.php" class="nav-link">
+                            <a href="project-index.php"
+                                class="nav-link <?= ($current_file_name == 'project-index.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-list"></i>
                                 <p>Project List</p>
                             </a>
@@ -112,52 +126,60 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="task-list.php" class="nav-link">
+                    <a href="task-list.php"
+                        class="nav-link <?= ($current_file_name == 'task-list.php') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-check-circle"></i>
                         <p>Task List</p>
                     </a>
                 </li>
-                <li class="nav-header">REPORT</li>
-
-                    <a href="project-report.php" class="nav-link">
+                <li class="nav-header">ARCHIVED</li>
+                <li class="nav-item">
+                    <a href="project-report.php"
+                        class="nav-link <?= ($current_file_name == 'project-report.php') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-folder"></i>
-                        <p>Project Report<i class="right fas fa-angle-left"></i></p>
+                        <p>Project Record</p>
                     </a>
-
+                </li>
                 <li class="nav-header">INFO</li>
-
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li
+                    class="nav-item has-treeview <?= in_array($current_file_name, ['registered.php', 'employee-create.php', 'employee.php', 'customers-create.php', 'customers.php']) ? 'menu-open' : ''; ?>">
+                    <a href="#"
+                        class="nav-link <?= in_array($current_file_name, ['registered.php', 'employee-create.php', 'employee.php', 'customers-create.php', 'customers.php']) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-circle text-success"></i>
-                        <p>Records<i class="right fas fa-angle-left"></i></p>
+                        <p>Records <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="registered.php" class="nav-link">
+                            <a href="registered.php"
+                                class="nav-link <?= ($current_file_name == 'registered.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle text-warning"></i>
                                 <p>Registered User</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="employee-create.php" class="nav-link">
+                            <a href="employee-create.php"
+                                class="nav-link <?= ($current_file_name == 'employee-create.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>Create Employee</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="employee.php" class="nav-link">
+                            <a href="employee.php"
+                                class="nav-link <?= ($current_file_name == 'employee.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>View Employee List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="customers-create.php" class="nav-link">
+                            <a href="customers-create.php"
+                                class="nav-link <?= ($current_file_name == 'customers-create.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle text-primary"></i>
                                 <p>Create Customer</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="customers.php" class="nav-link">
+                            <a href="customers.php"
+                                class="nav-link <?= ($current_file_name == 'customers.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle text-primary"></i>
                                 <span class="badge badge-danger right"><?= getCount('customers'); ?></span>
                                 <p>View Customer</p>

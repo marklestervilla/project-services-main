@@ -5,7 +5,7 @@ include('config/dbcon.php');
 
 $proj_id = $_GET['proj_id'];
 
-// Query to get project details and tasks
+// Query to get project and customer details
 $query = "
     SELECT 
         project.project_name, 
@@ -14,21 +14,29 @@ $query = "
         SUM(task.cost) AS total_cost, 
         GROUP_CONCAT(task.materials SEPARATOR ', ') AS all_materials, 
         GROUP_CONCAT(task.equipments SEPARATOR ', ') AS all_equipments, 
-        CASE WHEN task.workers IS NOT NULL AND task.workers != '' THEN LENGTH(task.workers) - LENGTH(REPLACE(task.workers, ',', '')) + 1 ELSE 0 END AS total_workers 
+        SUM(CASE WHEN task.workers IS NOT NULL AND task.workers != '' THEN LENGTH(task.workers) - LENGTH(REPLACE(task.workers, ',', '')) + 1 ELSE 0 END) AS total_workers,
+        customers.name AS customer_name,
+        customers.phone AS customer_phone,
+        customers.email AS customer_email
     FROM 
         project 
     LEFT JOIN 
         task ON task.project_id = project.id 
+    LEFT JOIN 
+        customers ON project.customers_id = customers.id
     WHERE 
-        project.id = $proj_id 
+        project.id = ? 
     GROUP BY 
         project.id
 ";
 
-$result = mysqli_query($con, $query);
+$stmt = $con->prepare($query);
+$stmt->bind_param('i', $proj_id);
+$stmt->execute();
+$result = $stmt->get_result();
 $response = [];
 
-if ($row = mysqli_fetch_assoc($result)) {
+if ($row = $result->fetch_assoc()) {
     // Initialize response
     $response = [
         'project_name' => $row['project_name'],
@@ -38,6 +46,9 @@ if ($row = mysqli_fetch_assoc($result)) {
         'total_cost' => $row['total_cost'],
         'all_materials' => $row['all_materials'],
         'all_equipments' => $row['all_equipments'],
+        'customer_name' => $row['customer_name'],
+        'customer_phone' => $row['customer_phone'],
+        'customer_email' => $row['customer_email'],
         'tasks' => [],
         'grouped_materials' => []
     ];
@@ -51,22 +62,28 @@ if ($row = mysqli_fetch_assoc($result)) {
         FROM 
             task 
         WHERE 
-            task.project_id = $proj_id
+            task.project_id = ?
     ";
 
-    $tasks_result = mysqli_query($con, $tasks_query);
+    $tasks_stmt = $con->prepare($tasks_query);
+    $tasks_stmt->bind_param('i', $proj_id);
+    $tasks_stmt->execute();
+    $tasks_result = $tasks_stmt->get_result();
     $material_totals = [];
 
-    while ($task_row = mysqli_fetch_assoc($tasks_result)) {
+    while ($task_row = $tasks_result->fetch_assoc()) {
         $materials = explode(', ', $task_row['materials']);
         $task_costs = [];
 
         foreach ($materials as $material) {
             // Fetch the price of the material
-            $product_query = "SELECT price FROM products WHERE name = '$material'";
-            $product_result = mysqli_query($con, $product_query);
+            $product_query = "SELECT price FROM products WHERE name = ?";
+            $product_stmt = $con->prepare($product_query);
+            $product_stmt->bind_param('s', $material);
+            $product_stmt->execute();
+            $product_result = $product_stmt->get_result();
 
-            if ($product_row = mysqli_fetch_assoc($product_result)) {
+            if ($product_row = $product_result->fetch_assoc()) {
                 $price = $product_row['price'];
 
                 // Aggregate material quantities and costs
@@ -109,5 +126,5 @@ if ($row = mysqli_fetch_assoc($result)) {
 
 echo json_encode($response);
 
-mysqli_close($con);
+$con->close();
 ?>
