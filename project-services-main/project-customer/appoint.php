@@ -89,7 +89,7 @@ if (isset($_POST['submit'])) {
                         <input type="email" class="form-control" id="email" name="EMAIL" required>
                     </div>
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                    <a href="appointment.php" class="btn btn-success">Back</a>
+                    <a href="customer-index.php" class="btn btn-success">Back</a>
                 </form>
             </div>
         </div>
