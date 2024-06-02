@@ -443,4 +443,74 @@ if (isset($_POST['taskDelete'])) {
     }
 }
 
+if(isset($_GET['task_id'])) {
+    $task_id = mysqli_real_escape_string($con, $_GET['task_id']);
+
+    $query = "SELECT * FROM task WHERE id='$task_id' ";
+    $query_run = mysqli_query($con, $query);
+
+    if(mysqli_num_rows($query_run) == 1) {
+        $task = mysqli_fetch_array($query_run);
+
+        $res = [
+            'status' => 200,
+            'message' => 'Task Fetch Successfully',
+            'data' => $task
+        ];
+        echo json_encode($res);
+    } else {
+        $res = [
+            'status' => 404,
+            'message' => 'Task ID not found.'
+        ];
+        echo json_encode($res);
+    }
+}
+
+if(isset($_POST['update_task']))
+{
+    $task_id = mysqli_real_escape_string($con, $_POST['task_id']);
+    $task_name = mysqli_real_escape_string($con, $_POST['task_name']);
+    $description = mysqli_real_escape_string($con, $_POST['description']);
+    $start_date = mysqli_real_escape_string($con, $_POST['start_date']);
+    $due_date = mysqli_real_escape_string($con, $_POST['due_date']);
+    $status = mysqli_real_escape_string($con, $_POST['status']);
+    $priority = mysqli_real_escape_string($con, $_POST['priority']);
+
+    // Check if any of the fields are empty
+    if(empty($task_name) || empty($description) || empty($start_date) || empty($due_date) || empty($status) || empty($priority))
+    {
+        $res = [
+            'status' => 422,
+            'message' => 'All fields are mandatory'
+        ];
+        echo json_encode($res);
+        return false;
+    }
+    
+    $query = "UPDATE task SET task_name='$task_name', description='$description', start_date='$start_date', due_date='$due_date', status='$status', priority='$priority' 
+            WHERE id='$task_id' ";
+            
+    $query_run = mysqli_query($con, $query);
+    
+    if($query_run)
+    {
+        $res = [
+            'status' => 200,
+            'message' => 'Task Updated Successfully'
+        ];
+        echo json_encode($res);
+        return false;
+
+    }
+    else
+    {
+        $res = [
+            'status' => 500,
+            'message' => 'Task Not Updated'
+        ];
+        echo json_encode($res);
+        return false;
+    }
+}
 

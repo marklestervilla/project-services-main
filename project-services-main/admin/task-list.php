@@ -3,9 +3,79 @@ include('authentication.php');
 include('includes/header.php');
 include('includes/topbar.php');
 include('includes/sidebar.php');
-// include('modal/task-modal-add.php');
+include('config/dbcon.php');
 
 ?>
+
+
+<!-- Edit Task Modal -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateTask">
+
+                    <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
+
+                    <input type="hidden" name="task_id" id="task_id" readonly>
+
+                    <div class="form-group">
+                        <label for="">Task Name</label>
+                        <input type="text" name="task_name" id="task_name" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Description</label>
+                        <textarea class="form-control" name="description" id="description" rows="3"
+                            placeholder="Enter Task Description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Start Date</label>
+                        <input type="datetime-local" class="form-control" name="start_date" id="start_date" required />
+
+                        <label for="">Due Date</label>
+                        <input type="datetime-local" class="form-control" name="due_date" id="due_date" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority">Priority:</label>
+                        <select class="form-control" name="priority" id="priority" required>
+                            <option value="0">Low</option>
+                            <option value="1">Medium</option>
+                            <option value="2">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+                        <select class="form-control" name="status" id="status" required>
+                            <option value="0">Pending</option>
+                            <option value="1">Preparing</option>
+                            <option value="2">On-Progress</option>
+                            <option value="3">Completed</option>
+                            <option value="4">Cancelled</option>
+                        </select>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
@@ -103,14 +173,25 @@ include('includes/sidebar.php');
                                                 aria-expanded="false">
                                                 <i class="fas fa-cog"></i> Actions
                                             </button>
+
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="task-edit.php?id=<?= $row['id']; ?>"><i
-                                                        class="fas fa-pencil-alt"></i> Edit</a>
+
+                                                <!-- <a class="dropdown-item" href="task-edit.php?id=<?= $row['id']; ?>"><i
+                                                        class="fas fa-pencil-alt"></i> Edit</a> -->
+
+                                                <button type="button" class="dropdown-item editTaskBtn"
+                                                    data-toggle="modal" data-target="#editTaskModal"
+                                                    data-id="<?= $row['id']; ?>">
+                                                    <i class="fas fa-pencil-alt"></i> Edit
+                                                </button>
+
+
                                                 <form action="code-proj.php" method="POST">
                                                     <button type="submit" class="dropdown-item text-danger"
                                                         name="taskDelete" value="<?= $row['id']; ?>"><i
                                                             class="fas fa-trash-alt"></i> Delete</button>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </td>
@@ -136,6 +217,71 @@ include('includes/sidebar.php');
     </div>
 
     <?php include('includes/script.php'); ?>
+    <script>
+    $(document).ready(function() {
+        $('.editTaskBtn').click(function() {
+            var task_id = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                url: "code-proj.php",
+                data: {
+                    task_id: task_id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == 422) {
+                        alert(response.message);
+                    } else if (response.status == 200) {
+                        $('#editTaskModal #task_id').val(response.data.id);
+                        $('#editTaskModal #task_name').val(response.data.task_name);
+                        $('#editTaskModal #description').val(response.data.description);
+                        $('#editTaskModal #start_date').val(response.data.start_date);
+                        $('#editTaskModal #due_date').val(response.data.due_date);
+                        $('#editTaskModal #status').val(response.data.status);
+                        $('#editTaskModal #priority').val(response.data.priority);
+
+                        $('#editTaskModal').modal('show');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+    $(document).on('submit', '#updateTask', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+        formData.append("update_task", true);
+
+        $.ajax({
+            type: "POST",
+            url: "code-proj.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                var res = jQuery.parseJSON(response);
+                if (res.status == 422) {
+                    $('#errorMessageUpdate').removeClass(response);
+                    $('#errorMessageUpdate').text(res.message);
+                } else if (res.status == 200) {
+                    $('#errorMessageUpdate').addClass('d-none');
+                    $('#editTaskModal').modal('hide');
+                    $('#updateTask')[0].reset();
+
+                    // Redirect to task-list.php after successful update
+                    window.location.href = 'task-list.php';
+                }
+            }
+        });
+    });
+    </script>
+
+
+
+
     <?php include('includes/footer.php'); ?>
 
     <?php
@@ -163,4 +309,6 @@ function getStatusText($status)
             break;
     }
 }
+
+
 ?>

@@ -202,6 +202,7 @@ include('config/dbcon.php');
                                                     class="dropdown-item edit-btn btn-success">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </button>
+
                                                 <button type="button" class="dropdown-item delete-btn btn-danger"
                                                     data-product-id="<?php echo $item['id']; ?>">
                                                     <i class="fas fa-trash-alt"></i> Delete
@@ -270,5 +271,6 @@ include('config/dbcon.php');
         window.location.href = 'products-edit.php?user_id=' + userId;
     }
     </script>
+    
 
     <?php include('includes/footer.php'); ?>

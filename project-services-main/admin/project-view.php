@@ -60,7 +60,7 @@ if ($stmt->execute()) {
         <div class="card mt-4 shadow-sm">
             <div class="card-header">
                 <h4 class="mb-0">Project Details
-                    <a href="project-index.php" class="btn btn-danger float-right mx-2 btn-sm">Back</a>
+                    <a href="project-index.php" class="btn btn-danger float-right mx-2 btn-sm"><i class="fas fa-arrow-left"></i> Back</a>
                 </h4>
             </div>
 

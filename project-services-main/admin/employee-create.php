@@ -35,7 +35,7 @@ include('includes/sidebar.php');
                     <div class="card">
                         <div class="card-header">
                             <h4> <i class="fas fa-plus-circle"></i> Add New Employee
-                                <a href="employee.php" class="btn btn-danger float-right">Back</a>
+                                <a href="employee.php" class="btn btn-danger btn-sm float-right"><i class="fas fa-arrow-left"></i> Back</a>
                             </h4>
                         </div>
                         <div class="card-body">
