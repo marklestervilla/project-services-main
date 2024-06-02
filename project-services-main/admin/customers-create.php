@@ -34,7 +34,7 @@ include('config/dbcon.php');
                 <div class="card">
                     <div class="card-header">
                         <h3> <i class="fas fa-plus-circle"></i> Add Customer
-                        <a href="customers.php" class="btn btn-danger btn-sm float-right">Back</a>
+                        <a href="customers.php" class="btn btn-danger btn-sm float-right"><i class="fas fa-arrow-left"></i> Back</a>
                         </h3>
                     </div>
                     <!-- /.card-header -->

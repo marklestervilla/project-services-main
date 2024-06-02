@@ -33,7 +33,7 @@ include('config/dbcon.php');
                     <div class="card-header">
                         <h4><i class="fas fa-edit"></i> Edit Product
                         <!-- Back Button -->
-                        <a href="products.php" class="btn btn-danger btn-sm float-right">Back</a>
+                        <a href="products.php" class="btn btn-danger btn-sm float-right"><i class="fas fa-arrow-left"></i> Back</a>
                         </h4>
                     </div>
                     <!-- /.card-header -->
@@ -41,7 +41,7 @@ include('config/dbcon.php');
                         <?php 
                         alertMessage();
                         ?>
-                        <div class="col-md-6">
+                        <div class="col-md-10 mx-auto"> <!-- Center the form -->
                             <form action="code-pos.php" method="POST">
 
                             <?php
@@ -61,7 +61,7 @@ include('config/dbcon.php');
                                  
                                  <input type="hidden" name="product_id" value="<?= $product['data']['id']; ?>" />
                                 <div class="row">
-                                    <div class="col-md-12 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="">Select Category:</label>
                                         <select name="category_id" class="form-select">
                                                 <?php
@@ -88,30 +88,34 @@ include('config/dbcon.php');
                                         </select>
                                     </div>
 
-                                    <div class="col-md-12 mb-3">
+                                    <div class="col-md-8 mb-3">
                                     <div class="form-group">
                                         <label for="name">Product Name *</label>
                                         <input type="text" class="form-control" name="name" value="<?= $product['data']['name']; ?>" required />
                                     </div>
                                     </div>
+
                                     <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="description">Description * (Note)</label>
                                         <textarea name="description" class="form-control" rows="3"><?= $product['data']['description']; ?></textarea>
                                     </div>
                                     </div>
-                                    <div class="col-md-12 mb-3">
+
+                                    <div class="col-md-6 mb-3">
                                     <div class="form-group">
                                         <label for="name">Original Price *</label>
-                                        <input type="text" class="form-control" name="price" value="<?= $product['data']['price']; ?>" required />
+                                        <input type="text" class="form-control" name="price" value="₱ <?= $product['data']['price']; ?>" required />
                                     </div>
                                     </div>
-                                    <div class="col-md-12 mb-3">
+
+                                    <div class="col-md-6 mb-3">
                                     <div class="form-group">
                                         <label for="name">Quantity *</label>
                                         <input type="text" class="form-control" name="quantity" value="<?= $product['data']['quantity']; ?>" required />
                                     </div>
                                     </div>
+
                                     <!-- <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="name">Image *</label>
@@ -119,6 +123,7 @@ include('config/dbcon.php');
                                         <img src="../<?= $product['data']['image']; ?>" style="width:150px;height:150px;"  alt="Product Image"  />
                                     </div>
                                     </div> -->
+
                                     <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                             <label>Status (UnChecked=Available, Checked=Unavailable)</label>
@@ -129,7 +134,7 @@ include('config/dbcon.php');
                                 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <button type="submit" name="updateProduct" class="btn btn-info">Update</button>
+                                            <button type="submit" name="updateProduct" class="btn btn-info float-right">Update</button>
                                         </div>
                                     </div>
                                 </div>

@@ -36,7 +36,7 @@ include('config/dbcon.php');
                         <div class="card-header">
                             <h3><i class="fas fa-edit"></i> Edit - Registered User
                             <!-- Back Button -->
-                            <a href="registered.php" class="btn btn-danger btn-sm float-right">Back</a>
+                            <a href="registered.php" class="btn btn-danger btn-sm float-right"><i class="fas fa-arrow-left"></i> Back</a>
                             </h3>
                         </div>
                         <!-- /.card-header -->

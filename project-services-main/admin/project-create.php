@@ -41,7 +41,7 @@ include('modal/task-modal-add.php');
                     <div class="card-header">
                         <h4>
                             <i class="fas fa-plus-circle"></i> Create Project
-                            <a href="project-index.php" class="btn btn-danger float-right">Back</a>
+                            <a href="project-index.php" class="btn btn-danger btn-sm float-right"><i class="fas fa-arrow-left"></i> Back</a>
                         </h4>
                     </div>
                     <div class="card-body">

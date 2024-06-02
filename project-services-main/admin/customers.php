@@ -49,7 +49,7 @@ include('config/dbcon.php');
                         <div class="card-header">
                             <h4>
                                 Customer Record
-                                <a href="customers-create.php" class="btn btn-primary float-right"> <i
+                                <a href="customers-create.php" class="btn btn-primary btn-sm float-right"> <i
                                         class="fas fa-plus-circle"></i> Add Customer</a>
                             </h4>
                         </div>
