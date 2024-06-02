@@ -37,7 +37,7 @@ include('./config/dbcon.php');
                         <table id="projectsTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Project ID</th>
                                     <th>Project Name</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
@@ -50,8 +50,8 @@ include('./config/dbcon.php');
                                 $query = "SELECT * FROM project WHERE status = 5";
                                 $result = mysqli_query($con, $query);
 
-                                if(mysqli_num_rows($result) > 0) {
-                                    while($row = mysqli_fetch_assoc($result)) {
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
                                         echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['project_name'] . "</td>";
@@ -82,53 +82,53 @@ include('./config/dbcon.php');
 <?php include('includes/footer.php'); ?>
 
 <script>
-$(document).ready(function() {
-    $('#projectsTable').DataTable();
-});
+    $(document).ready(function() {
+        $('#projectsTable').DataTable();
+    });
 </script>
 
 <style>
-.table {
-    width: 100%;
-    margin-bottom: 1rem;
-    color: #212529;
-}
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+    }
 
-.table th,
-.table td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6;
-}
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
 
-.table thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6;
-}
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
 
-.table tbody+tbody {
-    border-top: 2px solid #dee2e6;
-}
+    .table tbody+tbody {
+        border-top: 2px solid #dee2e6;
+    }
 
-.table-bordered {
-    border: 1px solid #dee2e6;
-}
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
 
-.table-bordered th,
-.table-bordered td {
-    border: 1px solid #dee2e6;
-}
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid #dee2e6;
+    }
 
-.table-bordered thead th,
-.table-bordered thead td {
-    border-bottom-width: 2px;
-}
+    .table-bordered thead th,
+    .table-bordered thead td {
+        border-bottom-width: 2px;
+    }
 
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, 0.05);
-}
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
 
-.badge-success {
-    background-color: #28a745;
-}
+    .badge-success {
+        background-color: #28a745;
+    }
 </style>

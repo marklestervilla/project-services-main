@@ -12,7 +12,7 @@ include('config/dbcon.php');
 <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-success">
                 <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -32,8 +32,7 @@ include('config/dbcon.php');
 
                     <div class="form-group">
                         <label for="">Description</label>
-                        <textarea class="form-control" name="description" id="description" rows="3"
-                            placeholder="Enter Task Description"></textarea>
+                        <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter Task Description"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -66,8 +65,8 @@ include('config/dbcon.php');
 
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update Task</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Save</button>
                     </div>
                 </form>
             </div>
@@ -101,15 +100,14 @@ include('config/dbcon.php');
         <div class="row">
             <div class="col-md-12">
 
-                <?php 
+                <?php
                 alertMessage();
                 ?>
 
                 <div class="card">
                     <div class="card-header">
                         <h4><b>Task List / Progress</b>
-                            <a href="javascript:history.go(-1)" class="btn btn-danger float-right btn-sm"><i
-                                    class="fas fa-arrow-alt-circle-left"></i> Go Back</a>
+                            <a href="javascript:history.go(-1)" class="btn btn-danger float-right btn-sm"><i class="fas fa-arrow-alt-circle-left"></i> Go Back</a>
                         </h4>
 
 
@@ -119,7 +117,7 @@ include('config/dbcon.php');
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Project ID</th>
                                     <th>Task Name</th>
                                     <th>Project Name</th>
                                     <th>Status</th>
@@ -133,14 +131,14 @@ include('config/dbcon.php');
                                           LEFT JOIN project ON task.project_id = project.id";
                                 $query_run = mysqli_query($con, $query);
 
-                                if($query_run) {
-                                    while($row = mysqli_fetch_assoc($query_run)) {
-                                        ?>
-                                <tr>
-                                    <td><?php echo $row['id']; ?></td>
-                                    <td><?php echo $row['task_name']; ?></td>
-                                    <td><?php echo $row['project_name']; ?></td>
-                                    <td><?php
+                                if ($query_run) {
+                                    while ($row = mysqli_fetch_assoc($query_run)) {
+                                ?>
+                                        <tr>
+                                            <td><?php echo $row['project_id']; ?></td>
+                                            <td><?php echo $row['task_name']; ?></td>
+                                            <td><?php echo $row['project_name']; ?></td>
+                                            <td><?php
                                                 $status = $row['status'];
                                                 $badge_class = '';
                                                 switch ($status) {
@@ -165,41 +163,35 @@ include('config/dbcon.php');
                                                 }
                                                 echo '<span class="badge ' . $badge_class . '">' . getStatusText($status) . '</span>';
                                                 ?>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
-                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="fas fa-cog"></i> Actions
-                                            </button>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-cog"></i> Actions
+                                                    </button>
 
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                                <!-- <a class="dropdown-item" href="task-edit.php?id=<?= $row['id']; ?>"><i
+                                                        <!-- <a class="dropdown-item" href="task-edit.php?id=<?= $row['id']; ?>"><i
                                                         class="fas fa-pencil-alt"></i> Edit</a> -->
 
-                                                <button type="button" class="dropdown-item editTaskBtn"
-                                                    data-toggle="modal" data-target="#editTaskModal"
-                                                    data-id="<?= $row['id']; ?>">
-                                                    <i class="fas fa-pencil-alt"></i> Edit
-                                                </button>
+                                                        <button type="button" class="dropdown-item editTaskBtn" data-toggle="modal" data-target="#editTaskModal" data-id="<?= $row['id']; ?>">
+                                                            <i class="fas fa-pencil-alt"></i> Edit
+                                                        </button>
 
 
-                                                <form action="code-proj.php" method="POST">
-                                                    <button type="submit" class="dropdown-item text-danger"
-                                                        name="taskDelete" value="<?= $row['id']; ?>"><i
-                                                            class="fas fa-trash-alt"></i> Delete</button>
-                                                </form>
+                                                        <form action="code-proj.php" method="POST">
+                                                            <button type="submit" class="dropdown-item text-danger" name="taskDelete" value="<?= $row['id']; ?>"><i class="fas fa-trash-alt"></i> Delete</button>
+                                                        </form>
 
-                                            </div>
-                                        </div>
-                                    </td>
+                                                    </div>
+                                                </div>
+                                            </td>
 
 
 
 
-                                </tr>
+                                        </tr>
                                 <?php
                                     }
                                 } else {
@@ -218,65 +210,65 @@ include('config/dbcon.php');
 
     <?php include('includes/script.php'); ?>
     <script>
-    $(document).ready(function() {
-        $('.editTaskBtn').click(function() {
-            var task_id = $(this).data('id');
-            $.ajax({
-                type: "GET",
-                url: "code-proj.php",
-                data: {
-                    task_id: task_id
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == 422) {
-                        alert(response.message);
-                    } else if (response.status == 200) {
-                        $('#editTaskModal #task_id').val(response.data.id);
-                        $('#editTaskModal #task_name').val(response.data.task_name);
-                        $('#editTaskModal #description').val(response.data.description);
-                        $('#editTaskModal #start_date').val(response.data.start_date);
-                        $('#editTaskModal #due_date').val(response.data.due_date);
-                        $('#editTaskModal #status').val(response.data.status);
-                        $('#editTaskModal #priority').val(response.data.priority);
+        $(document).ready(function() {
+            $('.editTaskBtn').click(function() {
+                var task_id = $(this).data('id');
+                $.ajax({
+                    type: "GET",
+                    url: "code-proj.php",
+                    data: {
+                        task_id: task_id
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status == 422) {
+                            alert(response.message);
+                        } else if (response.status == 200) {
+                            $('#editTaskModal #task_id').val(response.data.id);
+                            $('#editTaskModal #task_name').val(response.data.task_name);
+                            $('#editTaskModal #description').val(response.data.description);
+                            $('#editTaskModal #start_date').val(response.data.start_date);
+                            $('#editTaskModal #due_date').val(response.data.due_date);
+                            $('#editTaskModal #status').val(response.data.status);
+                            $('#editTaskModal #priority').val(response.data.priority);
 
-                        $('#editTaskModal').modal('show');
+                            $('#editTaskModal').modal('show');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
+                });
+            });
+        });
+        $(document).on('submit', '#updateTask', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("update_task", true);
+
+            $.ajax({
+                type: "POST",
+                url: "code-proj.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 422) {
+                        $('#errorMessageUpdate').removeClass(response);
+                        $('#errorMessageUpdate').text(res.message);
+                    } else if (res.status == 200) {
+                        $('#errorMessageUpdate').addClass('d-none');
+                        $('#editTaskModal').modal('hide');
+                        $('#updateTask')[0].reset();
+
+                        // Redirect to task-list.php after successful update
+                        window.location.href = 'task-list.php';
+                    }
                 }
             });
         });
-    });
-    $(document).on('submit', '#updateTask', function(e) {
-        e.preventDefault();
-
-        var formData = new FormData(this);
-        formData.append("update_task", true);
-
-        $.ajax({
-            type: "POST",
-            url: "code-proj.php",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                var res = jQuery.parseJSON(response);
-                if (res.status == 422) {
-                    $('#errorMessageUpdate').removeClass(response);
-                    $('#errorMessageUpdate').text(res.message);
-                } else if (res.status == 200) {
-                    $('#errorMessageUpdate').addClass('d-none');
-                    $('#editTaskModal').modal('hide');
-                    $('#updateTask')[0].reset();
-
-                    // Redirect to task-list.php after successful update
-                    window.location.href = 'task-list.php';
-                }
-            }
-        });
-    });
     </script>
 
 
@@ -285,30 +277,30 @@ include('config/dbcon.php');
     <?php include('includes/footer.php'); ?>
 
     <?php
-// Function to get status text based on status code
-function getStatusText($status)
-{
-    switch ($status) {
-        case 0:
-            return 'Pending';
-            break;
-        case 1:
-            return 'Preparing';
-            break;
-        case 2:
-            return 'On-progress';
-            break;
-        case 3:
-            return 'Completed';
-            break;
-        case 4:
-            return 'Cancelled';
-            break;
-        default:
-            return 'Unknown';
-            break;
+    // Function to get status text based on status code
+    function getStatusText($status)
+    {
+        switch ($status) {
+            case 0:
+                return 'Pending';
+                break;
+            case 1:
+                return 'Preparing';
+                break;
+            case 2:
+                return 'On-progress';
+                break;
+            case 3:
+                return 'Completed';
+                break;
+            case 4:
+                return 'Cancelled';
+                break;
+            default:
+                return 'Unknown';
+                break;
+        }
     }
-}
 
 
-?>
+    ?>

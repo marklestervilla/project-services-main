@@ -36,7 +36,6 @@ include('config/dbcon.php');
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Description</th>
                                         <th>Status</th>
@@ -47,7 +46,6 @@ include('config/dbcon.php');
 
                                     <?php foreach($poscat as $Item) : ?>
                                     <tr>
-                                        <td><?= $Item['id'] ?></td>
                                         <td><?= $Item['name'] ?></td>
                                         <td><?= $Item['description'] ?></td>
                                         <td>

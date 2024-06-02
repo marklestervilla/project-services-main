@@ -69,9 +69,11 @@
 
 <!-- Page specific script -->
 <script>
-  $(function () {
+  $(function() {
     $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
@@ -85,8 +87,8 @@
     });
   });
 
-  $(document).ready(function(){
-    $("#togglePassword").click(function(){
+  $(document).ready(function() {
+    $("#togglePassword").click(function() {
       var x = $("#password");
       if (x.attr("type") === "password") {
         x.attr("type", "text");
@@ -97,7 +99,7 @@
   });
 
   document.addEventListener('DOMContentLoaded', function() {
-    <?php if(isset($_SESSION['status'])) { ?>
+    <?php if (isset($_SESSION['status'])) { ?>
       var statusDiv = document.createElement('div');
       statusDiv.classList.add('alert', 'alert-warning', 'alert-dismissible', 'fade', 'show');
       statusDiv.setAttribute('role', 'alert');
@@ -150,9 +152,8 @@
   }
 
   function confirmLogout() {
-    alertify.confirm('Confirm Logout', 'Are you sure you want to logout?', function(){
+    alertify.confirm('Confirm Logout', 'Are you sure you want to logout?', function() {
       document.querySelector('form[name="logoutForm"]').submit();
-    }, function(){
-    });
+    }, function() {});
   }
 </script>
