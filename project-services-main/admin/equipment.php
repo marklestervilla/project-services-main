@@ -72,7 +72,7 @@ include('includes/sidebar.php');
                                         <tr>
                                           <!-- <td><?php echo $row['id']; ?></td> -->
                                           <td>
-                                            <img src="<?php echo "uploads/".$row['image']; ?>" width="75" height="75" alt="Equipment Image">
+                                            <img src="<?php echo "uploads/".$row['image']; ?>" width="100" height="100" alt="Equipment Image">
                                           </td>
                                           <td><?php echo $row['name']; ?></td>
                                           <td>₱ <?php echo $row['value']; ?></td>

@@ -9,87 +9,88 @@ include('config/dbcon.php');
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
- <!-- Content Header (Page header) -->
- <div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Add Customer</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Dashboard</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Add Customer</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
 
-<section class="content">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3> <i class="fas fa-plus-circle"></i> Add Customer
-                        <a href="customers.php" class="btn btn-danger btn-sm float-right"><i class="fas fa-arrow-left"></i> Back</a>
-                        </h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
+    <style>
+        .container {
+            max-width: 600px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
 
-                        <?php 
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-success">
+                            <h2> <i class="fas fa-plus-circle"></i> Add New Customer
+                                <!-- <a href="customers.php" class="btn btn-danger btn-sm float-right"><i
+                                        class="fas fa-arrow-left"></i> Back</a> -->
+                            </h2>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+                            <?php 
                         alertMessage();
                         ?>
 
-                        <div class="col-md-6">
-                            <form action="code-pos.php" method="POST">
-
-                                <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <div class="form-group">
-                                            <label for="name">Name</label>
-                                            <input type="text" class="form-control" name="name" />
+                            <div class="container mt-5">
+                                <form action="code-pos.php" method="POST">
+                                    <div class="form-group">
+                                        <label for="name">Full Name:</label>
+                                        <input type="text" class="form-control" name="name"
+                                            placeholder="Enter Customer Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" name="email"
+                                            placeholder="Enter Email Address" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone:</label>
+                                        <input type="tel" class="form-control" name="phone"
+                                            placeholder="Enter Contact no." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="status" name="status">
+                                            <label class="form-check-label" for="status">Status *
+                                                (UnChecked=CashPayment, Checked=OnlinePayment)</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="text" class="form-control" name="email" />
-                                        </div>
+                                    <hr>
+                                    <div class="card-footer">
+                                    <button type="submit" name="saveCustomer" class="btn btn-primary float-right"><i class="fas fa-save"></i> Save</button>
+                                    <a href="customers.php" class="btn btn-danger float-right me-2">Back</a>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <div class="form-group">
-                                            <label for="phone">Phone</label>
-                                            <input type="number" class="form-control" name="phone" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <div class="form-group">
-                                            <label for="status">Status * (UnChecked=CashPayment, Checked=OnlinePayment)</label>
-                                            <br/>
-                                            <input type="checkbox" name="status" style="width:30px;height:30px;">
-                                        </div>
-                                    </div>
-
-                                
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <button type="submit" name="saveCustomer" class="btn btn-info">Save</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<?php include('includes/script.php'); ?>
-<?php include('includes/footer.php'); ?>
+    <?php include('includes/script.php'); ?>
+    <?php include('includes/footer.php'); ?>

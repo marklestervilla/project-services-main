@@ -9,12 +9,12 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="customer-index.php" class="nav-link">Home</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="services.php" class="nav-link">Services</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="about-us.php" class="nav-link">About Us</a>
-      </li>
+      </li> -->
       <li class="nav-item d-none d-sm-inline-block">
         <a href="contact.php" class="nav-link">Contact Us</a>
       </li>

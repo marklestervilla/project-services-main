@@ -82,7 +82,7 @@ if (isset($_POST['addCategoryUpdate'])) {
     }
 }
 
-// categories id edit modal
+// Categories id edit modal
 if (isset($_GET['categories_id'])) {
     $categories_id = mysqli_real_escape_string($con, $_GET['categories_id']);
 
@@ -107,7 +107,7 @@ if (isset($_GET['categories_id'])) {
         return false;
     }
 }
-// categories edit modal
+// Categories update modal
 if (isset($_POST['update_categories'])) {
     $categories_id = mysqli_real_escape_string($con, $_POST['categories_id']);
 

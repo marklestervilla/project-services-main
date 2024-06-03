@@ -55,9 +55,9 @@ include('includes/sidebar.php');
 
     <div class="card">
         <div class="card-header">
-            <h4>Employee Record
+            <h2>Employee Record
                 <a href="employee-create.php" class="btn btn-primary float-right"><i class="fas fa-plus-circle"></i> Add New Employee</a>
-            </h4>
+            </h2>
         </div>
 
         <div class="card-body">

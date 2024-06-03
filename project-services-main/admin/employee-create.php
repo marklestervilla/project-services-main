@@ -33,7 +33,7 @@ include('includes/sidebar.php');
                     alertMessage();
                     ?>
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header bg-primary">
                             <h4> <i class="fas fa-plus-circle"></i> Add New Employee
                                 <a href="employee.php" class="btn btn-danger btn-sm float-right"><i class="fas fa-arrow-left"></i> Back</a>
                             </h4>
@@ -104,7 +104,7 @@ include('includes/sidebar.php');
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" name="saveEmployee" class="btn btn-primary float-right">Save Employee</button>
+                                    <button type="submit" name="saveEmployee" class="btn btn-primary float-right"><i class="fas fa-save"></i> Save Employee</button>
                                 </div>
                             </form>
                         </div>

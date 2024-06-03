@@ -4,6 +4,7 @@ include('includes/header.php');
 include('includes/topbar.php');
 include('includes/sidebar.php');
 include('config/dbcon.php');
+require_once 'config/function.php';
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -33,7 +34,7 @@ include('config/dbcon.php');
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3><i class="fas fa-plus-circle"></i> Add Category
+                        <h3><i class="fas fa-plus-circle"></i> Add Material Category
                         <!-- Back Button -->
                         <a href="category.php" class="btn btn-danger btn-sm float-right">Back</a>
                         </h3>
@@ -60,7 +61,7 @@ include('config/dbcon.php');
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <div class="form-group">
-                                            <label for="status">Status * (UnChecked=Available, Checked=Unavailable)</label>
+                                            <label for="status">Status * (Unchecked=Available, Checked=Unavailable)</label>
                                             <br/>
                                             <input type="checkbox" name="status" style="width:30px;height:30px;">
                                         </div>
