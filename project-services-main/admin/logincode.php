@@ -2,18 +2,15 @@
 session_start();
 include('config/dbcon.php');
 
-if(isset($_POST['login_btn']))
-{
+if (isset($_POST['login_btn'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     $log_query = "SELECT * FROM users WHERE email='$email' AND password='$password' LIMIT 1";
     $log_query_run = mysqli_query($con, $log_query);
 
-    if(mysqli_num_rows($log_query_run) > 0)
-    {
-        foreach($log_query_run as $row)
-        {
+    if (mysqli_num_rows($log_query_run) > 0) {
+        foreach ($log_query_run as $row) {
             $user_id = $row['id'];
             $user_name = $row['name'];
             $user_email = $row['email'];
@@ -23,26 +20,20 @@ if(isset($_POST['login_btn']))
 
         $_SESSION['auth'] = "$role_as";
         $_SESSION['auth_user'] = [
-            'user_id'=>$user_id,
-            'user_name'=>$user_name,
-            'user_email'=>$user_email,
-            'user_phone'=>$user_phone,
+            'user_id' => $user_id,
+            'user_name' => $user_name,
+            'user_email' => $user_email,
+            'user_phone' => $user_phone,
         ];
 
         $_SESSION['status'] = "Welcome to Dashboard!";
         header('Location: index.php');
-    }
-    else
-    {
+    } else {
         $_SESSION['status'] = "Invalid Email & Password";
+        $_SESSION['login_email'] = $email; // Store the entered email in session
         header('Location: login.php');
     }
-}
-else
-{
+} else {
     $_SESSION['status'] = "Access Denied";
     header('Location: login.php');
 }
-
-
-?>
