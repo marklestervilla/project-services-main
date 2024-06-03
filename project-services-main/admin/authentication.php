@@ -9,16 +9,12 @@ if(!isset($_SESSION['auth']))
 } 
 else
 {
-    if($_SESSION['auth'] == "1")
-    {
-        
-    }
-    else
-    {
-        $_SESSION['status'] = "You are not Authorized as ADMIN";
-        header('Location: ../index.php');
-        exit(0);
-    }
+   if($_SESSION['auth_role'] != "1" && $_SESSION['auth_role'] != "2")
+   {
+    $_SESSION['auth_status'] = "You Are Not Authorized as Admin";
+    header("Location: customer-index.php");
+    exit(0);
+   }
 }
 
 

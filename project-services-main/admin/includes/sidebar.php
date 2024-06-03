@@ -61,6 +61,11 @@
                         <p>Categories</p>
                     </a>
                 </li>
+
+
+
+                <?php if($_SESSION['auth_role'] == '2') : ?>
+
                 <li
                     class="nav-item has-treeview <?= in_array($current_file_name, ['equipment.php', 'products.php', 'category-create.php', 'category.php']) ? 'menu-open' : ''; ?>">
                     <a href="#"
@@ -90,9 +95,11 @@
                                 <p>View Category</p>
                             </a>
                         </li>
-                        
                     </ul>
                 </li>
+
+                <?php endif; ?>
+
 
                 <li
                     class="nav-item has-treeview <?= in_array($current_file_name, ['project-create.php', 'project-index.php']) ? 'menu-open' : ''; ?>">
@@ -126,15 +133,21 @@
                         <p>Task List</p>
                     </a>
                 </li>
+                <?php if($_SESSION['auth_role'] == '2') : ?>
                 <li class="nav-header">ARCHIVED</li>
                 <li class="nav-item">
+
                     <a href="project-report.php"
                         class="nav-link <?= ($current_file_name == 'project-report.php') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-folder"></i>
                         <p>Project Record</p>
                     </a>
                 </li>
+                <?php endif; ?>
+                
+                <?php if($_SESSION['auth_role'] == '2') : ?>
                 <li class="nav-header">INFO</li>
+                
                 <li
                     class="nav-item has-treeview <?= in_array($current_file_name, ['registered.php', 'employee-create.php', 'employee.php', 'customers-create.php', 'customers.php']) ? 'menu-open' : ''; ?>">
                     <a href="#"
@@ -181,6 +194,7 @@
                         </li>
                     </ul>
                 </li>
+                <?php endif; ?>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

@@ -1,6 +1,6 @@
 <?php
 include('authentication.php');
-
+include('middleware/superadminAuth.php');
 include('includes/header.php');
 include('includes/topbar.php');
 include('includes/sidebar.php');
@@ -169,7 +169,7 @@ include('config/dbcon.php');
                                                 } elseif ($row['role_as'] == '1') {
                                                     echo "Admin";
                                                 } elseif ($row['role_as'] == '2') {
-                                                    echo "Staff";
+                                                    echo "SuperAdmin";
                                                 } else {
                                                     echo "Invalid User";
                                                 }

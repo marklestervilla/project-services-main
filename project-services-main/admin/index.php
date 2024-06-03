@@ -3,7 +3,7 @@ include('authentication.php');
 include('includes/header.php');
 include('includes/topbar.php');
 include('includes/sidebar.php');
-include('./config/dbcon.php');
+include('config/dbcon.php');
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +68,7 @@ include('./config/dbcon.php');
                 <div class="row">
 
                     <div class="col-xl-3 col-md-6 mb-4">
-                        <a href="customers.php" class="text-decoration-none">
+                        <a href="appointment-view.php" class="text-decoration-none">
                             <div class="card shadow h-200 py-2 opacity-card" style="border-left: 4px solid #007bff;">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
