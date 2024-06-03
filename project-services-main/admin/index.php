@@ -16,13 +16,31 @@ include('./config/dbcon.php');
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        /* Smooth zoom effect on hover for specific cards */
-        .zoom-card {
-            transition: transform 0.3s ease-in-out;
+        /* Card with opacity effect on background */
+        .opacity-card {
+            position: relative;
+            overflow: hidden;
         }
 
-        .zoom-card:hover {
-            transform: scale(1.05);
+        .opacity-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0);
+            transition: background 0.3s ease-in-out;
+            z-index: 0;
+        }
+
+        .opacity-card:hover::before {
+            background: rgba(200, 200, 225, 0.8);
+        }
+
+        .opacity-card .card-body {
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
@@ -51,7 +69,7 @@ include('./config/dbcon.php');
 
                     <div class="col-xl-3 col-md-6 mb-4">
                         <a href="customers.php" class="text-decoration-none">
-                            <div class="card shadow h-200 py-2 zoom-card" style="border-left: 4px solid #007bff;">
+                            <div class="card shadow h-200 py-2 opacity-card" style="border-left: 4px solid #007bff;">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -70,7 +88,7 @@ include('./config/dbcon.php');
 
                     <div class="col-xl-3 col-md-6 mb-4">
                         <a href="project-index.php" class="text-decoration-none">
-                            <div class="card shadow h-200 py-2 zoom-card" style="border-left: 4px solid #28a745;">
+                            <div class="card shadow h-200 py-2 opacity-card" style="border-left: 4px solid #28a745;">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -89,7 +107,7 @@ include('./config/dbcon.php');
 
                     <div class="col-xl-3 col-md-6 mb-4">
                         <a href="employee.php" class="text-decoration-none">
-                            <div class="card shadow h-200 py-2 zoom-card" style="border-left: 4px solid #ffc107;">
+                            <div class="card shadow h-200 py-2 opacity-card" style="border-left: 4px solid #ffc107;">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -108,7 +126,7 @@ include('./config/dbcon.php');
 
                     <div class="col-xl-3 col-md-6 mb-4">
                         <a href="customers.php" class="text-decoration-none">
-                            <div class="card shadow h-200 py-2 zoom-card" style="border-left: 4px solid #17a2b8;">
+                            <div class="card shadow h-200 py-2 opacity-card" style="border-left: 4px solid #17a2b8;">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
