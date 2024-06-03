@@ -146,11 +146,10 @@ include('./config/dbcon.php');
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <hr>
-
                             <!-- Project Information Small Box -->
                             <div class="row">
                                 <div class="col-lg-6 col-6">
-                                    <div class="card">
+                                    <div class="card shadow h-200">
                                         <div class="card-header bg-info text-white">
                                             <h6>Project Information</h6>
                                         </div>
@@ -231,7 +230,7 @@ include('./config/dbcon.php');
 
                                 <!-- Project Generating Report -->
                                 <div class="col-lg-6 col-12">
-                                    <div class="card shadow-sm">
+                                    <div class="card shadow h-200">
                                         <div class="card-header bg-primary text-white">
                                             <h6 class="mb-0">Generating Project Report</h6>
                                         </div>
