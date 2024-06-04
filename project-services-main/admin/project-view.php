@@ -5,7 +5,6 @@ include('includes/topbar.php');
 include('includes/sidebar.php');
 include('../admin/config/dbcon.php');
 include('modal/task-modal-add.php');
-include('modal/productivity-add-modal.php');
 
 $proj_id = isset($_GET['proj_id']) ? $_GET['proj_id'] : '';
 
@@ -18,7 +17,6 @@ if ($stmt->execute()) {
     }
 }
 ?>
-
 
 <div class="content-wrapper">
     <div class="content-header">
@@ -38,32 +36,25 @@ if ($stmt->execute()) {
     </div>
 
     <div class="container-fluid px-4">
-
         <?php
         $query = "SELECT project.*, categories.name AS category_name, customers.name AS customer_name 
-          FROM project 
-          LEFT JOIN categories ON project.category_id = categories.id
-          LEFT JOIN customers ON project.customers_id = customers.id
-          WHERE project.id = $proj_id";
+                  FROM project 
+                  LEFT JOIN categories ON project.category_id = categories.id
+                  LEFT JOIN customers ON project.customers_id = customers.id
+                  WHERE project.id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('i', $proj_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        $query_run = mysqli_query($con, $query);
-
-        if (mysqli_num_rows($query_run) > 0) {
-            $row = mysqli_fetch_assoc($query_run);
+        if ($row = $result->fetch_assoc()) {
         ?>
-
-            <?php
-            alertMessage();
-            ?>
-
-
             <div class="card mt-4 shadow-sm">
                 <div class="card-header">
                     <h4 class="mb-0">Project Details
                         <a href="project-index.php" class="btn btn-danger float-right mx-2 btn-sm"><i class="fas fa-arrow-left"></i> Back</a>
                     </h4>
                 </div>
-
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -77,7 +68,7 @@ if ($stmt->execute()) {
                                         <td><?php echo $row['category_name']; ?></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">ProjectName</th>
+                                        <th scope="row">Project Name</th>
                                         <td><?php echo $row['project_name']; ?></td>
                                     </tr>
                                     <tr>
@@ -97,11 +88,13 @@ if ($stmt->execute()) {
                                         <td>
                                             <?php
                                             $project_manager_name = $row['position'];
-                                            $manager_query = "SELECT * FROM employee WHERE name='$project_manager_name'";
-                                            $manager_result = mysqli_query($con, $manager_query);
+                                            $manager_query = "SELECT * FROM employee WHERE name=?";
+                                            $manager_stmt = $con->prepare($manager_query);
+                                            $manager_stmt->bind_param('s', $project_manager_name);
+                                            $manager_stmt->execute();
+                                            $manager_result = $manager_stmt->get_result();
 
-                                            if (mysqli_num_rows($manager_result) > 0) {
-                                                $manager_row = mysqli_fetch_assoc($manager_result);
+                                            if ($manager_row = $manager_result->fetch_assoc()) {
                                                 $manager_image = $manager_row['image'];
                                                 echo '<div style="display: flex; align-items: center;">';
                                                 echo '<img src="uploads_emp/' . $manager_image . '" alt="Project Manager" class="rounded-circle" style="max-width: 50px; margin-right: 10px;">';
@@ -115,21 +108,11 @@ if ($stmt->execute()) {
                                     </tr>
                                     <tr>
                                         <th scope="row">Date Start</th>
-                                        <td>
-                                            <span style="position: relative;">
-                                                <i class="fa fa-calendar" style=""></i>
-                                                <?php echo date("F j, Y", strtotime($row['date_start'])); ?>
-                                            </span>
-                                        </td>
+                                        <td><?php echo date("F j, Y", strtotime($row['date_start'])); ?></td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Due Date</th>
-                                        <td>
-                                            <span style="position: relative;">
-                                                <i class="fa fa-calendar" style=""></i>
-                                                <?php echo date("F j, Y", strtotime($row['due_date'])); ?>
-                                            </span>
-                                        </td>
+                                        <td><?php echo date("F j, Y", strtotime($row['due_date'])); ?></td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Status</th>
@@ -178,7 +161,6 @@ if ($stmt->execute()) {
                     </div>
                 </div>
             </div>
-
         <?php
         } else {
         ?>
@@ -191,29 +173,6 @@ if ($stmt->execute()) {
 
         <!-- Task List Card -->
 
-        <!-- Task View Modal -->
-        <div class="modal fade" id="viewTaskModal" tabindex="-1" role="dialog" aria-labelledby="viewTaskModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-info">
-                        <h5 class="modal-title" id="viewTaskModalLabel">Task View</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <!-- Task details will be loaded dynamically here -->
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div class="card">
             <div class="card-header">
                 <h5>Task List</h5>
@@ -224,7 +183,6 @@ if ($stmt->execute()) {
                         <thead class="table-dark">
                             <tr>
                                 <th scope="col">Task Name</th>
-                                <!-- <th scope="col">Date Created</th> -->
                                 <th scope="col">Status</th>
                                 <th scope="col">Worker</th>
                                 <th scope="col" style="width: 200px;">Manage</th>
@@ -233,57 +191,58 @@ if ($stmt->execute()) {
                         <tbody>
                             <?php
                             $task_query = "SELECT task.*, project.project_name AS project_name
-                                FROM task
-                                LEFT JOIN project ON task.project_id = project.id
-                                WHERE task.project_id = $proj_id";
-                            $task_query_run = mysqli_query($con, $task_query);
+                                           FROM task
+                                           LEFT JOIN project ON task.project_id = project.id
+                                           WHERE task.project_id = ?";
+                            $task_stmt = $con->prepare($task_query);
+                            $task_stmt->bind_param('i', $proj_id);
+                            $task_stmt->execute();
+                            $task_result = $task_stmt->get_result();
 
-                            if ($task_query_run) {
-                                while ($row = mysqli_fetch_assoc($task_query_run)) {
+                            while ($row = $task_result->fetch_assoc()) {
                             ?>
-                                    <tr>
-                                        <td><?php echo $row['task_name']; ?></td>
-                                        <!-- <td><?php echo date("F j, Y | g:i A", strtotime($row['created_at'])); ?></td> -->
-                                        <td>
-                                            <?php
-                                            $status = $row['status'];
-                                            $badge_class = '';
-                                            switch ($status) {
-                                                case 0:
-                                                    $badge_class = 'bg-secondary'; // Pending
-                                                    break;
-                                                case 1:
-                                                    $badge_class = 'bg-info'; // Preparing
-                                                    break;
-                                                case 2:
-                                                    $badge_class = 'bg-primary'; // On-Progress
-                                                    break;
-                                                case 3:
-                                                    $badge_class = 'bg-success'; // Completed
-                                                    break;
-                                                case 4:
-                                                    $badge_class = 'bg-danger'; // Cancelled
-                                                    break;
-                                                case 5:
-                                                    $badge_class = 'bg-success'; // Archived
-                                                    break;
-                                                default:
-                                                    $badge_class = 'bg-secondary'; // Default
-                                                    break;
-                                            }
-                                            echo '<span class="badge ' . $badge_class . '">' . getStatusText($status) . '</span>';
-                                            ?>
-                                        </td>
-                                        <td><?php echo $row['workers']; ?></td>
-                                        <td class="text-nowrap">
-                                            <button class="btn btn-sm btn-info view-task" data-id="<?php echo $row['id']; ?>" data-toggle="modal" data-target="#viewTaskModal"><i class="fas fa-eye"></i> View</button>
-                                            <button class="btn btn-sm btn-secondary" onclick="window.location.href='task-set-status.php?id=<?php echo $row['id']; ?>'">
-                                                <i class="fas fa-edit"></i> Edit / Set Status
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td><?php echo $row['task_name']; ?></td>
+                                    <td>
+                                        <?php
+                                        $status = $row['status'];
+                                        $badge_class = '';
+                                        switch ($status) {
+                                            case 0:
+                                                $badge_class = 'bg-secondary'; // Pending
+                                                break;
+                                            case 1:
+                                                $badge_class = 'bg-info'; // Preparing
+                                                break;
+                                            case 2:
+                                                $badge_class = 'bg-primary'; // On-Progress
+                                                break;
+                                            case 3:
+                                                $badge_class = 'bg-success'; // Completed
+                                                break;
+                                            case 4:
+                                                $badge_class = 'bg-danger'; // Cancelled
+                                                break;
+                                            case 5:
+                                                $badge_class = 'bg-success'; // Archived
+                                                break;
+                                            default:
+                                                $badge_class = 'bg-secondary'; // Default
+                                                break;
+                                        }
+                                        echo '<span class="badge ' . $badge_class . '">' . getStatusText($status) . '</span>';
+                                        ?>
+                                    </td>
+                                    <td><?php echo $row['workers']; ?></td>
+                                    <td class="text-nowrap">
+                                        <button class="btn btn-sm btn-info view-task" data-id="<?php echo $row['id']; ?>" data-toggle="modal" data-target="#viewTaskModal"><i class="fas fa-eye"></i> View</button>
+                                        <button class="btn btn-sm btn-secondary" onclick="window.location.href='task-set-status.php?id=<?php echo $row['id']; ?>'">
+                                            <i class="fas fa-edit"></i> Edit / Set Status
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tr>
                             <?php
-                                }
                             }
                             ?>
                         </tbody>
@@ -307,20 +266,27 @@ if ($stmt->execute()) {
             }
         </style>
 
-
-        <!-- // Task List Card -->
-
-        <?php
-        if (isset($_GET['proj_id'])) {
-            $proj_id = $_GET['proj_id'];
-            $sql = "SELECT p.*, t.task_name 
-                    FROM productivity p
-                    LEFT JOIN task t ON p.task_id = t.id
-                    WHERE t.project_id = $proj_id";
-            $result = $con->query($sql);
-        }
-        ?>
-
+        <!-- Task View Modal -->
+        <div class="modal fade" id="viewTaskModal" tabindex="-1" role="dialog" aria-labelledby="viewTaskModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title" id="viewTaskModalLabel">Task View</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <!-- Task details will be loaded dynamically here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -360,25 +326,18 @@ function getStatusText($status)
     switch ($status) {
         case 0:
             return 'Pending';
-            break;
         case 1:
             return 'Preparing';
-            break;
         case 2:
             return 'On-progress';
-            break;
         case 3:
             return 'Completed';
-            break;
         case 4:
             return 'Cancelled';
-            break;
         case 5:
             return 'Archived';
-            break;
         default:
             return 'Unknown';
-            break;
     }
 }
 
@@ -387,17 +346,12 @@ function getPriorityText($priority)
     switch ($priority) {
         case 0:
             return 'Low';
-            break;
         case 1:
             return 'Medium';
-            break;
         case 2:
             return 'High';
-            break;
         default:
             return 'Unknown';
-            break;
     }
 }
-
 ?>

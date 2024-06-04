@@ -92,7 +92,9 @@ include('config/dbcon.php');
             <div class="row">
                 <div class="col-md-12">
 
-                    <?php alertMessage(); ?>
+                <?php 
+                alertMessage();
+                ?>
 
                     <div class="card">
                         <div class="card-header">
@@ -115,11 +117,11 @@ include('config/dbcon.php');
                             <table id="example1" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th># ID</th>
+                                        <!-- <th># ID</th> -->
                                         <th>Full Name</th>
                                         <th>Email Address</th>
                                         <th>Phone Number</th>
-                                        <th>Payment Mode</th>
+                                        <!-- <th>Payment Mode</th> -->
                                         <th>Manage</th>
                                     </tr>
                                 </thead>
@@ -127,11 +129,11 @@ include('config/dbcon.php');
 
                                     <?php foreach($customers as $customer) : ?>
                                     <tr>
-                                        <td><?= $customer['id'] ?></td>
+                                        <!-- <td><?= $customer['id'] ?></td> -->
                                         <td><?= $customer['name'] ?></td>
                                         <td><?= $customer['email'] ?></td>
                                         <td><?= $customer['phone'] ?></td>
-                                        <td>
+                                        <!-- <td>
                                             <?php
                                 if ($customer['status'] == 1) {
                                     echo '<span class="badge bg-primary">Online Payment</span>';
@@ -139,28 +141,27 @@ include('config/dbcon.php');
                                     echo '<span class="badge bg-success">Cash Payment</span>';
                                 }
                                 ?>
-                                        </td>
+                                        </td> -->
                                         <td>
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
                                                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false"><i class="fas fa-cog"></i>
-                                                    Actions
+                                                    aria-expanded="false">
+                                                    <i class="fas fa-cog"></i> Actions
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item"
-                                                        href="customers-edit.php?id=<?= $customer['id']; ?>"><i
-                                                            class="fas fa-edit"></i> Edit</a>
-
                                                     <button type="button" value="<?= $customer['id']; ?>"
-                                                        class="editCustomerBtn btn btn-success">Edit</button>
-
+                                                        class="dropdown-item editCustomerBtn btn btn-success">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
                                                     <a class="dropdown-item deleteCustomerBtn" href="#"
-                                                        data-customer-id="<?= $customer['id']; ?>"><i
-                                                            class="fas fa-trash"></i> Delete</a>
+                                                        data-customer-id="<?= $customer['id']; ?>">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
+
 
                                     </tr>
 

@@ -39,15 +39,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $con->begin_transaction();
 
     try {
+        // Check if quantity is sufficient
+        $isQuantitySufficient = true;
+
         foreach ($_POST as $field_name => $value) {
             if (in_array($field_name, $material_names) && !empty($value)) {
                 $material_name = $con->real_escape_string($field_name);
                 $quantity = (int)$value;
-        
+
+                // Check if the quantity is sufficient
+                $check_quantity_query = "SELECT quantity FROM products WHERE name = '$material_name'";
+                $result = $con->query($check_quantity_query);
+
+                if ($result && $result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $available_quantity = (int)$row['quantity'];
+
+                    if ($quantity > $available_quantity) {
+                        $isQuantitySufficient = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!$isQuantitySufficient) {
+            throw new Exception("Insufficient quantity for one or more materials.");
+        }
+
+        // Continue with task insertion
+        foreach ($_POST as $field_name => $value) {
+            if (in_array($field_name, $material_names) && !empty($value)) {
+                $material_name = $con->real_escape_string($field_name);
+                $quantity = (int)$value;
+
                 for ($i = 0; $i < $quantity; $i++) {
                     $materials_used[] = $material_name;
                 }
-        
+
                 $update_query = "UPDATE products SET quantity = quantity - $quantity WHERE name = '$material_name'";
                 if (!$con->query($update_query)) {
                     throw new Exception("Error executing update query for $material_name: " . $con->error);
@@ -88,3 +117,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $con->close();
+?>

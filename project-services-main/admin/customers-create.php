@@ -50,10 +50,6 @@ include('config/dbcon.php');
                         <!-- /.card-header -->
                         <div class="card-body">
 
-                            <?php 
-                        alertMessage();
-                        ?>
-
                             <div class="container mt-5">
                                 <form action="code-pos.php" method="POST">
                                     <div class="form-group">

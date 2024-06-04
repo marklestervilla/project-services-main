@@ -174,7 +174,7 @@
                             <a href="employee.php"
                                 class="nav-link <?= ($current_file_name == 'employee.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>View Employee List</p>
+                                <p>View Employee</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -188,8 +188,8 @@
                             <a href="customers.php"
                                 class="nav-link <?= ($current_file_name == 'customers.php') ? 'active' : ''; ?>">
                                 <i class="nav-icon far fa-circle text-primary"></i>
-                                <span class="badge badge-danger right"><?= getCount('customers'); ?></span>
-                                <p>View Customer</p>
+                                <span class="badge badge-danger right me-2"><?= getCount('customers'); ?></span>
+                                  <p>View Customers</p>
                             </a>
                         </li>
                     </ul>

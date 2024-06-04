@@ -122,14 +122,16 @@
                     <hr>
 
                     <!-- Task Dates and Priority -->
-                    <div class="form-group">
-                        <label for="taskStartDateAdd">Start Date</label>
-                        <input type="datetime-local" class="form-control" id="taskStartDateAdd" name="task_start_date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskDueDateAdd">Due Date</label>
-                        <input type="datetime-local" class="form-control" id="taskDueDateAdd" name="task_due_date" required>
-                    </div>
+<div class="form-group">
+    <label for="taskStartDateAdd">Start Date</label>
+    <input type="datetime-local" class="form-control" id="taskStartDateAdd" name="task_start_date" required 
+           min="<?php echo date('Y-m-d\TH:i'); ?>">
+</div>
+<div class="form-group">
+    <label for="taskDueDateAdd">Due Date</label>
+    <input type="datetime-local" class="form-control" id="taskDueDateAdd" name="task_due_date" required min="<?php echo date('Y-m-d\TH:i'); ?>">
+</div>
+
                     <div class="form-group">
                         <label for="taskPriorityAdd">Priority</label>
                         <select id="taskPriorityAdd" name="task_priority" class="form-control" required>
@@ -156,7 +158,7 @@
 
 <script src="../js/createProject.js"></script>
 <script>
-    $(document).ready(function() {
+   $(document).ready(function() {
         const productInputs = document.querySelectorAll('.product-quantity');
         const totalPriceField = document.getElementById('totalPrice');
 
@@ -177,11 +179,28 @@
         $('#saveTaskBtn').click(function(event) {
             event.preventDefault();
 
+            // Validate material quantities
+            let isValid = true;
+            productInputs.forEach(input => {
+                const quantity = parseInt(input.value) || 0;
+                const availableQuantity = parseInt(input.getAttribute('data-available')) || 0;
+                if (quantity > availableQuantity) {
+                    isValid = false;
+                    // Display error message
+                    alert(`The entered quantity for ${input.name} exceeds the available quantity.`);
+                    return;
+                }
+            });
+
+            if (!isValid) {
+                return; // Abort task saving if validation fails
+            }
+
             $.ajax({
                 url: './modal/addTask.php',
                 type: "POST",
                 data: $('#projectTaskForm').serialize(),
-                success(response) {
+                success: function(response) {
                     console.log(response);
                     $('#addTaskModal').modal('hide');
                     $('#selected-workers-list').empty();

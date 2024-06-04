@@ -48,7 +48,7 @@ include('config/dbcon.php');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-success">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Edit Categories</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Edit Project Categories</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -95,7 +95,7 @@ include('config/dbcon.php');
                     <div class="card">
                         <div class="card-header">
                             <h4>
-                                Categories
+                                Project Categories
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#AddCategoryModal">
                                     <i class="fas fa-plus-circle"></i>

@@ -148,17 +148,17 @@ include('modal/task-modal-add.php');
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                    <label for="">Date Start</label>
-                                    <input type="date" id="projectStartAdd" name="date_start" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                    <label for="">Due Date</label>
-                                    <input type="date" id="projectDueAdd" name="due_date" class="form-control" required>
-                                </div>
-                            </div>
+    <div class="form-group">
+        <label for="projectStartAdd">Date Start</label>
+        <input type="date" id="projectStartAdd" name="date_start" class="form-control" required>
+    </div>
+</div>
+<div class="col-md-6 mb-3">
+    <div class="form-group">
+        <label for="projectDueAdd">Due Date</label>
+        <input type="date" id="projectDueAdd" name="due_date" class="form-control" required>
+    </div>
+</div>
 
 
                             <div class="col-md-3 mb-3">
@@ -227,3 +227,22 @@ include('modal/task-modal-add.php');
                 });
             });
         </script>
+
+<script>
+    // Get today's date
+    var today = new Date();
+
+    // Set the minimum value for Date Start input
+    document.getElementById('projectStartAdd').min = formatDate(today);
+
+    // Set the minimum value for Due Date input
+    document.getElementById('projectDueAdd').min = formatDate(today);
+
+    // Function to format date as 'YYYY-MM-DD' (required by input type="date")
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+</script>

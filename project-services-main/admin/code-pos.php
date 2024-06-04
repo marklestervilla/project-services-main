@@ -431,18 +431,14 @@ if(isset($_POST['saveCustomer']))
 
         $result = insert('customers', $data);
         if($result){
-            redirect('customers.php', 'Customer Created Successfully');
-        }else{
-            redirect('customers.php', 'Something Went Wrong');
+            $_SESSION['status'] = "Customer Added Successfully";
+        } else {
+            session_start();
+            $_SESSION['status'] = "Customer Insertion Failed!";
+            header("Location: customers.php");
         }
-
-    }
-    else
-    {
-        redirect('customers.php', 'Please fill required fields');
     }
 }
-
 if(isset($_POST['updateCustomer']))
 {
     $customerId = validate($_POST['customerId']);
@@ -470,11 +466,12 @@ if(isset($_POST['updateCustomer']))
 
         $result = update('customers', $customerId, $data);
         if($result){
-            redirect('customers-edit.php?id='.$customerId, 'Customer Updated Successfully');
-        }else{
-            redirect('customers-edit.php?id='.$customerId, 'Something Went Wrong');
+            $_SESSION['status'] = "Customer Updated Successfully";
+        } else {
+            session_start();
+            $_SESSION['status'] = "Customer Update Failed!";
+            header("Location: customers.php");
         }
-
     }
     else
     {

@@ -11,7 +11,7 @@ include('includes/sidebar.php');
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-info">
                 <h5 class="modal-title" id="employeeModalLabel">Information</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -21,7 +21,7 @@ include('includes/sidebar.php');
                 <!-- Employee details will be loaded here via AJAX -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -36,7 +36,6 @@ include('includes/sidebar.php');
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -151,7 +150,7 @@ include('includes/sidebar.php');
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdown"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action
                                     <i class="fas fa-cog"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="actionDropdown">
