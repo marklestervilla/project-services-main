@@ -130,23 +130,33 @@ $("document").ready(function () {
 
   $("#saveTaskBtn").click(function (event) {
     event.preventDefault();
-
     let selectedWorkers = [];
     $('#selected-workers-list input[name="selected_workers[]"]').each(function () {
         selectedWorkers.push($(this).val());
     });
-
+    
     let selectedMaterials = [];
     $('#selected-materials-list input[name="selected_materials[]"]').each(function () {
         selectedMaterials.push($(this).val());
     });
-
+    
     let selectedEquipment = [];
     $('#selected-equipment-list input[name="selected_equipment[]"]').each(function () {
         selectedEquipment.push($(this).val());
     });
-
-    var taskFormAddData = {
+    
+    // Validate selected equipment
+    let isValidEquipment = selectedEquipment.every(equip => availableEquipment.includes(equip));
+    if (!isValidEquipment) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Equipment',
+            text: 'One or more selected equipment items are invalid.',
+        });
+        return; 
+    }
+    
+    let taskFormAddData = {
         task_name: $("#taskNameAdd").val(),
         task_description: $("#taskDescriptionAdd").val(),
         task_start_date: $("#taskStartDateAdd").val(),
@@ -157,17 +167,17 @@ $("document").ready(function () {
         task_status: $("#taskStatusAdd").val(),
         task_priority: $("#taskPriorityAdd").val(),
     };
-
+    
     createdTasks.push(taskFormAddData);
     num_task = createdTasks.length;
-
-    console.table(taskFormAddData)
+    
+    console.table(taskFormAddData);
     console.log(num_task);
-
+    
     function createdTasksList() {
         $('#projectCreateTasksList').empty();
-
-        var structure = `
+    
+        let structure = `
         <table class="table table-bordered table-striped" id="taskTableAdd">
             <thead class="table-dark">
                 <tr>
@@ -180,14 +190,14 @@ $("document").ready(function () {
                 </tr>
             </thead>
             <tbody>
-            `;
-
+        `;
+    
         createdTasks.forEach(function(data) {
-            var formattedStartDate = formatDate(data.task_start_date);
-            var formattedDueDate = formatDate(data.task_due_date);
-            var priority = data.task_priority;
-
-            var formattedPriority = '';
+            let formattedStartDate = formatDate(data.task_start_date);
+            let formattedDueDate = formatDate(data.task_due_date);
+            let priority = data.task_priority;
+    
+            let formattedPriority = '';
             if (priority === '0') {
                 formattedPriority = 'Low';
             } else if (priority === '1') {
@@ -195,7 +205,7 @@ $("document").ready(function () {
             } else if (priority === '2') {
                 formattedPriority = 'High';
             }
-
+    
             structure += `
             <tr>
                 <td>${data.task_name}</td>
@@ -213,9 +223,9 @@ $("document").ready(function () {
             </tbody>
         </table>
         `;
-
+    
         $('#projectCreateTasksList').append(structure);
-
+    
         $('#taskNameAdd').val('');
         $('#taskDescriptionAdd').val('');
         $('#taskStartDateAdd').val('');
@@ -225,31 +235,41 @@ $("document").ready(function () {
         $('#selected-workers-list .selected-workers').remove();
         $('#project_num_task').val(num_task);
         $('#addTaskModal').modal('hide');
- 
+    
         Swal.fire({
             icon: 'success',
             title: 'Task Saved',
             text: 'Task Added successfully!'
         });
     }
-
-    createdTasksList();
-});
-
-function cleanTaskListDisplay() {
+    
+    // Save the task and handle errors with SweetAlert
+    try {
+        createdTasksList();
+    } catch (error) {
+        console.error(error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Task Not Saved',
+            text: 'There was an error saving the task. Please try again.',
+        });
+    }
+    });
+    
+    function cleanTaskListDisplay() {
     if (createdTasks.length === 0) {
         $("#projectCreateTasksList").empty();
     }
-}
-
-$(document).on("click", "#taskTableAdd .btn-remove", function () {
+    }
+    
+    $(document).on("click", "#taskTableAdd .btn-remove", function () {
     var rowIndex = $(this).closest("tr").index();
-
+    
     createdTasks.splice(rowIndex, 1);
-
+    
     $(this).closest("tr").remove();
-
+    
     cleanTaskListDisplay();
-});
-
+    });
+    
 });
