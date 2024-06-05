@@ -47,37 +47,6 @@ $("document").ready(function () {
     return formattedDate;
   }
 
-  // $('#projectFormCreate').submit(function(event) {
-  //     event.preventDefault();
-
-  //     var formData = new FormData(this);
-  //     formData.append('num_task', num_task);
-
-  //     $.ajax({
-  //         type: 'POST',
-  //         url: './php/project_save.php',
-  //         data: formData,
-  //         processData: false,
-  //         contentType: false,
-  //         success: function(response) {
-  //             console.log(response);
-  //             if (response === '0') {
-  //                 insertTask();
-  //             } else if (response === '1') {
-  //                 Swal.fire({
-  //                     title: 'Something Went Wrong',
-  //                     text: 'we are unable to save this project',
-  //                     icon: 'error',
-  //                 })
-  //             } else {
-  //                 console.log('Hello? Something Went Wrong on Submitting this data');
-  //             }
-  //         },
-  //         error: function(xhr, status, error) {
-  //             console.error(xhr.responseText);
-  //         }
-  //     });
-  // });
 
   function insertTask() {
     $.ajax({
@@ -111,22 +80,7 @@ $("document").ready(function () {
     });
   }
 
-  // $('#projectFormSubmit').on('click', function() {
-  //     if(createdTasks.length != 0) {
-  //         var form = document.getElementById('projectFormCreate');
-  //         if (form.checkValidity()) {
-  //             $('#projectFormCreate').submit();
-  //         } else {
-  //             form.reportValidity();
-  //         }
-  //     } else {
-  //         Swal.fire({
-  //             title: 'Oops',
-  //             text: 'There are no Tasks for this Project yet.',
-  //             icon: 'warning',
-  //         })
-  //     }
-  // });
+
 
   $("#saveTaskBtn").click(function (event) {
     event.preventDefault();
@@ -268,7 +222,6 @@ $("document").ready(function () {
     createdTasks.splice(rowIndex, 1);
     
     $(this).closest("tr").remove();
-    
     cleanTaskListDisplay();
     });
     

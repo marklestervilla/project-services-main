@@ -406,6 +406,7 @@ if (isset($_POST['update_customer'])) {
     }
 }
 
+
 if(isset($_POST['saveCustomer']))
 {
     $name = validate($_POST['name']);
@@ -431,14 +432,18 @@ if(isset($_POST['saveCustomer']))
 
         $result = insert('customers', $data);
         if($result){
-            $_SESSION['status'] = "Customer Added Successfully";
-        } else {
-            session_start();
-            $_SESSION['status'] = "Customer Insertion Failed!";
-            header("Location: customers.php");
-        }
+	 redirect('customers.php', 'Customer Created Successfully');
+        }else{
+            redirect('customers.php', 'Something Went Wrong');
+ }
+
+    }
+    else
+    {
+        redirect('customers.php', 'Please fill required fields');
     }
 }
+
 if(isset($_POST['updateCustomer']))
 {
     $customerId = validate($_POST['customerId']);
