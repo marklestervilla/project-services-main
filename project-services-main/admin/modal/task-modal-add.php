@@ -165,6 +165,7 @@ if ($product_count > 0) {
 
 <script src="../js/createProject.js"></script>
 <script>
+
 $(document).ready(function() {
     const productInputs = document.querySelectorAll('.product-quantity');
     const totalPriceField = document.getElementById('totalPrice');
