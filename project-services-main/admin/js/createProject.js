@@ -82,9 +82,6 @@ $("document").ready(function () {
 
 
 
-  $(document).ready(function() {
-    const availableEquipment = <?php echo json_encode($availableEquipmentArray); ?>;
-
     $("#saveTaskBtn").click(function (event) {
         event.preventDefault();
 
@@ -102,17 +99,6 @@ $("document").ready(function () {
         $('#selected-equipment-list input[name="selected_equipment[]"]').each(function () {
             selectedEquipment.push($(this).val());
         });
-
-        // Validate selected equipment
-        let isValidEquipment = selectedEquipment.every(equip => availableEquipment.includes(equip));
-        if (!isValidEquipment) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Equipment',
-                text: 'One or more selected equipment items are invalid.',
-            });
-            return; // Abort task saving if validation fails
-        }
 
         let taskFormAddData = {
             task_name: $("#taskNameAdd").val(),
@@ -221,7 +207,8 @@ $("document").ready(function () {
     }
 
     $(document).on("click", "#taskTableAdd .btn-remove", function () {
-var rowIndex = $(this).closest("tr").index();
+
+    var rowIndex = $(this).closest("tr").index();
     
     createdTasks.splice(rowIndex, 1);
     
@@ -237,5 +224,4 @@ var rowIndex = $(this).closest("tr").index();
         cleanTaskListDisplay();
 
     });
-});
 });

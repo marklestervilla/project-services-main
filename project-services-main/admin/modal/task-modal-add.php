@@ -1,5 +1,6 @@
 <!-- Task Modal Add -->
-<div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+<div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info">
@@ -26,11 +27,13 @@
                     <!-- Task Details -->
                     <div class="form-group">
                         <label for="taskNameAdd">Task Name</label>
-                        <input type="text" class="form-control" id="taskNameAdd" name="task_name" placeholder="Enter task name" required>
+                        <input type="text" class="form-control" id="taskNameAdd" name="task_name"
+                            placeholder="Enter task name" required>
                     </div>
                     <div class="form-group">
                         <label for="taskDescriptionAdd">Description</label>
-                        <textarea class="form-control" id="taskDescriptionAdd" name="task_description" rows="3" placeholder="Enter task description" required></textarea>
+                        <textarea class="form-control" id="taskDescriptionAdd" name="task_description" rows="3"
+                            placeholder="Enter task description" required></textarea>
                     </div>
 
                     <hr>
@@ -63,7 +66,8 @@
 
                     <!-- Button to Show/Hide Materials -->
                     <label>Materials:
-                        <button type="button" id="toggleMaterials" class="btn btn-success btn-sm">Show Material List</button>
+                        <button type="button" id="toggleMaterials" class="btn btn-success btn-sm">Show Material
+                            List</button>
                     </label>
 
 
@@ -72,20 +76,21 @@
                     <div class="form-group" id="materialsList" style="display: none;">
                         <!-- <label>Material List:</label> -->
                         <?php
-                        $products_query = "SELECT * FROM products";
-                        $available_products = mysqli_query($con, $products_query);
-                        $product_count = mysqli_num_rows($available_products);
-                        if ($product_count > 0) {
-                            foreach ($available_products as $product) {
-                                echo "<div class='form-group'>
-                                        <label for='{$product['name']}'>{$product['name']} (Price: {$product['price']})</label>
-                                        <input type='number' id='{$product['name']}' name='{$product['name']}' class='form-control product-quantity' min='0' data-price='{$product['price']}'>
-                                    </div>";
-                            }
-                        } else {
-                            echo "<p>No Available Products</p>";
-                        }
-                        ?>
+$products_query = "SELECT * FROM products";
+$available_products = mysqli_query($con, $products_query);
+$product_count = mysqli_num_rows($available_products);
+if ($product_count > 0) {
+    foreach ($available_products as $product) {
+        echo "<div class='form-group'>
+                <label for='{$product['name']}'>{$product['name']} (Price: {$product['price']})</label>
+                <input type='number' id='{$product['name']}' name='{$product['name']}' class='form-control product-quantity' min='0' data-price='{$product['price']}' data-available='{$product['quantity']}'>
+            </div>";
+    }
+} else {
+    echo "<p>No Available Products</p>";
+}
+?>
+
                         <div class="form-group">
                             <label>Total Price:</label>
                             <input type="text" id="totalPrice" name="total_price" class="form-control" readonly>
@@ -122,15 +127,16 @@
                     <hr>
 
                     <!-- Task Dates and Priority -->
-<div class="form-group">
-    <label for="taskStartDateAdd">Start Date</label>
-    <input type="datetime-local" class="form-control" id="taskStartDateAdd" name="task_start_date" required 
-           min="<?php echo date('Y-m-d\TH:i'); ?>">
-</div>
-<div class="form-group">
-    <label for="taskDueDateAdd">Due Date</label>
-    <input type="datetime-local" class="form-control" id="taskDueDateAdd" name="task_due_date" required min="<?php echo date('Y-m-d\TH:i'); ?>">
-</div>
+                    <div class="form-group">
+                        <label for="taskStartDateAdd">Start Date</label>
+                        <input type="datetime-local" class="form-control" id="taskStartDateAdd" name="task_start_date"
+                            required min="<?php echo date('Y-m-d\TH:i'); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDueDateAdd">Due Date</label>
+                        <input type="datetime-local" class="form-control" id="taskDueDateAdd" name="task_due_date"
+                            required min="<?php echo date('Y-m-d\TH:i'); ?>">
+                    </div>
 
                     <div class="form-group">
                         <label for="taskPriorityAdd">Priority</label>
@@ -143,7 +149,8 @@
                     </div>
 
                     <!-- Hidden Status -->
-                    <input type="hidden" id="taskStatusAdd" name="task_status" class="form-control" value="0" required readonly>
+                    <input type="hidden" id="taskStatusAdd" name="task_status" class="form-control" value="0" required
+                        readonly>
 
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -158,67 +165,66 @@
 
 <script src="../js/createProject.js"></script>
 <script>
-   $(document).ready(function() {
-        const productInputs = document.querySelectorAll('.product-quantity');
-        const totalPriceField = document.getElementById('totalPrice');
+$(document).ready(function() {
+    const productInputs = document.querySelectorAll('.product-quantity');
+    const totalPriceField = document.getElementById('totalPrice');
 
+    productInputs.forEach(input => {
+        input.addEventListener('input', calculateTotalPrice);
+    });
+
+    function calculateTotalPrice() {
+        let total = 0;
         productInputs.forEach(input => {
-            input.addEventListener('input', calculateTotalPrice);
+            const price = parseFloat(input.getAttribute('data-price'));
+            const quantity = parseInt(input.value) || 0;
+            total += price * quantity;
         });
+        totalPriceField.value = total.toFixed(2);
+    }
 
-        function calculateTotalPrice() {
-            let total = 0;
-            productInputs.forEach(input => {
-                const price = parseFloat(input.getAttribute('data-price'));
-                const quantity = parseInt(input.value) || 0;
-                total += price * quantity;
-            });
-            totalPriceField.value = total.toFixed(2);
-        }
-
-        $('#saveTaskBtn').click(function(event) {
-            event.preventDefault();
-
-            // Validate material quantities
-            let isValid = true;
-            productInputs.forEach(input => {
-                const quantity = parseInt(input.value) || 0;
-                const availableQuantity = parseInt(input.getAttribute('data-available')) || 0;
-                if (quantity > availableQuantity) {
-                    isValid = false;
-                    // Display error message
-                    alert(`The entered quantity for ${input.name} exceeds the available quantity.`);
-                    return;
-                }
-            });
-
-            if (!isValid) {
-                return; // Abort task saving if validation fails
+    $('#saveTaskBtn').click(function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: './modal/addTask.php',
+            type: "POST",
+            data: $('#projectTaskForm').serialize(),
+            success: function(response) {
+                console.log(response);
+                $('#addTaskModal').modal('hide');
+                $('#selected-workers-list').empty();
+                $('#selected-equipment-list').empty();
+                $('#projectTaskForm')[0].reset();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
             }
+        });
+    });
 
-            $.ajax({
-                url: './modal/addTask.php',
-                type: "POST",
-                data: $('#projectTaskForm').serialize(),
-                success: function(response) {
-                    console.log(response);
-                    $('#addTaskModal').modal('hide');
-                    $('#selected-workers-list').empty();
-                    $('#selected-equipment-list').empty();
-                    $('#projectTaskForm')[0].reset();
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
+    $('#materialsList').change(function() {
+        let isValid = true;
+        productInputs.forEach(input => {
+            const quantity = parseInt(input.value) || 0;
+            const availableQuantity = parseInt(input.getAttribute('data-available')) || 0;
+            if (quantity > availableQuantity) {
+                isValid = false;
+                alert(`The entered quantity for ${input.name} exceeds the available quantity.`);
+                return false;
+            }
         });
 
-        $('#equipment').change(function() {
-            let selectedValue = $(this).val();
-            let selectedText = $("#equipment option:selected").text();
+        if (!isValid) {
+            return;
+        }
+    });
 
-            if (selectedValue) {
-                $('#selected-equipment-list').append(`
+    $('#equipment').change(function() {
+        let selectedValue = $(this).val();
+        let selectedText = $("#equipment option:selected").text();
+
+        if (selectedValue) {
+            $('#selected-equipment-list').append(`
                     <div class="selected-equipment">
                         <input type="hidden" name="selected_equipment[]" value="${selectedValue}">
                         <span>${selectedText}</span>
@@ -226,21 +232,21 @@
                     </div>
                 `);
 
-                $('#equipment').prop('selectedIndex', 0);
-            }
-        });
+            $('#equipment').prop('selectedIndex', 0);
+        }
+    });
 
-        $(document).on('click', '.remove-equipment', function() {
-            $(this).closest('.selected-equipment').remove();
-        });
+    $(document).on('click', '.remove-equipment', function() {
+        $(this).closest('.selected-equipment').remove();
+    });
 
-        $('#workers').change(function() {
-            let selectedValue = $(this).val();
-            let selectedText = $("#workers option:selected").text();
+    $('#workers').change(function() {
+        let selectedValue = $(this).val();
+        let selectedText = $("#workers option:selected").text();
 
-            if ($('#selected-workers-list input[value="' + selectedValue + '"]').length == 0) {
-                if (selectedValue) {
-                    $('#selected-workers-list').append(`
+        if ($('#selected-workers-list input[value="' + selectedValue + '"]').length == 0) {
+            if (selectedValue) {
+                $('#selected-workers-list').append(`
                         <div class="selected-workers">
                             <input type="hidden" name="selected_workers[]" value="${selectedValue}">
                             <span>${selectedText}</span>
@@ -248,43 +254,43 @@
                         </div>
                     `);
 
-                    $('#workers').prop('selectedIndex', 0);
-                }
-            } else {
-                alert("Worker already selected.");
+                $('#workers').prop('selectedIndex', 0);
             }
-        });
-
-        $(document).on('click', '.remove-workers', function() {
-            $(this).closest('.selected-workers').remove();
-        });
+        } else {
+            alert("Worker already selected.");
+        }
     });
+
+    $(document).on('click', '.remove-workers', function() {
+        $(this).closest('.selected-workers').remove();
+    });
+});
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('#toggleMaterials').click(function() {
-            $('#materialsList').toggle();
-            if ($('#materialsList').is(':visible')) {
-                $(this).text('Hide Materials');
-            } else {
-                $(this).text('Show Material List');
-            }
-        });
+$(document).ready(function() {
+    $('#toggleMaterials').click(function() {
+        $('#materialsList').toggle();
+        if ($('#materialsList').is(':visible')) {
+            $(this).text('Hide Materials');
+        } else {
+            $(this).text('Show Material List');
+        }
     });
+});
 </script>
 
 <style>
-    .selected-workers,
-    .selected-equipment {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
+.selected-workers,
+.selected-equipment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
-    .selected-workers span,
-    .selected-equipment span {
-        margin-right: 10px;
-    }
+.selected-workers span,
+.selected-equipment span {
+    margin-right: 10px;
+}
 </style>
