@@ -287,31 +287,30 @@ if(isset($_POST['updateProduct']))
     $name = validate($_POST['name']);
     $description = validate($_POST['description']);
 
-    $price = validate($_POST['price']);
+    // Remove non-numeric characters from price
+    $price = preg_replace('/[^\d.]/', '', $_POST['price']);
+    $price = validate($price);
+
     $quantity = validate($_POST['quantity']);
-    $status = isset($_POST['status']) == true ? 1:0;
+    $status = isset($_POST['status']) == true ? 1 : 0;
 
     // Check if a new image file is uploaded
-    if($_FILES['image']['size'] > 0)
-    {
+    if ($_FILES['image']['size'] > 0) {
         $path = "../assets/uploads/products";
         $image_ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION); // Fixed typo here
 
-        $filename = time().'.'.$image_ext;
+        $filename = time() . '.' . $image_ext;
 
-        move_uploaded_file($_FILES['image']['tmp_name'], $path."/".$filename);
+        move_uploaded_file($_FILES['image']['tmp_name'], $path . "/" . $filename);
 
-        $finalImage = "assets/uploads/products/".$filename;
+        $finalImage = "assets/uploads/products/" . $filename;
 
         // Delete the old image file
-        $deleteImage = "../".$productData['data']['image'];
-        if(file_exists($deleteImage)){
+        $deleteImage = "../" . $productData['data']['image'];
+        if (file_exists($deleteImage)) {
             unlink($deleteImage);
         }
-
-    }
-    else
-    {
+    } else {
         // If no new image file is uploaded, keep the existing image file
         $finalImage = $productData['data']['image'];
     }
@@ -324,14 +323,13 @@ if(isset($_POST['updateProduct']))
         'quantity' => $quantity,
         'image' => $finalImage,
         'status' => $status
-        
     ];
     $result = update('products', $product_id, $data);
 
-    if($result){
-        redirect('products-edit.php?user_id='.$product_id, 'Product Updated Successfully');
-    }else{
-        redirect('products-edit.php?user_id='.$product_id, 'Something Went Wrong');
+    if ($result) {
+        redirect('products-edit.php?user_id=' . $product_id, 'Product Updated Successfully');
+    } else {
+        redirect('products-edit.php?user_id=' . $product_id, 'Something Went Wrong');
     }
 }
 

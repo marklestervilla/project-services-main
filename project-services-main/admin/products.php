@@ -176,7 +176,7 @@ include('config/dbcon.php');
                                             <td><?php echo $item['name']; ?></td>
                                             <td><?php echo $item['description']; ?></td>
                                             <td><?php echo $item['quantity']; ?></td>
-                                            <td>₱ <?php echo $item['price']; ?></td>
+                                            <td>₱ <?php echo number_format($item['price'], 2, '.', ','); ?></td>
                                             <td>
                                                 <?php if ($item['status'] == 1) : ?>
                                                     <span class="badge bg-danger">Unavailable</span>

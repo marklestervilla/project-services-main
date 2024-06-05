@@ -103,10 +103,10 @@ include('config/dbcon.php');
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label for="name">Original Price *</label>
-                                        <input type="text" class="form-control" name="price" value="₱ <?= $product['data']['price']; ?>" required />
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="name">Original Price *</label>
+                                            <input type="text" class="form-control" name="price" value="<?= $product['data']['price']; ?>" required />
+                                        </div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
