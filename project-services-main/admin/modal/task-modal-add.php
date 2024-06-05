@@ -81,8 +81,9 @@ $available_products = mysqli_query($con, $products_query);
 $product_count = mysqli_num_rows($available_products);
 if ($product_count > 0) {
     foreach ($available_products as $product) {
+        $formatted_price = number_format($product['price'], 2); // Format the price with commas
         echo "<div class='form-group'>
-                <label for='{$product['name']}'>{$product['name']} (Price: {$product['price']})</label>
+                <label for='{$product['name']}'>{$product['name']} (Price: ₱ {$formatted_price})</label>
                 <input type='number' id='{$product['name']}' name='{$product['name']}' class='form-control product-quantity' min='0' data-price='{$product['price']}' data-available='{$product['quantity']}'>
             </div>";
     }
@@ -90,6 +91,7 @@ if ($product_count > 0) {
     echo "<p>No Available Products</p>";
 }
 ?>
+
 
                         <div class="form-group">
                             <label>Total Price:</label>
