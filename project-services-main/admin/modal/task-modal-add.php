@@ -186,6 +186,19 @@ $(document).ready(function() {
         totalPriceField.value = total.toFixed(2);
     }
 
+    $('#taskStartDateAdd').change(function() {
+        // Get the selected start date value
+        const startDate = new Date($(this).val());
+        // Calculate the due date by adding one week to the start date
+        const dueDate = new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+        // Format the due date in YYYY-MM-DDTHH:MM format required by datetime-local input
+        const formattedDueDate = dueDate.toISOString().slice(0, 16);
+        // Set the value and min attribute of the due date input field
+        $('#taskDueDateAdd').val(formattedDueDate);
+        $('#taskDueDateAdd').attr('min', formattedDueDate); // Set the minimum allowed date
+    });
+
+
     $('#saveTaskBtn').click(function(event) {
         event.preventDefault();
         $.ajax({

@@ -404,9 +404,9 @@ $(document).ready(() => {
                                             {
                                                 text: `Address: ${data.address}\n`
                                             },
-                                            {
-                                                text: `Status: ${projectStatus}\n`
-                                            },
+                                            // {
+                                            //     text: `Status: ${projectStatus}\n`
+                                            // },
                                         ]
                                     }
                                 ]
@@ -428,7 +428,7 @@ $(document).ready(() => {
                                 margin: [0, 0, 0, 10]
                             },
                             {
-                                text: `Total Cost: ₱${parseFloat(data.total_cost).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`,
+                                text: `Total Cost: ₱ ${parseFloat(data.total_cost).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`,
                                 margin: [0, 0, 0, 10]
                             },
                             {

@@ -133,18 +133,18 @@ $result = $con->query($sql);
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="">Date Start</label>
-                                            <input type="date" name="date_start" value="<?php echo $row['date_start']; ?>" class="form-control" />
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="">Date Start</label>
+                                    <input type="date" id="projectStartEdit" name="date_start" value="<?php echo $row['date_start']; ?>" class="form-control" />
+                                </div>
+                            </div>
 
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="">Due Date</label>
-                                            <input type="date" name="due_date" value="<?php echo $row['due_date']; ?>" class="form-control" />
-                                        </div>
-                                    </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="">Due Date</label>
+                                    <input type="date" id="projectDueEdit" name="due_date" value="<?php echo $row['due_date']; ?>" class="form-control" />
+                                </div>
+                            </div>
 
                                     <div class="col-md-3 mb-3">
                                         <div class="form-group">
@@ -190,5 +190,98 @@ $result = $con->query($sql);
             $('#summernote').summernote();
         });
     </script>
+
+<script>
+        $(document).ready(function() {
+            $('#summernote').summernote();
+
+            function formatDate(date) {
+                var year = date.getFullYear();
+                var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                var day = date.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            $('#projectStartEdit').change(function() {
+                var startDate = new Date($(this).val());
+                var dueDate = new Date(startDate.getTime() + (30 * 24 * 60 * 60 * 1000)); // Add 30 days to start date
+                $('#projectDueEdit').val(formatDate(dueDate)); // Set due date 30 days after start date
+            });
+
+            $('#projectStartEdit').trigger('change');
+        });
+    </script>
+<script>
+// Update Due Date input based on selected Start Date
+            $('#projectStartEdit').change(function() {
+                var startDate = new Date($(this).val());
+                var minDueDate = new Date(startDate);
+                minDueDate.setDate(minDueDate.getDate() +
+                1); // Set minimum due date to be one day after start date
+                $('#projectDueEdit').attr('min', formatDate(minDueDate));
+            });
+
+            // Disable past dates for Due Date input
+            $('#projectDueEdit').change(function() {
+                var dueDate = new Date($(this).val());
+                var startDate = new Date($('#projectStartAdd').val());
+
+                if (dueDate < startDate) {
+                    alert('Due Date cannot be before Start Date.');
+                    $(this).val('');
+                }
+            });
+
+        // Get today's date
+        var today = new Date();
+
+        // Set the minimum value for Date Start input
+        document.getElementById('projectStartEdit').min = formatDate(today);
+
+        // Set the minimum value for Due Date input based on today's date
+        var initialDueDate = new Date(today);
+        initialDueDate.setDate(initialDueDate.getDate() + 1); // Minimum due date is one day after today's date
+        document.getElementById('projectDueEdit').min = formatDate(initialDueDate);
+
+        // Function to format date as 'YYYY-MM-DD' (required by input type="date")
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        </script>
+
+
+<script>
+$(document).ready(function() {
+    // Function to format date as 'YYYY-MM-DD' (required by input type="date")
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // Event listener for start date input change
+    $('#projectStartEdit').change(function() {
+        var startDate = new Date($(this).val());
+        var dueDate = new Date(startDate.getTime() + (30 * 24 * 60 * 60 * 1000)); // Add 30 days to start date
+        $('#projectDueEdit').val(formatDate(dueDate)); // Set due date 30 days after start date
+
+        // Disable dates prior to the due date
+        var minDueDate = new Date(dueDate);
+        minDueDate.setDate(minDueDate.getDate() + 1); // Minimum due date is one day after the calculated due date
+        var maxDueDate = new Date(dueDate);
+        maxDueDate.setDate(maxDueDate.getDate() + 30); // Maximum due date is 30 days after the calculated due date
+        $('#projectDueEdit').attr('min', formatDate(minDueDate));
+        $('#projectDueEdit').attr('max', formatDate(maxDueDate));
+    });
+
+    // Initial setup
+    $('#projectStartEdit').trigger('change'); // Trigger change event to set initial due date
+});
+
+</script>
 
     <?php include('includes/footer.php'); ?>

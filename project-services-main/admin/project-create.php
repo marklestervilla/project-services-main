@@ -261,5 +261,37 @@ include('modal/task-modal-add.php');
             return `${year}-${month}-${day}`;
         }
         </script>
+
+<script>
+$(document).ready(function() {
+    // Function to format date as 'YYYY-MM-DD' (required by input type="date")
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // Event listener for start date input change
+    $('#projectStartAdd').change(function() {
+        var startDate = new Date($(this).val());
+        var dueDate = new Date(startDate.getTime() + (30 * 24 * 60 * 60 * 1000)); // Add 30 days to start date
+        $('#projectDueAdd').val(formatDate(dueDate)); // Set due date 30 days after start date
+
+        // Disable dates prior to the due date
+        var minDueDate = new Date(dueDate);
+        minDueDate.setDate(minDueDate.getDate() + 1); // Minimum due date is one day after the calculated due date
+        var maxDueDate = new Date(dueDate);
+        maxDueDate.setDate(maxDueDate.getDate() + 30); // Maximum due date is 30 days after the calculated due date
+        $('#projectDueAdd').attr('min', formatDate(minDueDate));
+        $('#projectDueAdd').attr('max', formatDate(maxDueDate));
+    });
+
+    // Initial setup
+    $('#projectStartAdd').trigger('change'); // Trigger change event to set initial due date
+});
+
+</script>
+
     </div>
 </div>

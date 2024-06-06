@@ -92,10 +92,12 @@ if (isset($_GET['id'])) {
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="taskName">Start Date</label>
-                                        <input type="datetime-local" class="form-control" name="start_date" required value="<?php echo date('Y-m-d\TH:i', strtotime($task['start_date'])); ?>">
+                                        <input type="datetime-local" class="form-control" id="taskStartDateEdit" name="start_date" required
+       min="<?= date('Y-m-d\TH:i'); ?>" value="<?= date('Y-m-d\TH:i'); ?>">
+
 
                                         <label for="taskName">Due Date</label>
-                                        <input type="datetime-local" class="form-control" name="due_date" required value="<?php echo date('Y-m-d\TH:i', strtotime($task['due_date'])); ?>">
+                                        <input type="datetime-local" class="form-control" id="taskDueDateEdit" name="due_date" required value="<?php echo date('Y-m-d\TH:i', strtotime($task['due_date'])); ?>">
                                     </div>
                                 </div>
 
@@ -166,3 +168,4 @@ if (isset($_GET['id'])) {
             }
         });
     </script>
+
