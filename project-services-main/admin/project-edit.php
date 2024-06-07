@@ -252,36 +252,47 @@ $result = $con->query($sql);
         }
         </script>
 
-
 <script>
-$(document).ready(function() {
-    // Function to format date as 'YYYY-MM-DD' (required by input type="date")
-    function formatDate(date) {
-        var year = date.getFullYear();
-        var month = (date.getMonth() + 1).toString().padStart(2, '0');
-        var day = date.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+    $(document).ready(function() {
+        // Function to format date as 'YYYY-MM-DD' (required by input type="date")
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
 
-    // Event listener for start date input change
-    $('#projectStartEdit').change(function() {
-        var startDate = new Date($(this).val());
-        var dueDate = new Date(startDate.getTime() + (30 * 24 * 60 * 60 * 1000)); // Add 30 days to start date
-        $('#projectDueEdit').val(formatDate(dueDate)); // Set due date 30 days after start date
+        // Event listener for start date input change
+        $('#projectStartEdit').change(function() {
+            var startDate = new Date($(this).val());
+            var dueDate = new Date(startDate.getTime() + (30 * 24 * 60 * 60 * 1000)); // Add 30 days to start date
+            $('#projectDueEdit').val(formatDate(dueDate)); // Set due date 30 days after start date
 
-        // Disable dates prior to the due date
-        var minDueDate = new Date(dueDate);
-        minDueDate.setDate(minDueDate.getDate() + 1); // Minimum due date is one day after the calculated due date
-        var maxDueDate = new Date(dueDate);
-        maxDueDate.setDate(maxDueDate.getDate() + 30); // Maximum due date is 30 days after the calculated due date
-        $('#projectDueEdit').attr('min', formatDate(minDueDate));
-        $('#projectDueEdit').attr('max', formatDate(maxDueDate));
+            // Ensure the due date is at least one day after the start date
+            var minDueDate = new Date(startDate);
+            minDueDate.setDate(minDueDate.getDate() + 1); // Minimum due date is one day after the start date
+            $('#projectDueEdit').attr('min', formatDate(minDueDate));
+        });
+
+        // Ensure the due date is not before the start date
+        $('#projectDueEdit').change(function() {
+            var dueDate = new Date($(this).val());
+            var startDate = new Date($('#projectStartEdit').val());
+
+            if (dueDate <= startDate) {
+                alert('Due Date cannot be before or the same as Start Date.');
+                $(this).val('');
+            }
+        });
+
+        // Set the minimum value for Date Start input to today's date
+        var today = new Date();
+        document.getElementById('projectStartEdit').min = formatDate(today);
+
+        // Set initial due date and minimum due date when the page loads
+        $('#projectStartEdit').trigger('change');
     });
-
-    // Initial setup
-    $('#projectStartEdit').trigger('change'); // Trigger change event to set initial due date
-});
-
 </script>
+
 
     <?php include('includes/footer.php'); ?>

@@ -278,18 +278,24 @@ $(document).ready(function() {
         var dueDate = new Date(startDate.getTime() + (30 * 24 * 60 * 60 * 1000)); // Add 30 days to start date
         $('#projectDueAdd').val(formatDate(dueDate)); // Set due date 30 days after start date
 
-        // Disable dates prior to the due date
-        var minDueDate = new Date(dueDate);
-        minDueDate.setDate(minDueDate.getDate() + 1); // Minimum due date is one day after the calculated due date
-        var maxDueDate = new Date(dueDate);
-        maxDueDate.setDate(maxDueDate.getDate() + 30); // Maximum due date is 30 days after the calculated due date
-        $('#projectDueAdd').attr('min', formatDate(minDueDate));
-        $('#projectDueAdd').attr('max', formatDate(maxDueDate));
+        // Make only the first 30 days non-clickable
+        $('input[type="date"]').on('change', function() {
+            var selectedDate = new Date($(this).val());
+            var thirtyDaysLater = new Date(startDate);
+            thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
+
+            if (selectedDate <= thirtyDaysLater) {
+                $('#projectDueAdd').attr('min', formatDate(thirtyDaysLater));
+            } else {
+                $('#projectDueAdd').removeAttr('min');
+            }
+        });
     });
 
     // Initial setup
     $('#projectStartAdd').trigger('change'); // Trigger change event to set initial due date
 });
+
 
 </script>
 

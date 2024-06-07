@@ -6,8 +6,8 @@ include('../project-customer/includes/header.php');
 <?php include('../project-customer/includes/sidebar.php'); ?>
 
 
- <!-- Content Wrapper. Contains page content -->
- <div class="content-wrapper">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -26,6 +26,36 @@ include('../project-customer/includes/header.php');
     </div>
     <!-- /.content-header -->
 
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Contact number section -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Contact Us</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <h4>GBUA CONSTRUCTION SERVICES</h4>
+                            <p>gbuaconstructionservice@gmail.com</p>
+                            <p>If you have any questions, feel free to reach out to us at the following number:</p>
+                            <h2 class="text-center"><strong>+1 (123) 456-7890</strong></h2>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
 
 <?php include('../project-customer/includes/script.php'); ?>
 <?php include('../project-customer/includes/footer.php'); ?>

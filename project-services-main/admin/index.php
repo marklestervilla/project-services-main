@@ -236,8 +236,8 @@ include('config/dbcon.php');
                                 <!-- Project Generating Report -->
                                 <div class="col-lg-6 col-12">
                                     <div class="card shadow h-200">
-                                        <div class="card-header bg-primary text-white">
-                                            <h6 class="mb-0">Generating Project Report</h6>
+                                        <div class="card-header bg-success text-white">
+                                            <h6 class="mb-0">Generating Financial Summary</h6>
                                         </div>
                                         <div class="card-body">
                                             <!-- Project Selection -->
@@ -255,6 +255,12 @@ include('config/dbcon.php');
                                             </div>
                                             <!-- // Project Selection -->
 
+
+                <div class="form-group">
+                    <label for="budget">Enter Budget:</label>
+                    <input type="number" id="budget" class="form-control" placeholder="Enter budget amount">
+                </div>
+
                                             <button id="generateProject" class="btn btn-success float-right">
                                                 <i class="fas fa-file-pdf mr-1"></i> Generate PDF
                                             </button>
@@ -262,6 +268,34 @@ include('config/dbcon.php');
                                     </div>
                                 </div>
                                 <!-- // Project Generating Report -->
+
+                                <div class="col-lg-6 col-12">
+                                    <div class="card shadow h-200">
+                                        <div class="card-header bg-primary text-white">
+                                            <h6 class="mb-0">Generating Project Report</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Project Selection -->
+                                            <div class="form-group">
+                                                <label for="projects">Select Project: </label>
+                                                <select class="form-control" name="projects" id="projects">
+                                                    <?php
+                                                    $query = "SELECT * FROM project GROUP BY id";
+                                                    $result = mysqli_query($con, $query);
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                        echo '<option value="' . $row['id'] . '">' . $row['project_name'] . '</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            <button id="generateProjectInvoice" class="btn btn-success float-right">
+                                                <i class="fas fa-file-pdf mr-1"></i> Generate PDF
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- // Project Generating Report -->
+
                             </div>
                             <!-- End of Project Information Small Box -->
                         </div>
@@ -273,240 +307,355 @@ include('config/dbcon.php');
         <?php include('includes/script.php'); ?>
         <?php include('includes/footer.php'); ?>
         <script>
-$(document).ready(() => {
-    $('#projectDataTable').DataTable();
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('generateProject').addEventListener('click', () => {
+                const projectId = document.getElementById('projects').value;
+                let budgetInput = document.getElementById('budget');
+                let budget = parseFloat(budgetInput.value.replace(/,/g, ''));
 
-    $('#generateProject').on('click', function() {
-        fetch(`fetch_project.php?proj_id=${$('#projects').val()}`)
-            .then(response => response.json())
-            .then(data => {
-                const statusMapping = {
-                    0: "Pending",
-                    1: "Preparing",
-                    2: "On-Progress",
-                    3: "Completed",
-                    4: "Cancelled",
-                    5: "Archived"
-                };
-
-                const projectStatus = statusMapping[data.status] || "Completed";
-
-                const tableBody = [
-                    [{
-                        text: 'Material',
-                        bold: true
-                    }, {
-                        text: 'Quantity',
-                        bold: true
-                    }, {
-                        text: 'Total Cost',
-                        bold: true
-                    }]
-                ];
-
-                data.grouped_materials.forEach(material => {
-                    let totalCost = parseFloat(material.total_cost);
-                    tableBody.push([material.name, material.quantity, totalCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})]);
-                });
-
-                let materialsUsedText = "Materials Used: " + data.grouped_materials.map(
-                    material => material.name).join(', ');
-                const groupedEquipments = data.all_equipments.split(', ').reduce((acc, equipment) => {
-                    acc[equipment] = acc[equipment] ? acc[equipment] + 1 : 1;
-                    return acc;
-                }, {});
-
-                let equipmentsUsedText = "Equipments Used: " + Object.keys(groupedEquipments).join(', ');
-
-                // Function to convert image to base64 and resize
-                function convertImageToBase64(imageUrl, callback) {
-                    const img = new Image();
-                    img.crossOrigin = 'Anonymous';
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 150;
-                        const MAX_HEIGHT = 150;
-                        let width = this.width;
-                        let height = this.height;
-
-                        if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-                        } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(this, 0, 0, width, height);
-                        const base64String = canvas.toDataURL('image/png').split(',')[1];
-                        callback(base64String);
-                    };
-                    img.src = imageUrl;
+                if (isNaN(budget) || budget <= 0) {
+                    alert('Please enter a valid budget.');
+                    return;
                 }
 
-                // Call function to convert image to base64 and resize
-                convertImageToBase64('images/icon-gbua-trans.png', function(base64Image) {
-                    let docDefinition = {
-                        content: [{
-                                image: `data:image/png;base64,${base64Image}`,
-                                width: 50, // Adjust the width as needed
-                                height: 50, // Adjust the height as needed
-                                alignment: 'center',
-                                margin: [0, 0, 0, 10]
-                            },
-                            {
-                                text: "God Bless Us All Services",
-                                style: 'header'
-                            },
-                            {
-                                text: "Blk 8 Lot 59 Birmingham Village Pulo, Cabuyao Laguna",
-                                style: 'subheader'
-                            },
-                            {
-                                text: "gbuaconstructionservices@gmail.com",
-                                style: 'subheader'
-                            },
-                            {
-                                columns: [{
-                                        width: '*',
-                                        text: [{
-                                                text: 'Customer Details\n',
-                                                style: 'sectionHeader'
-                                            },
-                                            {
-                                                text: `Full Name: ${data.customer_name}\n`
-                                            },
-                                            {
-                                                text: `Phone Number.: ${data.customer_phone}\n`
-                                            },
-                                            {
-                                                text: `Email Address: ${data.customer_email}\n`
-                                            },
-                                        ]
-                                    },
+                fetch(`fetch_project.php?proj_id=${projectId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const statusMapping = {
+                            0: "Pending",
+                            1: "Preparing",
+                            2: "On-Progress",
+                            3: "Completed",
+                            4: "Cancelled",
+                            5: "Archived"
+                        };
+
+                        const projectStatus = statusMapping[data.status] || "Completed";
+
+                        const totalCost = parseFloat(data.total_cost);
+                        const remainingBudget = budget - totalCost;
+
+                        if (remainingBudget < 0) {
+                            alert('Warning: The total project cost exceeds the budget!');
+                            return;
+                        }
+
+                        const tableBody = [
+                            [{ text: 'Material', bold: true }, { text: 'Quantity', bold: true }, { text: 'Total Cost', bold: true }]
+                        ];
+
+                        data.grouped_materials.forEach(material => {
+                            let totalCost = parseFloat(material.total_cost);
+                            tableBody.push([material.name, material.quantity, totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })]);
+                        });
+
+                        let materialsUsedText = "Materials Used: " + data.grouped_materials.map(material => material.name).join(', ');
+                        const groupedEquipments = data.all_equipments.split(', ').reduce((acc, equipment) => {
+                            acc[equipment] = acc[equipment] ? acc[equipment] + 1 : 1;
+                            return acc;
+                        }, {});
+
+                        let equipmentsUsedText = "Equipments Used: " + Object.keys(groupedEquipments).join(', ');
+
+                        function convertImageToBase64(imageUrl, callback) {
+                            const img = new Image();
+                            img.crossOrigin = 'Anonymous';
+                            img.onload = function () {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 150;
+                                const MAX_HEIGHT = 150;
+                                let width = this.width;
+                                let height = this.height;
+
+                                if (width > height) {
+                                    if (width > MAX_WIDTH) {
+                                        height *= MAX_WIDTH / width;
+                                        width = MAX_WIDTH;
+                                    }
+                                } else {
+                                    if (height > MAX_HEIGHT) {
+                                        width *= MAX_HEIGHT / height;
+                                        height = MAX_HEIGHT;
+                                    }
+                                }
+
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(this, 0, 0, width, height);
+                                const base64String = canvas.toDataURL('image/png').split(',')[1];
+                                callback(base64String);
+                            };
+                            img.src = imageUrl;
+                        }
+
+                        convertImageToBase64('images/icon-gbua-trans.png', function (base64Image) {
+                            let docDefinition = {
+                                content: [
+                                    { image: `data:image/png;base64,${base64Image}`, width: 50, height: 50, alignment: 'center', margin: [0, 0, 0, 10] },
+                                    { text: "God Bless Us All Services", style: 'header' },
+                                    { text: "Blk 8 Lot 59 Birmingham Village Pulo, Cabuyao Laguna", style: 'subheader' },
+                                    { text: "Financial Summary", style: 'subheader' },
+                                    { text: "gbuaconstructionservices@gmail.com", style: 'subheader' },
                                     {
-                                        width: '*',
-                                        alignment: 'right',
-                                        text: [{
-                                                text: 'Invoice Details\n',
-                                                style: 'sectionHeader'
-                                            },
+                                        // columns: [
+                                        //     {
+                                        //         width: '*',
+                                        //         text: [
+                                        //             { text: 'Customer Details\n', style: 'sectionHeader' },
+                                        //             { text: `Full Name: ${data.customer_name}\n` },
+                                        //             { text: `Phone Number: ${data.customer_phone}\n` },
+                                        //             { text: `Email Address: ${data.customer_email}\n` }
+                                        //         ]
+                                        //     },
+                                        //     {
+                                        //         width: '*',
+                                        //         alignment: 'right',
+                                        //         text: [
+                                        //             { text: 'Invoice Details\n', style: 'sectionHeader' },
+                                        //             { text: `Invoice Date: ${new Date().toLocaleDateString()}\n` },
+                                        //             { text: `Address: ${data.address}\n` },
+                                        //         ]
+                                        //     }
+                                        // ]
+                                    },
+                                    { text: "Project Details", style: 'sectionHeader' },
+                                    { text: `Project Name: ${data.project_name}`, margin: [0, 0, 0, 10] },
+                                    { text: `Total Workers: ${data.total_workers}`, margin: [0, 0, 0, 10] },
+                                    { text: `Total Tasks: ${data.total_tasks}`, margin: [0, 0, 0, 10] },
+                                    { text: `Budget: ₱ ${budget.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, margin: [0, 0, 0, 10] },
+                                    { text: `Total Cost: ₱ ${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, margin: [0, 0, 0, 10] },
+                                    { text: `Profit: ₱ ${remainingBudget.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, margin: [0, 0, 0, 10] },
+                                    { text: materialsUsedText, margin: [0, 0, 0, 10] },
+                                    { text: equipmentsUsedText, margin: [0, 0, 0, 10] },
+                                    { text: 'Material Costing', style: 'sectionHeader' },
+                                    {
+                                        table: {
+                                            headerRows: 1,
+                                            widths: ['*', '*', '*'],
+                                            body: tableBody
+                                        }
+                                    },
+                                    { text: '\n\n', },
+                                    {
+                                        columns: [
                                             {
-                                                text: `Invoice Date: ${new Date().toLocaleDateString()}\n`
-                                            },
-                                            {
-                                                text: `Address: ${data.address}\n`
+                                                width: '*',
+                                                text: [
+                                                    '_____________________________\n',
+                                                    'Olive Grace Burns\n',
+                                                    'Contractor\n',
+                                                    'Signature over printed name'
+                                                ],
+                                                alignment: 'center',
+                                                margin: [20, 100, 0, 0]
                                             },
                                             // {
-                                            //     text: `Status: ${projectStatus}\n`
-                                            // },
+                                            //     width: '*',
+                                            //     text: [
+                                            //         '_____________________________\n',
+                                            //         `${data.customer_name}\n`,
+                                            //         'Client\n',
+                                            //         'Signature over printed name'
+                                            //     ],
+                                            //     alignment: 'center',
+                                            //     margin: [20, 100, 0, 0]
+                                            // }
                                         ]
                                     }
-                                ]
-                            },
-                            {
-                                text: "Project Details",
-                                style: 'sectionHeader'
-                            },
-                            {
-                                text: `Project Name: ${data.project_name}`,
-                                margin: [0, 0, 0, 10]
-                            },
-                            {
-                                text: `Total Workers: ${data.total_workers}`,
-                                margin: [0, 0, 0, 10]
-                            },
-                            {
-                                text: `Total Tasks: ${data.total_tasks}`,
-                                margin: [0, 0, 0, 10]
-                            },
-                            {
-                                text: `Total Cost: ₱ ${parseFloat(data.total_cost).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`,
-                                margin: [0, 0, 0, 10]
-                            },
-                            {
-                                text: materialsUsedText,
-                                margin: [0, 0, 0, 10]
-                            },
-                            {
-                                text: equipmentsUsedText,
-                                margin: [0, 0, 0, 10]
-                            },
-                            {
-                                text: 'Material Costing',
-                                style: 'sectionHeader'
-                            },
-                            {
-                                table: {
-                                    headerRows: 1,
-                                    widths: ['*', '*', '*'],
-                                    body: tableBody
-                                }
-                            },
-                            // Add signature section
-                            {
-                                text: '\n\n',
-                            },
-                            {
-                                columns: [{
-                                        width: '*',
-                                        text: [
-                                            '_____________________________\n',
-                                            'Olive Grace Burns\n',
-                                            'Contractor\n',
-                                            'Signature over printed name'
-                                        ],
-                                        alignment: 'center',
-                                        margin: [20, 100, 0, 0]
+                                ],
+                                styles: {
+                                    header: {
+                                        fontSize: 18,
+                                        bold: true,
+                                        alignment: 'center'
                                     },
-                                    {
-                                        width: '*',
-                                        text: [
-                                            '_____________________________\n',
-                                            `${data.customer_name}\n`,
-                                            'Client\n',
-                                            'Signature over printed name'
-                                        ],
-                                        alignment: 'center',
-                                        margin: [20, 100, 0, 0]
+                                    subheader: {
+                                        fontSize: 14,
+                                        alignment: 'center'
+                                    },
+                                    sectionHeader: {
+                                        fontSize: 14,
+                                        bold: true,
+                                        margin: [0, 10, 0, 10]
                                     }
-                                ]
-                            }
-                        ],
-                        styles: {
-                            header: {
-                                fontSize: 18,
-                                bold: true,
-                                alignment: 'center'
-                            },
-                            subheader: {
-                                fontSize: 14,
-                                alignment: 'center'
-                            },
-                            sectionHeader: {
-                                fontSize: 14,
-                                bold: true,
-                                margin: [0, 10, 0, 10]
-                            }
-                        }
-                    };
+                                }
+                            };
 
-                    pdfMake.createPdf(docDefinition).open();
-                });
+                            pdfMake.createPdf(docDefinition).open();
+                        });
+                    });
             });
-    });
-});
-</script>
+        });
+    </script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('generateProjectInvoice').addEventListener('click', () => {
+                const projectId = document.getElementById('projects').value;
+
+                fetch(`fetch_project.php?proj_id=${projectId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const statusMapping = {
+                            0: "Pending",
+                            1: "Preparing",
+                            2: "On-Progress",
+                            3: "Completed",
+                            4: "Cancelled",
+                            5: "Archived"
+                        };
+
+                        const projectStatus = statusMapping[data.status] || "Completed";
+
+                        const totalCost = parseFloat(data.total_cost);
+
+                        const tableBody = [
+                            [{ text: 'Material', bold: true }, { text: 'Quantity', bold: true }, { text: 'Total Cost', bold: true }]
+                        ];
 
 
+                        data.grouped_materials.forEach(material => {
+                            let totalCost = parseFloat(material.total_cost);
+                            tableBody.push([material.name, material.quantity, totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })]);
+                        });
 
+                        let materialsUsedText = "Materials Used: " + data.grouped_materials.map(material => material.name).join(', ');
+                        const groupedEquipments = data.all_equipments.split(', ').reduce((acc, equipment) => {
+                            acc[equipment] = acc[equipment] ? acc[equipment] + 1 : 1;
+                            return acc;
+                        }, {});
+
+                        let equipmentsUsedText = "Equipments Used: " + Object.keys(groupedEquipments).join(', ');
+
+                        function convertImageToBase64(imageUrl, callback) {
+                            const img = new Image();
+                            img.crossOrigin = 'Anonymous';
+                            img.onload = function () {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 150;
+                                const MAX_HEIGHT = 150;
+                                let width = this.width;
+                                let height = this.height;
+
+                                if (width > height) {
+                                    if (width > MAX_WIDTH) {
+                                        height *= MAX_WIDTH / width;
+                                        width = MAX_WIDTH;
+                                    }
+                                } else {
+                                    if (height > MAX_HEIGHT) {
+                                        width *= MAX_HEIGHT / height;
+                                        height = MAX_HEIGHT;
+                                    }
+                                }
+
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(this, 0, 0, width, height);
+                                const base64String = canvas.toDataURL('image/png').split(',')[1];
+                                callback(base64String);
+                            };
+                            img.src = imageUrl;
+                        }
+
+                        convertImageToBase64('images/icon-gbua-trans.png', function (base64Image) {
+                            let docDefinition = {
+                                content: [
+                                    { image: `data:image/png;base64,${base64Image}`, width: 50, height: 50, alignment: 'center', margin: [0, 0, 0, 10] },
+                                    { text: "God Bless Us All Services", style: 'header' },
+                                    { text: "Blk 8 Lot 59 Birmingham Village Pulo, Cabuyao Laguna", style: 'subheader' },
+                                    { text: "gbuaconstructionservices@gmail.com", style: 'subheader' },
+                                    {
+                                        columns: [
+                                            {
+                                                width: '*',
+                                                text: [
+                                                    { text: 'Customer Details\n', style: 'sectionHeader' },
+                                                    { text: `Full Name: ${data.customer_name}\n` },
+                                                    { text: `Phone Number: ${data.customer_phone}\n` },
+                                                    { text: `Email Address: ${data.customer_email}\n` }
+                                                ]
+                                            },
+                                            {
+                                                width: '*',
+                                                alignment: 'right',
+                                                text: [
+                                                    { text: 'Invoice Details\n', style: 'sectionHeader' },
+                                                    { text: `Invoice Date: ${new Date().toLocaleDateString()}\n` },
+                                                    { text: `Address: ${data.address}\n` },
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    { text: "Project Details", style: 'sectionHeader' },
+                                    { text: `Project Name: ${data.project_name}`, margin: [0, 0, 0, 10] },
+                                    { text: `Total Workers: ${data.total_workers}`, margin: [0, 0, 0, 10] },
+                                    { text: `Total Tasks: ${data.total_tasks}`, margin: [0, 0, 0, 10] },
+                                    { text: `Total Cost: ₱ ${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, margin: [0, 0, 0, 10] },
+                                    { text: materialsUsedText, margin: [0, 0, 0, 10] },
+                                    { text: equipmentsUsedText, margin: [0, 0, 0, 10] },
+                                    { text: 'Material Costing', style: 'sectionHeader' },
+                                    {
+                                        table: {
+                                            headerRows: 1,
+                                            widths: ['*', '*', '*'],
+                                            body: tableBody
+                                        }
+                                    },
+                                    { text: '\n\n', },
+                                    {
+                                        columns: [
+                                            {
+                                                width: '*',
+                                                text: [
+                                                    '_____________________________\n',
+                                                    'Olive Grace Burns\n',
+                                                    'Contractor\n',
+                                                    'Signature over printed name'
+                                                ],
+                                                alignment: 'center',
+                                                margin: [20, 100, 0, 0]
+                                            },
+                                            {
+                                                width: '*',
+                                                text: [
+                                                    '_____________________________\n',
+                                                    `${data.customer_name}\n`,
+                                                    'Client\n',
+                                                    'Signature over printed name'
+                                                ],
+                                                alignment: 'center',
+                                                margin: [20, 100, 0, 0]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                styles: {
+                                    header: {
+                                        fontSize: 18,
+                                        bold: true,
+                                        alignment: 'center'
+                                    },
+                                    subheader: {
+                                        fontSize: 14,
+                                        alignment: 'center'
+                                    },
+                                    sectionHeader: {
+                                        fontSize: 14,
+                                        bold: true,
+                                        margin: [0, 10, 0, 10]
+                                    }
+                                }
+                            };
+
+                            pdfMake.createPdf(docDefinition).open();
+                        });
+                    });
+            });
+        });
+    </script>
 
     </div>
 </body>

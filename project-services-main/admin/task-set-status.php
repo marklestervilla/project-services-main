@@ -169,3 +169,89 @@ if (isset($_GET['id'])) {
         });
     </script>
 
+<script>
+    $(document).ready(function() {
+        // Function to format date as 'YYYY-MM-DDTHH:MM' (required by input type="datetime-local")
+        function formatDateTime(date) {
+            return date.toISOString().slice(0, 16);
+        }
+
+        // Event listener for start date input change
+        $('#taskStartDateEdit').change(function() {
+            // Get the selected start date value
+            const startDate = new Date($(this).val());
+            // Calculate the due date by adding one week to the start date
+            const dueDate = new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+            // Format the due date in YYYY-MM-DDTHH:MM format required by datetime-local input
+            const formattedDueDate = formatDateTime(dueDate);
+            // Set the value and min attribute of the due date input field
+            $('#taskDueDateEdit').val(formattedDueDate);
+            $('#taskDueDateEdit').attr('min', formattedDueDate); // Set the minimum allowed date
+        });
+
+        // Ensure the due date is not before the start date
+        $('#taskDueDateEdit').change(function() {
+            const dueDate = new Date($(this).val());
+            const startDate = new Date($('#taskStartDateEdit').val());
+
+            if (dueDate <= startDate) {
+                alert('Due Date cannot be before or the same as Start Date.');
+                $(this).val(''); // Clear the due date field
+            }
+        });
+
+        // Set the minimum value for Date Start input to today's date
+        const today = new Date();
+        document.getElementById('taskStartDateEdit').min = formatDateTime(today);
+
+        // Initial setup to trigger the change event on page load
+        $('#taskStartDateEdit').trigger('change');
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const statusSelect = document.getElementById('selectedStatus');
+    const commentSection = document.getElementById('commentSection');
+
+    statusSelect.addEventListener('change', function() {
+        const newStatus = statusSelect.value;
+        const currentStatus = <?php echo $task['status']; ?>;
+
+        // If the new status is different from the current status and not 'Cancelled', prompt for confirmation
+        if (newStatus !== currentStatus && newStatus !== '4') {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to change the task status.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                } else {
+                   statusSelect.value = currentStatus;
+                }
+            });
+        }
+
+        // If the new status is 'Cancelled', display the comment section
+        if (newStatus === '4') {
+            commentSection.style.display = 'block';
+        } else {
+            commentSection.style.display = 'none';
+        }
+    });
+
+    // Initial check in case the page loads with "Cancelled" status
+    if (statusSelect.value === '4') {
+        commentSection.style.display = 'block';
+    }
+});
+
+</script>
+
+
+
